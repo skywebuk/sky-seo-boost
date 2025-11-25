@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wpml-config>
+    <!--
+    ====================================================================
+    Sky SEO Boost - WPML Configuration File
+    ====================================================================
+    This file tells WPML which elements of the plugin should be translated.
+
+    Documentation: https://wpml.org/documentation/support/language-configuration-files/
+    Version: 1.0
+    Last Updated: 2025-11-15
+    ====================================================================
+    -->
+
+    <!-- Custom Post Types Translation -->
+    <custom-types>
+        <!-- Areas We Cover Post Type -->
+        <custom-type translate="1">sky_areas</custom-type>
+
+        <!-- Trending Searches/Insights Post Type -->
+        <custom-type translate="1">sky_trending</custom-type>
+
+        <!-- Sectors Post Type -->
+        <custom-type translate="1">sky_sectors</custom-type>
+    </custom-types>
+
+    <!-- Custom Fields Translation Configuration -->
+    <custom-fields>
+        <!-- FAQ Schema Data - needs full translation -->
+        <custom-field action="translate">_sky_seo_faqs</custom-field>
+
+        <!-- Yoast SEO Meta Fields - copy to translations -->
+        <custom-field action="copy">_yoast_wpseo_title</custom-field>
+        <custom-field action="copy">_yoast_wpseo_metadesc</custom-field>
+        <custom-field action="copy">_yoast_wpseo_canonical</custom-field>
+        <custom-field action="copy">_yoast_wpseo_focuskw</custom-field>
+
+        <!-- Rank Math SEO Fields - copy to translations -->
+        <custom-field action="copy">rank_math_title</custom-field>
+        <custom-field action="copy">rank_math_description</custom-field>
+        <custom-field action="copy">rank_math_canonical_url</custom-field>
+        <custom-field action="copy">rank_math_focus_keyword</custom-field>
+
+        <!-- All in One SEO Fields - copy to translations -->
+        <custom-field action="copy">_aioseop_title</custom-field>
+        <custom-field action="copy">_aioseop_description</custom-field>
+        <custom-field action="copy">_aioseop_keywords</custom-field>
+
+        <!-- WordPress Core Fields - translate -->
+        <custom-field action="translate">_thumbnail_id</custom-field>
+
+        <!-- Sky SEO Internal Fields - ignore (technical data) -->
+        <custom-field action="ignore">_sky_seo_internal_linking</custom-field>
+        <custom-field action="ignore">_sky_seo_last_checked</custom-field>
+    </custom-fields>
+
+    <!-- Admin Settings Translation -->
+    <admin-texts>
+        <key name="sky_seo_settings">
+            <!-- Duplicate Post Feature Strings -->
+            <key name="duplicate_prefix" />
+            <key name="duplicate_suffix" />
+
+            <!-- Custom Tracking Strings (if user-defined) -->
+            <key name="ga_measurement_id" />
+            <key name="google_ads_conversion_label" />
+            <key name="gtm_container_id" />
+            <key name="meta_pixel_id" />
+        </key>
+    </admin-texts>
+
+    <!-- Taxonomy Translation (if any are added in future) -->
+    <taxonomies>
+        <!-- Currently no custom taxonomies, but prepared for future expansion -->
+        <!-- <taxonomy translate="1">sky_area_category</taxonomy> -->
+    </taxonomies>
+
+    <!--
+    ====================================================================
+    WPML String Translation Integration
+    ====================================================================
+    Strings in the plugin are already wrapped in WordPress translation functions:
+    - __('text', 'sky-seo-boost')
+    - _e('text', 'sky-seo-boost')
+    - esc_html__('text', 'sky-seo-boost')
+
+    These will be automatically available in WPML > String Translation
+    after running "Scan strings in theme and plugins"
+    ====================================================================
+    -->
+
+</wpml-config>

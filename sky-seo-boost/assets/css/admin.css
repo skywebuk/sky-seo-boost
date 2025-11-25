@@ -1,0 +1,504 @@
+/* Sky SEO Boost Admin Base Styles */
+
+/* Core Table Styles */
+.sky-seo-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.sky-seo-table th,
+.sky-seo-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e1e1e1;
+    vertical-align: middle;
+}
+
+.sky-seo-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sky-seo-table th.sort:hover {
+    background: #e5e7eb;
+}
+
+.sky-seo-table tr:hover {
+    background: #f5f5f5;
+}
+
+.sky-seo-table .row-actions {
+    visibility: hidden;
+    padding-top: 5px;
+}
+
+.sky-seo-table tr:hover .row-actions {
+    visibility: visible;
+}
+
+/* Draft Badge */
+.sky-seo-draft-badge {
+    display: inline-block;
+    background: #f0ad4e;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* Filters Section */
+.sky-seo-filters {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sky-seo-filters label {
+    font-weight: 600;
+}
+
+.sky-seo-filters select,
+.sky-seo-filters input[type="text"],
+.sky-seo-filters input[type="date"],
+.sky-seo-filters input[type="number"],
+.sky-seo-filters textarea {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 0.875rem;
+}
+
+.sky-seo-filters input[type="text"] {
+    width: 200px;
+}
+
+.sky-seo-filters input[type="date"],
+.sky-seo-filters input[type="number"] {
+    width: 150px;
+}
+
+.sky-seo-filters textarea {
+    width: 100%;
+}
+
+.sky-seo-filters .button {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.sky-seo-filters .button:hover {
+    background: #005f87;
+}
+
+/* Navigation Tabs - Scoped to plugin pages only */
+.sky-seo-boost-page .nav-tab-wrapper {
+    margin-bottom: 20px;
+}
+
+.sky-seo-boost-page .nav-tab {
+    margin-right: 5px;
+}
+
+/* Status Indicators */
+.sky-seo-check.success {
+    color: #15803d;
+    font-weight: 500;
+}
+
+.sky-seo-check.warning {
+    color: #d97706;
+    font-weight: 500;
+}
+
+.sky-seo-check.error {
+    color: #b91c1c;
+    font-weight: 500;
+}
+
+/* Link Suggestions */
+.sky-seo-link-suggestion {
+    cursor: pointer;
+    color: #0073aa;
+    text-decoration: underline;
+}
+
+.sky-seo-link-suggestion:hover {
+    color: #005f87;
+}
+
+/* Analytics Wrapper Base */
+.sky-seo-analytics-wrap {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Utility Classes */
+.sky-seo-analytics-wrap .bg-white {
+    background: #ffffff;
+}
+
+.sky-seo-analytics-wrap .p-4 {
+    padding: 1rem;
+}
+
+.sky-seo-analytics-wrap .rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.sky-seo-analytics-wrap .shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.sky-seo-analytics-wrap .mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.sky-seo-analytics-wrap .flex {
+    display: flex;
+}
+
+.sky-seo-analytics-wrap .flex-wrap {
+    flex-wrap: wrap;
+}
+
+.sky-seo-analytics-wrap .gap-4 {
+    gap: 1rem;
+}
+
+.sky-seo-analytics-wrap .items-end {
+    align-items: flex-end;
+}
+
+.sky-seo-analytics-wrap .items-center {
+    align-items: center;
+}
+
+.sky-seo-analytics-wrap .justify-between {
+    justify-content: space-between;
+}
+
+.sky-seo-analytics-wrap .border {
+    border: 1px solid #d1d5db;
+}
+
+.sky-seo-analytics-wrap .text-lg {
+    font-size: 1.125rem;
+}
+
+.sky-seo-analytics-wrap .font-semibold {
+    font-weight: 600;
+}
+
+.sky-seo-analytics-wrap .text-2xl {
+    font-size: 1.5rem;
+}
+
+.sky-seo-analytics-wrap .text-sm {
+    font-size: 0.875rem;
+}
+
+.sky-seo-analytics-wrap .text-gray-600 {
+    color: #4b5563;
+}
+
+.sky-seo-analytics-wrap .grid {
+    display: grid;
+}
+
+.sky-seo-analytics-wrap .grid-cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.sky-seo-analytics-wrap .md\:grid-cols-2 {
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.sky-seo-analytics-wrap .md\:grid-cols-3 {
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.sky-seo-analytics-wrap .w-full {
+    width: 100%;
+}
+
+.sky-seo-analytics-wrap .space-y-4 > * + * {
+    margin-top: 1rem;
+}
+
+/* Base Status Badges */
+.sky-seo-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.sky-seo-status-badge.success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.sky-seo-status-badge.error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Base Card Styles */
+.sky-seo-card {
+    transition: all 0.2s ease;
+}
+
+.sky-seo-card:hover {
+    transform: translateY(-2px);
+}
+
+.sky-seo-card-header {
+    transition: background 0.2s ease;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+}
+
+.sky-seo-card-header:hover {
+    background: #f9fafb;
+}
+
+/* Custom arrow for details/summary */
+.sky-seo-card-header::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>') no-repeat center;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+}
+
+.sky-seo-card[open] .sky-seo-card-header::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.sky-seo-card-content {
+    padding: 1rem;
+}
+
+/* Base Button Styles */
+.sky-seo-copy-code,
+.sky-seo-override-button,
+.sky-seo-reset-override {
+    padding: 8px 16px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.875rem;
+    touch-action: manipulation;
+}
+
+.sky-seo-copy-code {
+    background: #6b7280;
+}
+
+.sky-seo-copy-code:hover {
+    background: #4b5563;
+}
+
+.sky-seo-override-button {
+    background: #d97706;
+}
+
+.sky-seo-override-button:hover {
+    background: #b45309;
+}
+
+.sky-seo-reset-override {
+    background: #6b7280;
+}
+
+.sky-seo-reset-override:hover {
+    background: #4b5563;
+}
+
+/* Border Colors - Scoped */
+.sky-seo-analytics-wrap .border-green-500 {
+    border-color: #22c55e;
+}
+
+.sky-seo-analytics-wrap .border-red-500 {
+    border-color: #ef4444;
+}
+
+/* Orientation Fix */
+.sky-seo-analytics-wrap,
+.sky-seo-card,
+.sky-seo-card-header,
+.sky-seo-card-content {
+    transform: none !important;
+    flex-direction: column;
+    display: flex;
+}
+
+/* Remove default details marker - Scoped to plugin only */
+.sky-seo-analytics-wrap details > summary::-webkit-details-marker,
+.sky-seo-card details > summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 782px) {
+    .sky-seo-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .sky-seo-filters input[type="text"],
+    .sky-seo-filters input[type="date"],
+    .sky-seo-filters select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .sky-seo-table {
+        font-size: 12px;
+    }
+    
+    .sky-seo-table th,
+    .sky-seo-table td {
+        padding: 8px 10px;
+    }
+}
+
+/* Powered by Sky Web */
+.sky-seo-powered-by {
+    font-size: 12px;
+    color: #666;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sky-seo-powered-by a {
+    color: #0073aa;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.sky-seo-powered-by a:hover {
+    color: #005177;
+    text-decoration: underline;
+}
+
+/* Ensure header is flex container */
+.sky-seo-dashboard-header,
+.sky-seo-settings-header,
+.sky-seo-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Mobile responsive */
+@media (max-width: 782px) {
+    .sky-seo-powered-by {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    .sky-seo-dashboard-header,
+    .sky-seo-settings-header,
+    .sky-seo-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Animate logo on hover */
+.sky-powered-by:hover svg {
+    animation: pulse 0.6s ease-in-out;
+}
+
+.sky-powered-by img {
+    height: 16px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0; /* Added */
+}
+
+/* Updated hover animation for img */
+.sky-powered-by:hover img {
+    animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Date Controls - Updated */
+.sky-seo-date-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%; /* Added to ensure full width */
+}
+
+/* Responsive Design */
+@media (max-width: 782px) {
+    .sky-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .sky-powered-by {
+        align-self: flex-end;
+        margin-left: 0; /* Reset margin on mobile */
+    }
+    
+    .sky-seo-date-controls {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .sky-powered-by {
+        padding: 6px 12px 6px 14px;
+    }
+    
+    .sky-powered-by a {
+        font-size: 12px;
+        gap: 8px;
+    }
+    
+    .sky-powered-by svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .sky-powered-by img {
+        height: 14px; /* Added for smaller screens */
+    }
+}
