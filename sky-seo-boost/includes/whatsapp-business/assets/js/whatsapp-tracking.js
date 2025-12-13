@@ -41,7 +41,7 @@
             
             // Ensure modal HTML exists
             if ($('#sky-whatsapp-details-modal').length === 0) {
-                console.error('WhatsApp details modal HTML not found!');
+                // Modal HTML not found - will be handled gracefully
             }
             
             // Initialize components
@@ -509,9 +509,7 @@
             const $button = $(e.currentTarget);
             const pageUrl = $button.attr('data-page-url');
             const pageTitle = $button.attr('data-page-title');
-            
-            console.log('View details clicked for:', pageTitle, pageUrl);
-            
+
             // Show modal with loading state
             this.showModal();
             
@@ -529,7 +527,6 @@
                     page_title: pageTitle  // Send page title too
                 },
                 success: (response) => {
-                    console.log('Page details response:', response);
                     if (response.success) {
                         this.populateModal(response.data);
                     } else {
@@ -538,8 +535,7 @@
                     }
                 },
                 error: (xhr, status, error) => {
-                    console.error('Failed to load page details:', error);
-                    this.showError('Failed to load page details: ' + error);
+                    this.showError('Failed to load page details');
                     this.closeModal();
                 }
             });

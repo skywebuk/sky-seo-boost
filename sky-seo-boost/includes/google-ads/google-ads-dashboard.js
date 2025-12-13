@@ -43,8 +43,6 @@
          * Initialize dashboard
          */
         init: function() {
-            console.log('Initializing Google Ads Dashboard...');
-
             this.setupEventHandlers();
             this.loadDashboard();
         },
