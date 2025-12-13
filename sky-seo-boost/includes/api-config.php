@@ -59,14 +59,22 @@ class Sky_SEO_API_Config {
      * Fallback license servers
      *
      * Used if primary license server is unavailable.
-     * Add additional backup servers here.
+     * These are alternate endpoints for the same license server
+     * to handle cases where certain paths are blocked.
      */
     const FALLBACK_LICENSE_SERVERS = [
-        // Primary server is defined in Sky_SEO_License_Manager
+        // Alternative endpoint paths (same server, different access methods)
+        'https://skywebdesign.co.uk/wp-json/sky-license/v1/validate',
         // Add backup servers below if available
         // 'https://backup1.skywebdesign.co.uk/wp-content/plugins/sky-seo-license-manager/api-endpoint.php',
-        // 'https://backup2.skywebdesign.co.uk/wp-content/plugins/sky-seo-license-manager/api-endpoint.php',
     ];
+
+    /**
+     * Enable fallback server support
+     *
+     * When true, the system will try fallback servers if primary fails
+     */
+    const ENABLE_FALLBACK = true;
 
     /**
      * Get timeout for specific API type
