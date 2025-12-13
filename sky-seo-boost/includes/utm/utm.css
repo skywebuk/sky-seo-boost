@@ -1,4 +1,32 @@
-/* Sky Insights UTM Tab Styles */
+/**
+ * Sky SEO Boost - UTM Dashboard Styles
+ *
+ * UTM link builder and tracking dashboard styling
+ *
+ * @package Sky_SEO_Boost
+ * @subpackage UTM
+ * @version 1.0.0
+ *
+ * Table of Contents:
+ * 1. CSS Variables Import
+ * 2. UTM Builder Section
+ * 3. Form Layout
+ * 4. Generated Links
+ * 5. Analytics Cards
+ * 6. Charts & Tables
+ * 7. Modals
+ * 8. Responsive Design
+ */
+
+/* ========================================
+   1. CSS VARIABLES IMPORT
+   ======================================== */
+
+@import url('../../assets/css/variables.css');
+
+/* ========================================
+   2. UTM BUILDER SECTION
+   ======================================== */
 
 /* UTM Builder Section */
 .sky-utm-builder {

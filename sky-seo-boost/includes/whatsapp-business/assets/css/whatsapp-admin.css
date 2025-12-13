@@ -1,10 +1,32 @@
 /**
  * Sky SEO Boost - WhatsApp Business Admin Styles
- * 
+ *
  * @package Sky_SEO_Boost
  * @subpackage WhatsApp_Business
  * @version 1.3.0
+ *
+ * Table of Contents:
+ * 1. CSS Variables Import
+ * 2. Reset & Base Styles
+ * 3. Main Container
+ * 4. Header & Navigation
+ * 5. Settings Cards
+ * 6. Form Elements
+ * 7. Toggle Switches
+ * 8. Position Selector
+ * 9. Preview Components
+ * 10. Responsive Design
  */
+
+/* ========================================
+   1. CSS VARIABLES IMPORT
+   ======================================== */
+
+@import url('../../../../assets/css/variables.css');
+
+/* ========================================
+   2. RESET & BASE STYLES
+   ======================================== */
 
 /* Reset for WhatsApp admin area */
 .sky-seo-whatsapp-wrap *,

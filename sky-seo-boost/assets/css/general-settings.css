@@ -1,4 +1,38 @@
-.sky-seo-settings-wrap .nav-tab-wrapper/* Sky SEO Boost - General Settings Styles */
+/**
+ * Sky SEO Boost - General Settings Styles
+ *
+ * Settings page styling with modern card-based layout
+ *
+ * @package Sky_SEO_Boost
+ * @version 4.4.0
+ *
+ * Table of Contents:
+ * 1. CSS Variables Import
+ * 2. Settings Wrapper & Container
+ * 3. Header Styles
+ * 4. Navigation Tabs
+ * 5. Sub-tabs Navigation
+ * 6. Settings Cards
+ * 7. Form Elements
+ * 8. Toggle Switch
+ * 9. Status Badges
+ * 10. Notices & Messages
+ * 11. Plugin-specific Settings
+ * 12. Sitemap Diagnostics
+ * 13. Animations
+ * 14. Responsive Design
+ * 15. Print & Accessibility
+ */
+
+/* ========================================
+   1. CSS VARIABLES IMPORT
+   ======================================== */
+
+@import url('./variables.css');
+
+/* ========================================
+   2. SETTINGS WRAPPER & CONTAINER
+   ======================================== */
 
 /* Settings Wrapper - Match Modern Analytics Dashboard */
 .sky-seo-settings-wrap {

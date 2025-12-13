@@ -1,33 +1,64 @@
-/* Sky SEO Boost Admin Base Styles */
+/**
+ * Sky SEO Boost - Admin Base Styles
+ *
+ * Core admin styling for the Sky SEO Boost plugin
+ *
+ * @package Sky_SEO_Boost
+ * @version 4.4.0
+ *
+ * Table of Contents:
+ * 1. CSS Variables Import
+ * 2. Core Table Styles
+ * 3. Status Badges & Indicators
+ * 4. Filter Section
+ * 5. Navigation Tabs
+ * 6. Link Suggestions
+ * 7. Analytics Wrapper
+ * 8. Utility Classes
+ * 9. Card Components
+ * 10. Button Styles
+ * 11. Date Controls
+ * 12. Powered By Footer
+ * 13. Responsive Design
+ */
 
-/* Core Table Styles */
+/* ========================================
+   1. CSS VARIABLES IMPORT
+   ======================================== */
+
+@import url('./variables.css');
+
+/* ========================================
+   2. CORE TABLE STYLES
+   ======================================== */
+
 .sky-seo-table {
     border-collapse: separate;
     border-spacing: 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    background: #fff;
+    box-shadow: var(--sky-shadow);
+    background: var(--sky-bg-white);
 }
 
 .sky-seo-table th,
 .sky-seo-table td {
     padding: 12px 15px;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid var(--sky-border);
     vertical-align: middle;
 }
 
 .sky-seo-table th {
-    background: #f9f9f9;
-    font-weight: 600;
+    background: var(--sky-bg-alt);
+    font-weight: var(--sky-font-weight-semibold);
     text-align: left;
     cursor: pointer;
 }
 
 .sky-seo-table th.sort:hover {
-    background: #e5e7eb;
+    background: var(--sky-gray-200);
 }
 
 .sky-seo-table tr:hover {
-    background: #f5f5f5;
+    background: var(--sky-bg-hover);
 }
 
 .sky-seo-table .row-actions {
@@ -39,18 +70,61 @@
     visibility: visible;
 }
 
+/* ========================================
+   3. STATUS BADGES & INDICATORS
+   ======================================== */
+
 /* Draft Badge */
 .sky-seo-draft-badge {
     display: inline-block;
-    background: #f0ad4e;
-    color: #fff;
+    background: var(--sky-warning-badge);
+    color: var(--sky-text-white);
     padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 12px;
+    border-radius: var(--sky-radius-sm);
+    font-size: var(--sky-font-size-xs);
     margin-left: 5px;
 }
 
-/* Filters Section */
+/* Status Check Indicators */
+.sky-seo-check.success {
+    color: var(--sky-success-dark);
+    font-weight: var(--sky-font-weight-medium);
+}
+
+.sky-seo-check.warning {
+    color: var(--sky-warning-dark);
+    font-weight: var(--sky-font-weight-medium);
+}
+
+.sky-seo-check.error {
+    color: var(--sky-error-darker);
+    font-weight: var(--sky-font-weight-medium);
+}
+
+/* Base Status Badges */
+.sky-seo-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--sky-spacing-xs) var(--sky-spacing-sm);
+    border-radius: var(--sky-radius-lg);
+    font-size: var(--sky-font-size-sm);
+    font-weight: var(--sky-font-weight-medium);
+}
+
+.sky-seo-status-badge.success {
+    background: var(--sky-success-light);
+    color: var(--sky-success-dark);
+}
+
+.sky-seo-status-badge.error {
+    background: var(--sky-error-light);
+    color: var(--sky-error-darker);
+}
+
+/* ========================================
+   4. FILTER SECTION
+   ======================================== */
+
 .sky-seo-filters {
     margin-bottom: 20px;
     display: flex;
@@ -60,7 +134,7 @@
 }
 
 .sky-seo-filters label {
-    font-weight: 600;
+    font-weight: var(--sky-font-weight-semibold);
 }
 
 .sky-seo-filters select,
@@ -68,11 +142,11 @@
 .sky-seo-filters input[type="date"],
 .sky-seo-filters input[type="number"],
 .sky-seo-filters textarea {
-    padding: 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
+    padding: var(--sky-spacing-sm);
+    border: 1px solid var(--sky-border-input);
+    border-radius: var(--sky-radius-sm);
     margin-right: 10px;
-    font-size: 0.875rem;
+    font-size: var(--sky-font-size-sm);
 }
 
 .sky-seo-filters input[type="text"] {
@@ -89,19 +163,24 @@
 }
 
 .sky-seo-filters .button {
-    background: #0073aa;
-    color: #fff;
+    background: var(--sky-primary);
+    color: var(--sky-text-white);
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 0.875rem;
+    padding: var(--sky-spacing-sm) var(--sky-spacing-md);
+    border-radius: var(--sky-radius-sm);
+    font-size: var(--sky-font-size-sm);
+    transition: background var(--sky-transition);
 }
 
 .sky-seo-filters .button:hover {
-    background: #005f87;
+    background: var(--sky-primary-hover);
 }
 
-/* Navigation Tabs - Scoped to plugin pages only */
+/* ========================================
+   5. NAVIGATION TABS
+   ======================================== */
+
+/* Scoped to plugin pages only */
 .sky-seo-boost-page .nav-tab-wrapper {
     margin-bottom: 20px;
 }
@@ -110,43 +189,37 @@
     margin-right: 5px;
 }
 
-/* Status Indicators */
-.sky-seo-check.success {
-    color: #15803d;
-    font-weight: 500;
-}
+/* ========================================
+   6. LINK SUGGESTIONS
+   ======================================== */
 
-.sky-seo-check.warning {
-    color: #d97706;
-    font-weight: 500;
-}
-
-.sky-seo-check.error {
-    color: #b91c1c;
-    font-weight: 500;
-}
-
-/* Link Suggestions */
 .sky-seo-link-suggestion {
     cursor: pointer;
-    color: #0073aa;
+    color: var(--sky-primary);
     text-decoration: underline;
+    transition: color var(--sky-transition);
 }
 
 .sky-seo-link-suggestion:hover {
-    color: #005f87;
+    color: var(--sky-primary-hover);
 }
 
-/* Analytics Wrapper Base */
+/* ========================================
+   7. ANALYTICS WRAPPER
+   ======================================== */
+
 .sky-seo-analytics-wrap {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-/* Utility Classes */
+/* ========================================
+   8. UTILITY CLASSES
+   ======================================== */
+
 .sky-seo-analytics-wrap .bg-white {
-    background: #ffffff;
+    background: var(--sky-bg-white);
 }
 
 .sky-seo-analytics-wrap .p-4 {
@@ -154,11 +227,11 @@
 }
 
 .sky-seo-analytics-wrap .rounded-lg {
-    border-radius: 0.5rem;
+    border-radius: var(--sky-radius-md);
 }
 
 .sky-seo-analytics-wrap .shadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--sky-shadow-md);
 }
 
 .sky-seo-analytics-wrap .mb-6 {
@@ -190,7 +263,7 @@
 }
 
 .sky-seo-analytics-wrap .border {
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--sky-border-input);
 }
 
 .sky-seo-analytics-wrap .text-lg {
@@ -198,7 +271,7 @@
 }
 
 .sky-seo-analytics-wrap .font-semibold {
-    font-weight: 600;
+    font-weight: var(--sky-font-weight-semibold);
 }
 
 .sky-seo-analytics-wrap .text-2xl {
@@ -206,11 +279,11 @@
 }
 
 .sky-seo-analytics-wrap .text-sm {
-    font-size: 0.875rem;
+    font-size: var(--sky-font-size-sm);
 }
 
 .sky-seo-analytics-wrap .text-gray-600 {
-    color: #4b5563;
+    color: var(--sky-gray-600);
 }
 
 .sky-seo-analytics-wrap .grid {
@@ -241,29 +314,21 @@
     margin-top: 1rem;
 }
 
-/* Base Status Badges */
-.sky-seo-status-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.875rem;
-    font-weight: 500;
+/* Border Colors - Scoped */
+.sky-seo-analytics-wrap .border-green-500 {
+    border-color: var(--sky-success);
 }
 
-.sky-seo-status-badge.success {
-    background: #dcfce7;
-    color: #15803d;
+.sky-seo-analytics-wrap .border-red-500 {
+    border-color: var(--sky-error);
 }
 
-.sky-seo-status-badge.error {
-    background: #fee2e2;
-    color: #b91c1c;
-}
+/* ========================================
+   9. CARD COMPONENTS
+   ======================================== */
 
-/* Base Card Styles */
 .sky-seo-card {
-    transition: all 0.2s ease;
+    transition: all var(--sky-transition);
 }
 
 .sky-seo-card:hover {
@@ -271,7 +336,7 @@
 }
 
 .sky-seo-card-header {
-    transition: background 0.2s ease;
+    transition: background var(--sky-transition);
     cursor: pointer;
     list-style: none;
     position: relative;
@@ -279,7 +344,7 @@
 }
 
 .sky-seo-card-header:hover {
-    background: #f9fafb;
+    background: var(--sky-bg-light);
 }
 
 /* Custom arrow for details/summary */
@@ -293,7 +358,7 @@
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    transition: transform 0.2s ease;
+    transition: transform var(--sky-transition);
 }
 
 .sky-seo-card[open] .sky-seo-card-header::after {
@@ -302,50 +367,6 @@
 
 .sky-seo-card-content {
     padding: 1rem;
-}
-
-/* Base Button Styles */
-.sky-seo-copy-code,
-.sky-seo-override-button,
-.sky-seo-reset-override {
-    padding: 8px 16px;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 0.875rem;
-    touch-action: manipulation;
-}
-
-.sky-seo-copy-code {
-    background: #6b7280;
-}
-
-.sky-seo-copy-code:hover {
-    background: #4b5563;
-}
-
-.sky-seo-override-button {
-    background: #d97706;
-}
-
-.sky-seo-override-button:hover {
-    background: #b45309;
-}
-
-.sky-seo-reset-override {
-    background: #6b7280;
-}
-
-.sky-seo-reset-override:hover {
-    background: #4b5563;
-}
-
-/* Border Colors - Scoped */
-.sky-seo-analytics-wrap .border-green-500 {
-    border-color: #22c55e;
-}
-
-.sky-seo-analytics-wrap .border-red-500 {
-    border-color: #ef4444;
 }
 
 /* Orientation Fix */
@@ -364,44 +385,75 @@
     display: none;
 }
 
-/* Responsive Design */
-@media (max-width: 782px) {
-    .sky-seo-filters {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .sky-seo-filters input[type="text"],
-    .sky-seo-filters input[type="date"],
-    .sky-seo-filters select {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    
-    .sky-seo-table {
-        font-size: 12px;
-    }
-    
-    .sky-seo-table th,
-    .sky-seo-table td {
-        padding: 8px 10px;
-    }
+/* ========================================
+   10. BUTTON STYLES
+   ======================================== */
+
+.sky-seo-copy-code,
+.sky-seo-override-button,
+.sky-seo-reset-override {
+    padding: var(--sky-spacing-sm) var(--sky-spacing-md);
+    border-radius: var(--sky-radius-sm);
+    color: var(--sky-text-white);
+    font-size: var(--sky-font-size-sm);
+    touch-action: manipulation;
+    transition: background var(--sky-transition);
 }
 
-/* Powered by Sky Web */
+.sky-seo-copy-code {
+    background: var(--sky-gray-500);
+}
+
+.sky-seo-copy-code:hover {
+    background: var(--sky-gray-600);
+}
+
+.sky-seo-override-button {
+    background: var(--sky-warning-dark);
+}
+
+.sky-seo-override-button:hover {
+    background: var(--sky-warning-darker);
+}
+
+.sky-seo-reset-override {
+    background: var(--sky-gray-500);
+}
+
+.sky-seo-reset-override:hover {
+    background: var(--sky-gray-600);
+}
+
+/* ========================================
+   11. DATE CONTROLS
+   ======================================== */
+
+.sky-seo-date-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* ========================================
+   12. POWERED BY FOOTER
+   ======================================== */
+
 .sky-seo-powered-by {
-    font-size: 12px;
+    font-size: var(--sky-font-size-xs);
     color: #666;
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--sky-spacing-xs);
 }
 
 .sky-seo-powered-by a {
-    color: #0073aa;
+    color: var(--sky-primary);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: var(--sky-font-weight-semibold);
+    transition: color var(--sky-transition);
 }
 
 .sky-seo-powered-by a:hover {
@@ -418,21 +470,6 @@
     align-items: center;
 }
 
-/* Mobile responsive */
-@media (max-width: 782px) {
-    .sky-seo-powered-by {
-        margin-left: 0;
-        margin-top: 10px;
-    }
-    
-    .sky-seo-dashboard-header,
-    .sky-seo-settings-header,
-    .sky-seo-content-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
 /* Animate logo on hover */
 .sky-powered-by:hover svg {
     animation: pulse 0.6s ease-in-out;
@@ -442,10 +479,9 @@
     height: 16px;
     width: auto;
     object-fit: contain;
-    flex-shrink: 0; /* Added */
+    flex-shrink: 0;
 }
 
-/* Updated hover animation for img */
 .sky-powered-by:hover img {
     animation: pulse 0.6s ease-in-out;
 }
@@ -456,28 +492,55 @@
     100% { transform: scale(1); }
 }
 
-/* Date Controls - Updated */
-.sky-seo-date-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    width: 100%; /* Added to ensure full width */
-}
+/* ========================================
+   13. RESPONSIVE DESIGN
+   ======================================== */
 
-/* Responsive Design */
 @media (max-width: 782px) {
+    .sky-seo-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sky-seo-filters input[type="text"],
+    .sky-seo-filters input[type="date"],
+    .sky-seo-filters select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .sky-seo-table {
+        font-size: var(--sky-font-size-xs);
+    }
+
+    .sky-seo-table th,
+    .sky-seo-table td {
+        padding: var(--sky-spacing-sm) 10px;
+    }
+
+    .sky-seo-powered-by {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .sky-seo-dashboard-header,
+    .sky-seo-settings-header,
+    .sky-seo-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .sky-header-top {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .sky-powered-by {
         align-self: flex-end;
-        margin-left: 0; /* Reset margin on mobile */
+        margin-left: 0;
     }
-    
+
     .sky-seo-date-controls {
         width: 100%;
     }
@@ -487,18 +550,18 @@
     .sky-powered-by {
         padding: 6px 12px 6px 14px;
     }
-    
+
     .sky-powered-by a {
-        font-size: 12px;
-        gap: 8px;
+        font-size: var(--sky-font-size-xs);
+        gap: var(--sky-spacing-sm);
     }
-    
+
     .sky-powered-by svg {
         width: 20px;
         height: 20px;
     }
-    
+
     .sky-powered-by img {
-        height: 14px; /* Added for smaller screens */
+        height: 14px;
     }
 }
