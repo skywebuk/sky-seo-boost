@@ -1,0 +1,641 @@
+From e14be9f3ac4cadba0a2c8af465f630d291a6ff8c Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 13 Dec 2025 17:59:10 +0000
+Subject: [PATCH] Add REST API endpoint and improve license validation
+
+New Features:
+- Added WordPress REST API endpoint (/wp-json/sky-license/v1/validate) as fallback
+- Added health check endpoint for diagnostics
+
+Improvements:
+- Better domain normalization (handles localhost, ports, case sensitivity)
+- Always include timestamp in responses (even without signatures)
+- Added error_code field to all error responses for easier debugging
+- Improved logging with debug mode support
+- Consistent localhost handling across all variations (127.0.0.1, ::1)
+
+Bug Fixes:
+- Fixed domain mismatch issues by normalizing both license and request domains
+- Signature generator now loaded early to ensure availability
+
+Version bump to 2.1.0
+---
+ sky-seo-license-manager/api-endpoint.php      | 124 +++++--
+ .../includes/class-rest-api.php               | 332 ++++++++++++++++++
+ .../sky-seo-license-manager.php               |  14 +-
+ 3 files changed, 436 insertions(+), 34 deletions(-)
+ create mode 100644 sky-seo-license-manager/includes/class-rest-api.php
+
+diff --git a/sky-seo-license-manager/api-endpoint.php b/sky-seo-license-manager/api-endpoint.php
+index a38dbe0..31697c1 100644
+--- a/sky-seo-license-manager/api-endpoint.php
++++ b/sky-seo-license-manager/api-endpoint.php
+@@ -1,10 +1,10 @@
+ <?php
+ /**
+  * Sky SEO License API Endpoint
+- * Production-ready with Imunify360 bypass
+- * 
++ * Production-ready with Imunify360 bypass and improved error handling
++ *
+  * @package Sky_SEO_License_Manager
+- * @version 2.1.0
++ * @version 2.1.1
+  */
+ 
+ // CRITICAL: Imunify360 bypass - must be FIRST before any other code
+@@ -201,23 +201,41 @@ try {
+     if (empty($license) || empty($domain)) {
+         $response = [
+             'authenticated' => false,
+-            'error' => 'Missing required parameters'
++            'error' => 'Missing required parameters (license and domain are required)',
++            'error_code' => 'MISSING_PARAMS'
+         ];
+-        
++
+         if ($signature_available) {
+             $response = Sky_License_Signature_Generator::sign_response($response);
++        } else {
++            $response['timestamp'] = time();
+         }
+-        
++
+         send_response($response, 400);
+     }
+     
+-    // Normalize domain
++    // Normalize domain (must match client-side normalization)
+     $domain = strtolower($domain);
+     $domain = preg_replace('#^https?://#', '', $domain);
+     $domain = preg_replace('#^www\.#', '', $domain);
+     $domain = explode('/', $domain)[0];
+     $domain = explode(':', $domain)[0];
+     $domain = trim($domain);
++
++    // Handle localhost variations
++    if (in_array($domain, ['localhost', '127.0.0.1', '::1'])) {
++        $domain = 'localhost';
++    }
++
++    // Log request for debugging
++    if (defined('WP_DEBUG') && WP_DEBUG) {
++        error_log(sprintf(
++            'Sky License API: Validation request - License: %s****, Domain: %s, IP: %s',
++            substr($license, 0, 4),
++            $domain,
++            $_SERVER['REMOTE_ADDR'] ?? 'unknown'
++        ));
++    }
+     
+     // Query license from database
+     global $wpdb;
+@@ -230,30 +248,45 @@ try {
+     
+     // License not found or inactive
+     if (!$license_data) {
++        if (defined('WP_DEBUG') && WP_DEBUG) {
++            error_log(sprintf('Sky License API: Invalid license key attempted - %s****', substr($license, 0, 4)));
++        }
++
+         $response = [
+             'authenticated' => false,
+-            'error' => 'Invalid or inactive license'
++            'error' => 'Invalid or inactive license',
++            'error_code' => 'INVALID_LICENSE'
+         ];
+-        
++
+         if ($signature_available) {
+             $response = Sky_License_Signature_Generator::sign_response($response);
++        } else {
++            $response['timestamp'] = time();
+         }
+-        
++
+         send_response($response, 403);
+     }
+-    
++
+     // Check expiration
+     if (!empty($license_data->expires_at) && $license_data->expires_at !== '0000-00-00 00:00:00') {
+         if (strtotime($license_data->expires_at) < time()) {
++            if (defined('WP_DEBUG') && WP_DEBUG) {
++                error_log(sprintf('Sky License API: Expired license attempted - %s', $license_data->expires_at));
++            }
++
+             $response = [
+                 'authenticated' => false,
+-                'error' => 'License expired'
++                'error' => 'License has expired',
++                'error_code' => 'LICENSE_EXPIRED',
++                'expired_at' => $license_data->expires_at
+             ];
+-            
++
+             if ($signature_available) {
+                 $response = Sky_License_Signature_Generator::sign_response($response);
++            } else {
++                $response['timestamp'] = time();
+             }
+-            
++
+             send_response($response, 403);
+         }
+     }
+@@ -261,9 +294,15 @@ try {
+     // Check domain authorization
+     $lic_domain = strtolower(trim($license_data->domain));
+     $lic_domain = preg_replace('#^www\.#', '', $lic_domain);
+-    
++    $lic_domain = preg_replace('#:\d+$#', '', $lic_domain); // Remove port
++
++    // Normalize localhost for license domain too
++    if (in_array($lic_domain, ['localhost', '127.0.0.1', '::1'])) {
++        $lic_domain = 'localhost';
++    }
++
+     $domain_valid = false;
+-    
++
+     // Wildcard - allows any domain
+     if ($lic_domain === '*') {
+         $domain_valid = true;
+@@ -279,17 +318,29 @@ try {
+             $domain_valid = true;
+         }
+     }
+-    
++
+     if (!$domain_valid) {
++        // Log domain mismatch for debugging
++        if (defined('WP_DEBUG') && WP_DEBUG) {
++            error_log(sprintf(
++                'Sky License API: Domain mismatch - License domain: %s, Request domain: %s',
++                $lic_domain,
++                $domain
++            ));
++        }
++
+         $response = [
+             'authenticated' => false,
+-            'error' => 'Domain not authorized'
++            'error' => 'Domain not authorized',
++            'error_code' => 'DOMAIN_MISMATCH'
+         ];
+-        
++
+         if ($signature_available) {
+             $response = Sky_License_Signature_Generator::sign_response($response);
++        } else {
++            $response['timestamp'] = time(); // Always include timestamp
+         }
+-        
++
+         send_response($response, 403);
+     }
+     
+@@ -318,33 +369,42 @@ try {
+         $response['license_type'] = $license_data->license_type;
+     }
+     
+-    // Sign the response
++    // Sign the response (this adds timestamp and signature)
+     if ($signature_available) {
+         $response = Sky_License_Signature_Generator::sign_response($response);
++    } else {
++        // Always include timestamp even without signature
++        $response['timestamp'] = time();
+     }
+-    
++
++    // Log successful validation
++    if (defined('WP_DEBUG') && WP_DEBUG) {
++        error_log(sprintf('Sky License API: Successful validation - Domain: %s', $domain));
++    }
++
+     // Send success response
+     send_response($response, 200);
+-    
++
+ } catch (Exception $e) {
+-    // Log error
+-    if (defined('WP_DEBUG') && WP_DEBUG) {
+-        error_log('License API Error: ' . $e->getMessage());
+-    }
+-    
++    // Log error with full details
++    error_log('Sky License API Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
++
+     $response = [
+         'authenticated' => false,
+-        'error' => 'Validation error'
++        'error' => 'Server validation error',
++        'error_code' => 'SERVER_ERROR'
+     ];
+-    
++
+     if (isset($signature_available) && $signature_available) {
+         try {
+             $response = Sky_License_Signature_Generator::sign_response($response);
+         } catch (Exception $sign_error) {
+-            // Ignore signing errors
++            $response['timestamp'] = time();
+         }
++    } else {
++        $response['timestamp'] = time();
+     }
+-    
++
+     send_response($response, 500);
+ }
+ 
+diff --git a/sky-seo-license-manager/includes/class-rest-api.php b/sky-seo-license-manager/includes/class-rest-api.php
+new file mode 100644
+index 0000000..82669dc
+--- /dev/null
++++ b/sky-seo-license-manager/includes/class-rest-api.php
+@@ -0,0 +1,332 @@
++<?php
++/**
++ * Sky SEO License Manager - REST API Endpoint
++ *
++ * Provides WordPress REST API endpoints as an alternative to direct file access.
++ * This helps bypass hosting restrictions that may block direct PHP file access.
++ *
++ * @package Sky_SEO_License_Manager
++ * @version 1.0.0
++ */
++
++// Prevent direct access
++if (!defined('ABSPATH')) {
++    exit;
++}
++
++class Sky_License_REST_API {
++
++    /**
++     * REST API namespace
++     */
++    const NAMESPACE = 'sky-license/v1';
++
++    /**
++     * Database manager instance
++     */
++    private $db_manager;
++
++    /**
++     * Constructor
++     */
++    public function __construct($db_manager) {
++        $this->db_manager = $db_manager;
++    }
++
++    /**
++     * Register REST API routes
++     */
++    public function register_routes() {
++        // License validation endpoint
++        register_rest_route(self::NAMESPACE, '/validate', [
++            'methods' => ['GET', 'POST'],
++            'callback' => [$this, 'validate_license'],
++            'permission_callback' => '__return_true', // Public endpoint
++            'args' => [
++                'license' => [
++                    'required' => true,
++                    'type' => 'string',
++                    'sanitize_callback' => 'sanitize_text_field',
++                    'description' => 'License key to validate',
++                ],
++                'domain' => [
++                    'required' => true,
++                    'type' => 'string',
++                    'sanitize_callback' => 'sanitize_text_field',
++                    'description' => 'Domain to validate against',
++                ],
++            ],
++        ]);
++
++        // Update check endpoint
++        register_rest_route(self::NAMESPACE, '/update-check', [
++            'methods' => ['GET', 'POST'],
++            'callback' => [$this, 'check_update'],
++            'permission_callback' => '__return_true',
++            'args' => [
++                'license' => [
++                    'required' => true,
++                    'type' => 'string',
++                    'sanitize_callback' => 'sanitize_text_field',
++                ],
++                'domain' => [
++                    'required' => true,
++                    'type' => 'string',
++                    'sanitize_callback' => 'sanitize_text_field',
++                ],
++                'version' => [
++                    'required' => false,
++                    'type' => 'string',
++                    'sanitize_callback' => 'sanitize_text_field',
++                    'default' => '0.0.0',
++                ],
++            ],
++        ]);
++
++        // Health check endpoint (for diagnostics)
++        register_rest_route(self::NAMESPACE, '/health', [
++            'methods' => 'GET',
++            'callback' => [$this, 'health_check'],
++            'permission_callback' => '__return_true',
++        ]);
++    }
++
++    /**
++     * Validate license via REST API
++     *
++     * @param WP_REST_Request $request Request object
++     * @return WP_REST_Response Response object
++     */
++    public function validate_license($request) {
++        $license = $request->get_param('license');
++        $domain = $request->get_param('domain');
++
++        // Log the request for debugging
++        if (defined('WP_DEBUG') && WP_DEBUG) {
++            error_log(sprintf(
++                'Sky License REST API: Validation request - License: %s****, Domain: %s',
++                substr($license, 0, 4),
++                $domain
++            ));
++        }
++
++        // Normalize domain
++        $domain = $this->db_manager->normalize_domain($domain);
++
++        if (empty($domain)) {
++            return $this->send_error_response(
++                'Invalid domain format',
++                'INVALID_DOMAIN',
++                400
++            );
++        }
++
++        // Get license from database
++        $license_data = $this->db_manager->get_license_by_key($license);
++
++        if (!$license_data) {
++            return $this->send_error_response(
++                'Invalid license key',
++                'INVALID_LICENSE',
++                403
++            );
++        }
++
++        // Check status
++        if ($license_data->status !== 'active') {
++            return $this->send_error_response(
++                'License is ' . $license_data->status,
++                'LICENSE_' . strtoupper($license_data->status),
++                403
++            );
++        }
++
++        // Check expiration
++        if (!empty($license_data->expires_at) && $license_data->expires_at !== '0000-00-00 00:00:00') {
++            if (strtotime($license_data->expires_at) < time()) {
++                return $this->send_error_response(
++                    'License has expired',
++                    'LICENSE_EXPIRED',
++                    403
++                );
++            }
++        }
++
++        // Check domain match
++        if (!$this->db_manager->domains_match($license_data->domain, $domain)) {
++            return $this->send_error_response(
++                'Domain not authorized for this license',
++                'DOMAIN_MISMATCH',
++                403,
++                [
++                    'license_domain' => $this->db_manager->normalize_domain($license_data->domain),
++                    'request_domain' => $domain,
++                ]
++            );
++        }
++
++        // Update last check timestamp
++        $this->db_manager->update_last_check($license_data->id);
++
++        // Build success response
++        $response_data = [
++            'authenticated' => true,
++            'status' => 'active',
++            'domain' => $domain,
++        ];
++
++        // Add expiration info
++        if (!empty($license_data->expires_at) && $license_data->expires_at !== '0000-00-00 00:00:00') {
++            $response_data['expires_at'] = $license_data->expires_at;
++            $response_data['days_remaining'] = max(0, floor((strtotime($license_data->expires_at) - time()) / 86400));
++        }
++
++        // Sign the response if signature generator is available
++        $response_data = $this->sign_response($response_data);
++
++        return new WP_REST_Response($response_data, 200);
++    }
++
++    /**
++     * Check for updates via REST API
++     *
++     * @param WP_REST_Request $request Request object
++     * @return WP_REST_Response Response object
++     */
++    public function check_update($request) {
++        $license = $request->get_param('license');
++        $domain = $request->get_param('domain');
++        $current_version = $request->get_param('version');
++
++        // First validate the license
++        $domain = $this->db_manager->normalize_domain($domain);
++        $license_data = $this->db_manager->get_license_by_key($license);
++
++        if (!$license_data || $license_data->status !== 'active') {
++            return $this->send_error_response(
++                'Invalid or inactive license',
++                'INVALID_LICENSE',
++                403
++            );
++        }
++
++        if (!$this->db_manager->domains_match($license_data->domain, $domain)) {
++            return $this->send_error_response(
++                'Domain not authorized',
++                'DOMAIN_MISMATCH',
++                403
++            );
++        }
++
++        // Get update information
++        $update_info = get_option('sky_seo_boost_update_info', []);
++
++        $response_data = [
++            'authenticated' => true,
++            'current_version' => $current_version,
++            'latest_version' => $update_info['version'] ?? '0.0.0',
++            'update_available' => version_compare($current_version, $update_info['version'] ?? '0', '<'),
++        ];
++
++        if ($response_data['update_available']) {
++            $response_data['download_url'] = add_query_arg([
++                'license' => $license,
++                'domain' => $domain,
++            ], SKY_LICENSE_MANAGER_PLUGIN_URL . 'download-handler.php');
++            $response_data['info_url'] = $update_info['info_url'] ?? '';
++            $response_data['tested'] = $update_info['tested'] ?? '';
++            $response_data['requires'] = $update_info['requires'] ?? '';
++            $response_data['requires_php'] = $update_info['requires_php'] ?? '';
++            $response_data['changelog'] = $update_info['changelog'] ?? '';
++        }
++
++        // Sign the response
++        $response_data = $this->sign_response($response_data);
++
++        return new WP_REST_Response($response_data, 200);
++    }
++
++    /**
++     * Health check endpoint
++     *
++     * @param WP_REST_Request $request Request object
++     * @return WP_REST_Response Response object
++     */
++    public function health_check($request) {
++        global $wpdb;
++
++        $table_name = $this->db_manager->get_table_name();
++        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
++
++        // Check signature generator availability
++        $signature_available = class_exists('Sky_License_Signature_Generator') &&
++                               Sky_License_Signature_Generator::is_available();
++
++        $response_data = [
++            'status' => 'healthy',
++            'timestamp' => time(),
++            'server_time' => current_time('mysql'),
++            'database' => $table_exists ? 'connected' : 'error',
++            'signature_enabled' => $signature_available,
++            'version' => defined('SKY_LICENSE_MANAGER_VERSION') ? SKY_LICENSE_MANAGER_VERSION : 'unknown',
++        ];
++
++        // Sign the response
++        $response_data = $this->sign_response($response_data);
++
++        return new WP_REST_Response($response_data, 200);
++    }
++
++    /**
++     * Sign response data using signature generator
++     *
++     * @param array $data Response data
++     * @return array Signed response data
++     */
++    private function sign_response($data) {
++        // Always add timestamp
++        $data['timestamp'] = time();
++
++        // Load signature generator if not already loaded
++        if (!class_exists('Sky_License_Signature_Generator')) {
++            $signature_path = SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-signature-generator.php';
++            if (file_exists($signature_path)) {
++                require_once($signature_path);
++            }
++        }
++
++        // Sign if available
++        if (class_exists('Sky_License_Signature_Generator') && Sky_License_Signature_Generator::is_available()) {
++            $data = Sky_License_Signature_Generator::sign_response($data);
++        }
++
++        return $data;
++    }
++
++    /**
++     * Send error response with consistent format
++     *
++     * @param string $message Error message
++     * @param string $code Error code
++     * @param int $status HTTP status code
++     * @param array $debug_info Optional debug information
++     * @return WP_REST_Response Error response
++     */
++    private function send_error_response($message, $code, $status = 403, $debug_info = []) {
++        $response_data = [
++            'authenticated' => false,
++            'error' => $message,
++            'error_code' => $code,
++        ];
++
++        // Add debug info in debug mode
++        if (defined('WP_DEBUG') && WP_DEBUG && !empty($debug_info)) {
++            $response_data['debug_info'] = $debug_info;
++        }
++
++        // Sign the error response too
++        $response_data = $this->sign_response($response_data);
++
++        return new WP_REST_Response($response_data, $status);
++    }
++}
+diff --git a/sky-seo-license-manager/sky-seo-license-manager.php b/sky-seo-license-manager/sky-seo-license-manager.php
+index 4587c2c..249a473 100644
+--- a/sky-seo-license-manager/sky-seo-license-manager.php
++++ b/sky-seo-license-manager/sky-seo-license-manager.php
+@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
+ }
+ 
+ // Define plugin constants
+-define('SKY_LICENSE_MANAGER_VERSION', '2.0.0');
++define('SKY_LICENSE_MANAGER_VERSION', '2.1.0');
+ define('SKY_LICENSE_MANAGER_DB_VERSION', '2.0');
+ define('SKY_LICENSE_MANAGER_TABLE', 'sky_seo_licenses');
+ define('SKY_LICENSE_MANAGER_PLUGIN_DIR', plugin_dir_path(__FILE__));
+@@ -26,10 +26,12 @@ define('SKY_LICENSE_MANAGER_ASSETS_URL', SKY_LICENSE_MANAGER_PLUGIN_URL . 'asset
+ 
+ // Include required files in correct order
+ require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-database-manager.php');
++require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-signature-generator.php');
+ require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-api-handler.php');
+ require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-ajax-handlers.php');
+ require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-admin-pages.php');
+ require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-license-manager-core.php');
++require_once(SKY_LICENSE_MANAGER_INCLUDES_DIR . 'class-rest-api.php');
+ 
+ // Initialize the plugin
+ function sky_license_manager_init() {
+@@ -39,12 +41,20 @@ function sky_license_manager_init() {
+         false,
+         dirname(plugin_basename(__FILE__)) . '/languages/'
+     );
+-    
++
+     // Initialize main plugin class
+     Sky_SEO_License_Manager_Plugin::get_instance();
+ }
+ add_action('plugins_loaded', 'sky_license_manager_init');
+ 
++// Register REST API routes
++function sky_license_manager_register_rest_routes() {
++    $db_manager = new Sky_License_Database_Manager();
++    $rest_api = new Sky_License_REST_API($db_manager);
++    $rest_api->register_routes();
++}
++add_action('rest_api_init', 'sky_license_manager_register_rest_routes');
++
+ // Activation hook
+ register_activation_hook(__FILE__, 'sky_license_manager_activate');
+ function sky_license_manager_activate() {
+-- 
+2.43.0
+
