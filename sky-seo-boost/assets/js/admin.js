@@ -1,8 +1,6 @@
 // Sky SEO Boost Admin Base JavaScript
 
 jQuery(document).ready(function($) {
-    console.log('Sky SEO Admin JS loaded');
-
     // Client-side search filter for All Content table
     const searchInput = document.getElementById('sky-seo-search');
     if (searchInput) {

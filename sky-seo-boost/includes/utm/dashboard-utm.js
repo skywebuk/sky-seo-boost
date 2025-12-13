@@ -68,9 +68,7 @@
          */
         init: function() {
             const self = this;
-            
-            console.log('Initializing UTM Dashboard with all features...');
-            
+
             // Set up event handlers
             this.setupEventHandlers();
             

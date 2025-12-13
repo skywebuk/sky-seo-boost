@@ -24,9 +24,6 @@
             // Get config from localized data
             this.config = window.skySeoWhatsAppFront ? window.skySeoWhatsAppFront.config : {};
 
-            // Debug log
-            console.log('WhatsApp Frontend Init:', this.config);
-
             // Detect and apply RTL support
             this.detectRTL();
 
@@ -100,8 +97,6 @@
                 if (!body.classList.contains('rtl')) {
                     body.classList.add('rtl');
                 }
-
-                console.log('WhatsApp Widget: RTL mode enabled with inline styles for language:', lang);
             }
         },
         
@@ -204,9 +199,7 @@
         handleButtonClick: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
-            console.log('WhatsApp button clicked');
-            
+
             const button = $(e.currentTarget);
             const widget = button.closest('.sky-whatsapp-widget, .sky-whatsapp-elementor-widget');
             const popup = widget.find('.sky-whatsapp-popup');
@@ -353,7 +346,6 @@
             const message = button ? button.data('message') : this.config.message;
             
             if (!phone) {
-                console.error('WhatsApp phone number not configured');
                 return;
             }
             
@@ -416,12 +408,11 @@
         performTracking: function(clickType, source) {
             // Prevent duplicate tracking
             if (this.isProcessingClick) {
-                console.log('Already processing a click, skipping');
                 return;
             }
-            
+
             this.isProcessingClick = true;
-            
+
             // Get page data
             const pageData = {
                 page_url: window.location.href,
@@ -430,13 +421,11 @@
                 click_type: clickType,
                 source: source || ''
             };
-            
-            console.log('Tracking WhatsApp click:', pageData);
-            
+
             // Ensure we have AJAX URL and nonce
             const ajaxUrl = window.skySeoWhatsAppFront?.ajaxurl || '/wp-admin/admin-ajax.php';
             const nonce = window.skySeoWhatsAppFront?.nonce || '';
-            
+
             // Send tracking request
             $.ajax({
                 url: ajaxUrl,
@@ -447,17 +436,10 @@
                     ...pageData
                 },
                 success: (response) => {
-                    console.log('Track response:', response);
-                    if (response.success) {
-                        console.log('WhatsApp click tracked successfully');
-                    } else {
-                        console.error('Failed to track click:', response.data?.message);
-                    }
+                    // Tracking completed
                 },
                 error: (xhr, status, error) => {
-                    console.error('Failed to track WhatsApp click:', error);
-                    console.error('XHR:', xhr);
-                    console.error('Status:', status);
+                    // Silent fail - tracking errors shouldn't affect user experience
                 },
                 complete: () => {
                     // Reset flag after a delay to prevent rapid re-clicks
@@ -735,7 +717,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const whatsappWidget = document.querySelector('.sky-whatsapp-widget');
     
     if (!whatsappButton) {
-        console.error('WhatsApp button not found');
         return;
     }
     
@@ -746,12 +727,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function showDelayedEffects() {
         // Add pulse effect first
         whatsappButton.classList.add('show-pulse');
-        console.log('WhatsApp pulse effect activated');
-        
+
         // Add notification badge with a slight delay for better visual effect
         setTimeout(function() {
             whatsappButton.classList.add('show-notification');
-            console.log('WhatsApp notification badge shown');
         }, 300);
     }
     
