@@ -141,17 +141,25 @@ class Sky_SEO_License_Manager {
         }
 
         // Make request to license server using new API handler
-        $response = Sky_SEO_API_Request_Handler::request(
-            self::LICENSE_SERVER_URL,
-            [
-                'body' => [
-                    'license' => $license_data['key'],
-                    'domain' => $this->get_current_domain()
-                ]
-            ],
-            'critical',  // Use critical timeout (10 seconds)
-            true         // Enable retry logic
-        );
+        $domain = $this->get_current_domain();
+        $response = $this->make_license_request($license_data['key'], $domain);
+
+        // If primary fails and fallback is enabled, try fallback servers
+        if (is_wp_error($response) && Sky_SEO_API_Config::ENABLE_FALLBACK) {
+            $fallback_servers = Sky_SEO_API_Config::get_fallback_servers();
+
+            foreach ($fallback_servers as $fallback_url) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Sky SEO License: Verification trying fallback: ' . $fallback_url);
+                }
+
+                $response = $this->make_license_request($license_data['key'], $domain, $fallback_url);
+
+                if (!is_wp_error($response)) {
+                    break; // Success with fallback
+                }
+            }
+        }
 
         // Update last check time immediately
         update_option(self::LAST_CHECK_OPTION, time());
@@ -1099,14 +1107,18 @@ class Sky_SEO_License_Manager {
     }
     
     /**
-     * Activate license
+     * Make license request to specified server
+     *
+     * @param string $license_key License key
+     * @param string $domain Domain to validate
+     * @param string|null $server_url Optional server URL (uses primary if null)
+     * @return array|WP_Error Response or error
      */
-    private function activate_license($license_key) {
-        $domain = $this->get_current_domain();
+    private function make_license_request($license_key, $domain, $server_url = null) {
+        $url = $server_url ?? self::LICENSE_SERVER_URL;
 
-        // Verify with license server using new API handler
-        $response = Sky_SEO_API_Request_Handler::request(
-            self::LICENSE_SERVER_URL,
+        return Sky_SEO_API_Request_Handler::request(
+            $url,
             [
                 'body' => [
                     'license' => $license_key,
@@ -1116,11 +1128,66 @@ class Sky_SEO_License_Manager {
             'critical',  // Use critical timeout (10 seconds)
             true         // Enable retry logic
         );
+    }
+
+    /**
+     * Activate license
+     */
+    private function activate_license($license_key) {
+        $domain = $this->get_current_domain();
+
+        // Try primary server first
+        $response = $this->make_license_request($license_key, $domain);
+
+        // If primary fails and fallback is enabled, try fallback servers
+        if (is_wp_error($response) && Sky_SEO_API_Config::ENABLE_FALLBACK) {
+            $fallback_servers = Sky_SEO_API_Config::get_fallback_servers();
+
+            foreach ($fallback_servers as $fallback_url) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Sky SEO License: Trying fallback server: ' . $fallback_url);
+                }
+
+                $response = $this->make_license_request($license_key, $domain, $fallback_url);
+
+                if (!is_wp_error($response)) {
+                    break; // Success with fallback
+                }
+            }
+        }
 
         if (is_wp_error($response)) {
+            $error_code = $response->get_error_code();
+            $error_message = $response->get_error_message();
+
+            // Log detailed error for debugging
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(sprintf(
+                    'Sky SEO License: Connection failed - Code: %s, Message: %s, Domain: %s',
+                    $error_code,
+                    $error_message,
+                    $domain
+                ));
+            }
+
+            // Provide user-friendly messages based on error type
+            $user_message = __('Unable to connect to license server. ', 'sky-seo-boost');
+
+            if (strpos($error_message, 'cURL') !== false || strpos($error_message, 'curl') !== false) {
+                $user_message .= __('Your server may have cURL disabled or restricted.', 'sky-seo-boost');
+            } elseif (strpos($error_message, 'SSL') !== false || strpos($error_message, 'certificate') !== false) {
+                $user_message .= __('SSL certificate verification failed. Contact your hosting provider.', 'sky-seo-boost');
+            } elseif (strpos($error_message, 'timed out') !== false || strpos($error_message, 'timeout') !== false) {
+                $user_message .= __('Connection timed out. The server may be temporarily unavailable.', 'sky-seo-boost');
+            } elseif (strpos($error_message, 'resolve') !== false || strpos($error_message, 'DNS') !== false) {
+                $user_message .= __('DNS resolution failed. Check your server\'s DNS settings.', 'sky-seo-boost');
+            } else {
+                $user_message .= __('Please try again later or contact support.', 'sky-seo-boost');
+            }
+
             return [
                 'success' => false,
-                'message' => __('Unable to connect to license server. Please try again later.', 'sky-seo-boost')
+                'message' => $user_message
             ];
         }
 
@@ -1262,15 +1329,42 @@ class Sky_SEO_License_Manager {
     
     /**
      * Get current domain
+     *
+     * Normalizes domain to match server-side expectations.
+     * Must match Sky_License_Database_Manager::normalize_domain() on server.
      */
     private function get_current_domain() {
         $domain = wp_parse_url(home_url(), PHP_URL_HOST);
-        
+
+        if (empty($domain)) {
+            // Fallback to site_url if home_url fails
+            $domain = wp_parse_url(site_url(), PHP_URL_HOST);
+        }
+
+        if (empty($domain)) {
+            // Last resort fallback
+            $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        }
+
+        // Convert to lowercase for consistent matching
+        $domain = strtolower($domain);
+
         // Remove www. prefix if present
         if (strpos($domain, 'www.') === 0) {
             $domain = substr($domain, 4);
         }
-        
+
+        // Remove port number if present (e.g., localhost:8080)
+        $domain = preg_replace('/:\d+$/', '', $domain);
+
+        // Remove trailing slashes or paths
+        $domain = rtrim($domain, '/');
+
+        // Handle special cases for local development
+        if (in_array($domain, ['localhost', '127.0.0.1', '::1'])) {
+            $domain = 'localhost';
+        }
+
         return $domain;
     }
 }

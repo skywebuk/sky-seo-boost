@@ -47,10 +47,23 @@ class Sky_SEO_API_Request_Handler {
             $args['sslverify'] = true;
         }
 
+        // Initialize headers array if not set
+        if (!isset($args['headers'])) {
+            $args['headers'] = [];
+        }
+
         // Set user agent if not specified
         if (!isset($args['user-agent']) && !isset($args['headers']['User-Agent'])) {
             $version = defined('SKY_SEO_BOOST_VERSION') ? SKY_SEO_BOOST_VERSION : '4.0.1';
-            $args['user-agent'] = 'Sky SEO Boost/' . $version . ' (WordPress/' . get_bloginfo('version') . ')';
+            $args['headers']['User-Agent'] = 'Sky SEO Boost/' . $version . ' (WordPress/' . get_bloginfo('version') . ')';
+        }
+
+        // Convert body to JSON for POST requests to handle Cloudflare/WAF compatibility
+        // HTTP 415 errors occur when servers expect application/json but receive form-encoded data
+        if (isset($args['body']) && is_array($args['body'])) {
+            $args['headers']['Content-Type'] = 'application/json; charset=utf-8';
+            $args['headers']['Accept'] = 'application/json';
+            $args['body'] = wp_json_encode($args['body']);
         }
 
         // Determine request method

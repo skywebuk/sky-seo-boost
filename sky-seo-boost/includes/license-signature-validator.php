@@ -44,10 +44,15 @@ pQIDAQAB
 EOD;
  
     /**
-     * Maximum timestamp age in seconds (5 minutes)
+     * Maximum timestamp age in seconds (10 minutes)
      * Prevents replay attacks using old responses
+     *
+     * Increased from 5 to 10 minutes to accommodate:
+     * - Server clock skew on shared hosting
+     * - Network latency issues
+     * - NTP sync delays on some hosts
      */
-    const MAX_TIMESTAMP_AGE = 300;
+    const MAX_TIMESTAMP_AGE = 600;
  
     /**
      * Verify complete license response
