@@ -1,28 +1,36 @@
 /**
  * Sky SEO Boost - CSS Custom Properties (Variables)
  *
- * Central theme configuration for consistent styling across all modules
+ * Modern Design System - Clean & User-Friendly Interface
  *
  * @package Sky_SEO_Boost
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 :root {
     /* ========================================
-       PRIMARY BRAND COLORS
+       PRIMARY COLORS
        ======================================== */
 
-    /* WordPress Admin Blue */
-    --sky-primary: #0073aa;
-    --sky-primary-hover: #005f87;
-    --sky-primary-light: #e5f3ff;
+    --sky-primary: #4f46e5;
+    --sky-primary-hover: #4338ca;
+    --sky-primary-light: #eef2ff;
+    --sky-primary-dark: #3730a3;
 
-    /* WhatsApp Green (used in WhatsApp module) */
+    /* ========================================
+       ACCENT COLORS
+       ======================================== */
+
+    --sky-accent: #ec4899;
+    --sky-accent-light: #fce7f3;
+    --sky-accent-dark: #db2777;
+
+    /* WhatsApp Green (module-specific) */
     --sky-whatsapp: #25D366;
     --sky-whatsapp-hover: #20c05c;
     --sky-whatsapp-light: #f0fdf4;
 
-    /* Google Blue (used in Business API module) */
+    /* Google Blue (module-specific) */
     --sky-google: #1967D2;
     --sky-google-hover: #1A73E8;
     --sky-google-light: #e8f0fe;
@@ -32,30 +40,24 @@
        ======================================== */
 
     /* Success */
-    --sky-success: #22c55e;
-    --sky-success-dark: #15803d;
-    --sky-success-light: #dcfce7;
-    --sky-success-border: #bbf7d0;
+    --sky-success: #10b981;
+    --sky-success-light: #d1fae5;
+    --sky-success-dark: #059669;
 
     /* Warning */
     --sky-warning: #f59e0b;
-    --sky-warning-dark: #d97706;
-    --sky-warning-darker: #b45309;
     --sky-warning-light: #fef3c7;
-    --sky-warning-badge: #f0ad4e;
+    --sky-warning-dark: #d97706;
 
-    /* Error / Danger */
+    /* Error */
     --sky-error: #ef4444;
-    --sky-error-dark: #dc2626;
-    --sky-error-darker: #b91c1c;
     --sky-error-light: #fee2e2;
-    --sky-error-border: #fca5a5;
+    --sky-error-dark: #dc2626;
 
     /* Info */
     --sky-info: #3b82f6;
-    --sky-info-dark: #2563eb;
     --sky-info-light: #dbeafe;
-    --sky-info-border: #93c5fd;
+    --sky-info-dark: #2563eb;
 
     /* ========================================
        NEUTRAL / GRAY SCALE
@@ -73,97 +75,61 @@
     --sky-gray-900: #111827;
 
     /* ========================================
-       BACKGROUND COLORS
-       ======================================== */
-
-    --sky-bg-white: #ffffff;
-    --sky-bg-light: #f9fafb;
-    --sky-bg-page: #f0f2f5;
-    --sky-bg-hover: #f5f5f5;
-    --sky-bg-alt: #f9f9f9;
-
-    /* ========================================
-       BORDER COLORS
-       ======================================== */
-
-    --sky-border: #e5e7eb;
-    --sky-border-light: #f3f4f6;
-    --sky-border-dark: #d1d5db;
-    --sky-border-input: #d1d5db;
-
-    /* ========================================
-       TEXT COLORS
-       ======================================== */
-
-    --sky-text-primary: #111827;
-    --sky-text-secondary: #374151;
-    --sky-text-muted: #6b7280;
-    --sky-text-light: #9ca3af;
-    --sky-text-white: #ffffff;
-
-    /* ========================================
-       SHADOWS
-       ======================================== */
-
-    --sky-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --sky-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --sky-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --sky-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --sky-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-    /* ========================================
-       SPACING
-       ======================================== */
-
-    --sky-spacing-xs: 4px;
-    --sky-spacing-sm: 8px;
-    --sky-spacing-md: 16px;
-    --sky-spacing-lg: 24px;
-    --sky-spacing-xl: 32px;
-    --sky-spacing-2xl: 48px;
-
-    /* ========================================
-       BORDER RADIUS
-       ======================================== */
-
-    --sky-radius-sm: 4px;
-    --sky-radius: 6px;
-    --sky-radius-md: 8px;
-    --sky-radius-lg: 12px;
-    --sky-radius-xl: 16px;
-    --sky-radius-full: 9999px;
-
-    /* ========================================
        TYPOGRAPHY
        ======================================== */
 
-    --sky-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    --sky-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-    --sky-font-size-xs: 11px;
-    --sky-font-size-sm: 13px;
-    --sky-font-size-base: 14px;
-    --sky-font-size-md: 16px;
-    --sky-font-size-lg: 18px;
-    --sky-font-size-xl: 20px;
-    --sky-font-size-2xl: 24px;
-    --sky-font-size-3xl: 30px;
+    --sky-font-size-xs: 0.75rem;
+    --sky-font-size-sm: 0.875rem;
+    --sky-font-size-base: 1rem;
+    --sky-font-size-lg: 1.125rem;
+    --sky-font-size-xl: 1.25rem;
+    --sky-font-size-2xl: 1.5rem;
 
     --sky-font-weight-normal: 400;
     --sky-font-weight-medium: 500;
     --sky-font-weight-semibold: 600;
     --sky-font-weight-bold: 700;
 
-    --sky-line-height-tight: 1.25;
-    --sky-line-height-normal: 1.5;
-    --sky-line-height-relaxed: 1.75;
+    /* ========================================
+       SPACING
+       ======================================== */
+
+    --sky-space-1: 0.25rem;
+    --sky-space-2: 0.5rem;
+    --sky-space-3: 0.75rem;
+    --sky-space-4: 1rem;
+    --sky-space-5: 1.25rem;
+    --sky-space-6: 1.5rem;
+    --sky-space-8: 2rem;
+
+    /* ========================================
+       BORDER RADIUS
+       ======================================== */
+
+    --sky-radius-sm: 0.25rem;
+    --sky-radius-md: 0.375rem;
+    --sky-radius-lg: 0.5rem;
+    --sky-radius-xl: 0.75rem;
+    --sky-radius-2xl: 1rem;
+    --sky-radius-full: 9999px;
+
+    /* ========================================
+       SHADOWS
+       ======================================== */
+
+    --sky-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --sky-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --sky-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --sky-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 
     /* ========================================
        TRANSITIONS
        ======================================== */
 
-    --sky-transition-fast: 0.15s ease;
-    --sky-transition: 0.2s ease;
-    --sky-transition-slow: 0.3s ease;
+    --sky-transition: all 0.2s ease-in-out;
+    --sky-transition-fast: all 0.15s ease-in-out;
 
     /* ========================================
        Z-INDEX SCALE
@@ -174,39 +140,4 @@
     --sky-z-modal: 1000;
     --sky-z-popover: 1500;
     --sky-z-tooltip: 2000;
-    --sky-z-notification: 999999;
-
-    /* ========================================
-       COMPONENT-SPECIFIC COLORS
-       ======================================== */
-
-    /* Metric Cards */
-    --sky-metric-green: #10b981;
-    --sky-metric-green-light: #34d399;
-    --sky-metric-blue: #3b82f6;
-    --sky-metric-blue-light: #60a5fa;
-    --sky-metric-orange: #f59e0b;
-    --sky-metric-orange-light: #fbbf24;
-    --sky-metric-purple: #8b5cf6;
-    --sky-metric-purple-light: #a78bfa;
-    --sky-metric-pink: #ec4899;
-    --sky-metric-pink-light: #f472b6;
-
-    /* Device Badges */
-    --sky-device-mobile-bg: #dbeafe;
-    --sky-device-mobile-text: #1e40af;
-    --sky-device-desktop-bg: #e0e7ff;
-    --sky-device-desktop-text: #4338ca;
-    --sky-device-tablet-bg: #fce7f3;
-    --sky-device-tablet-text: #a21caf;
-}
-
-/* ========================================
-   DARK MODE SUPPORT (Future)
-   ======================================== */
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* Override variables for dark mode when implemented */
-    }
 }
