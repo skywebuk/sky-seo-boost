@@ -1062,23 +1062,6 @@ function sky_seo_handle_human_verification() {
     wp_die();
 }
 
-// Add test tracking functionality for debugging
-add_action('wp_footer', function() {
-    if (current_user_can('manage_options') && isset($_GET['test_tracking'])) {
-        ?>
-        <script>
-        console.log('Sky SEO Tracking Test Info:');
-        console.log('Referrer:', document.referrer);
-        console.log('Current URL:', window.location.href);
-        console.log('User Agent:', navigator.userAgent);
-        console.log('Webdriver:', navigator.webdriver);
-        console.log('Plugins:', navigator.plugins.length);
-        console.log('Languages:', navigator.languages);
-        </script>
-        <?php
-    }
-});
-
 // Add Social Meta Tags (Open Graph and Twitter Cards)
 function sky_seo_add_social_meta_tags() {
     $settings = get_option('sky_seo_settings', ['active_seo_plugin' => 'none']);

@@ -96,10 +96,7 @@ function sky_seo_enqueue_admin_scripts($hook) {
    
    // Check if we're on edit.php for our post types
    $is_edit_page = $hook === 'edit.php' && in_array($current_post_type, $post_types);
-   
-   // Debug - uncomment to check
-   // error_log("Hook: $hook, Current Post Type: $current_post_type, Is Edit Page: " . ($is_edit_page ? 'yes' : 'no'));
-   
+
    // Always load base admin styles and scripts on our pages
    if (in_array($hook, ['edit.php', 'post.php', 'post-new.php']) && in_array($current_post_type, $post_types) 
        || $is_sky_seo_page 

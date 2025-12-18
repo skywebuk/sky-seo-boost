@@ -44,12 +44,6 @@ function sky_seo_inject_tracking_codes() {
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', '<?php echo $ads_id; ?>');
-  
-  // Debug info for admins
-  <?php if (current_user_can('manage_options')): ?>
-  console.log('Sky SEO Boost - Google Ads loaded: <?php echo $ads_id; ?>');
-  console.log('Conversion Type: <?php echo $conversion_type; ?>');
-  <?php endif; ?>
 </script>
 <!-- End Sky SEO Boost: Google Ads -->
         <?php
@@ -67,9 +61,6 @@ function sky_seo_inject_tracking_codes() {
     'currency': '<?php echo function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : 'USD'; ?>',
     'transaction_id': '<?php echo sky_seo_get_order_id(); ?>'
   });
-  <?php if (current_user_can('manage_options')): ?>
-  console.log('Sky SEO Boost - WooCommerce conversion tracked');
-  <?php endif; ?>
 </script>
                     <?php
                 }
@@ -106,11 +97,6 @@ function sky_seo_inject_tracking_codes() {
     'value': <?php echo $conversion_value; ?>,
     'currency': 'USD',
     <?php endif; ?>
-    'event_callback': function() {
-      <?php if (current_user_can('manage_options')): ?>
-      console.log('Sky SEO Boost - Form submission conversion tracked on thank you page');
-      <?php endif; ?>
-    }
   });
 </script>
                         <?php
@@ -134,9 +120,6 @@ function sky_seo_inject_tracking_codes() {
       'currency': 'USD'
       <?php endif; ?>
     });
-    <?php if (current_user_can('manage_options')): ?>
-    console.log('Sky SEO Boost - Custom conversion triggered');
-    <?php endif; ?>
   }
 </script>
                     <?php

@@ -880,19 +880,13 @@ class Sky_SEO_Enhanced_Google_Ads {
         (function() {
             // Track form submissions with better error handling
             function trackFormSubmission(formId, formName, formData) {
-                console.log('Sky SEO: Tracking form submission', {
-                    formId: formId,
-                    formName: formName,
-                    formData: formData
-                });
-                
                 var data = new FormData();
                 data.append('action', 'sky_seo_track_form_submission');
                 data.append('nonce', '<?php echo esc_js($nonce); ?>');
                 data.append('form_id', formId);
                 data.append('form_name', formName || '');
                 data.append('form_data', JSON.stringify(formData || {}));
-                
+
                 fetch('<?php echo esc_js(admin_url('admin-ajax.php')); ?>', {
                     method: 'POST',
                     credentials: 'same-origin',
@@ -901,13 +895,8 @@ class Sky_SEO_Enhanced_Google_Ads {
                 .then(function(response) {
                     return response.json();
                 })
-                .then(function(result) {
-                    if (result.success) {
-                        console.log('✓ Form submission tracked successfully!');
-                    }
-                })
                 .catch(function(error) {
-                    console.error('Sky SEO Form Tracking Error:', error);
+                    // Silent fail - form submission tracking is non-critical
                 });
             }
             
@@ -995,7 +984,6 @@ class Sky_SEO_Enhanced_Google_Ads {
                     });
                 }
                 
-                console.log('Extracted form data:', data);
                 return data;
             }
             
@@ -1035,13 +1023,7 @@ class Sky_SEO_Enhanced_Google_Ads {
                         var formId = form.id || form.className || 'unknown-form-' + Date.now();
                         var formName = getFormName(form);
                         var formData = extractFormData(form);
-                        
-                        console.log('Form submission detected:', {
-                            formId: formId,
-                            formName: formName,
-                            dataExtracted: formData
-                        });
-                        
+
                         // Track the submission
                         trackFormSubmission(formId, formName, formData);
                     }, 100);
@@ -1088,8 +1070,6 @@ class Sky_SEO_Enhanced_Google_Ads {
             // WPForms - UPDATED
             if (typeof jQuery !== 'undefined' && typeof wpforms !== 'undefined') {
                 jQuery(document).on('wpformsAjaxSubmitSuccess', function(e, data) {
-                    console.log('WPForms submission detected:', data);
-                    
                     if (data && data.formId) {
                         var formId = 'wpforms-' + data.formId;
                         var form = jQuery('#wpforms-' + data.formId)[0] || jQuery('#wpforms-form-' + data.formId)[0];
@@ -1124,7 +1104,6 @@ class Sky_SEO_Enhanced_Google_Ads {
                             });
                         }
                         
-                        console.log('WPForms data extracted:', formData);
                         trackFormSubmission(formId, formName, formData);
                     }
                 });

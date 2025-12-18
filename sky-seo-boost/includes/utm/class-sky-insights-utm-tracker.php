@@ -69,10 +69,7 @@ class SkyInsightsUTMTracker {
         
         // Register AJAX handlers
         $this->register_ajax_handlers();
-        
-        // Debug logging
-        add_action('init', array($this, 'debug_utm_tracking'));
-        
+
         // Schedule cleanup of orphaned clicks
         if (!wp_next_scheduled('sky_utm_cleanup_orphaned_clicks')) {
             wp_schedule_event(time(), 'daily', 'sky_utm_cleanup_orphaned_clicks');
@@ -253,22 +250,7 @@ class SkyInsightsUTMTracker {
                 : 0
         );
     }
-    
-    /**
-     * Debug UTM tracking
-     */
-    public function debug_utm_tracking() {
-        if (defined('WP_DEBUG') && WP_DEBUG && isset($_GET['debug_utm'])) {
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-        }
-    }
-    
+
     /**
      * Register AJAX handlers
      */
@@ -344,7 +326,6 @@ class SkyInsightsUTMTracker {
         dbDelta($sql);
         
         // Log table creation
-        // Debug logging removed for performance
     }
     
     /**
@@ -384,14 +365,10 @@ class SkyInsightsUTMTracker {
      * Process UTM click
      */
     private function process_utm_click($short_code) {
-        // Debug log
-        // Debug logging removed for performance
-        
         $link = $this->get_link_by_short_code($short_code);
         
         if (!$link) {
-            // Debug logging removed for performance
-            wp_die('Invalid UTM link', 'Invalid Link', array('response' => 404));
+                wp_die('Invalid UTM link', 'Invalid Link', array('response' => 404));
             return;
         }
         
@@ -406,22 +383,17 @@ class SkyInsightsUTMTracker {
             $click_id = $this->record_click_fixed($link->id, $is_bot);
             
             if ($click_id) {
-                // Debug logging removed for performance
-                
+                        
                 // Set tracking cookies (if not a bot)
                 if (!$is_bot) {
                     $this->set_tracking_cookies($link, $click_id);
                 }
             }
         } else {
-            // Debug logging removed for performance
-        }
+            }
         
         // Build destination URL with UTM parameters
         $destination = $this->build_utm_url($link);
-        
-        // Debug log
-        // Debug logging removed for performance
         
         // Use JavaScript redirect as fallback for social media apps
         if ($this->is_social_media_app()) {
@@ -459,9 +431,6 @@ class SkyInsightsUTMTracker {
     private function record_click_fixed($link_id, $is_bot = false) {
         global $wpdb;
         
-        // Debug logging removed for performance
-        // Debug logging removed for performance
-        // Debug logging removed for performance
         
         // IMPORTANT: Verify the link exists before recording click
         $link_exists = $wpdb->get_var($wpdb->prepare(
@@ -470,8 +439,7 @@ class SkyInsightsUTMTracker {
         ));
         
         if (!$link_exists) {
-            // Debug logging removed for performance
-            return false;
+                return false;
         }
         
         // Get visitor info
@@ -505,13 +473,10 @@ class SkyInsightsUTMTracker {
         $result = $wpdb->insert($this->clicks_table, $visitor_data);
         
         if ($result === false) {
-            // Debug logging removed for performance
-            // Debug logging removed for performance
-            return false;
+                    return false;
         }
         
         $click_id = $wpdb->insert_id;
-        // Debug logging removed for performance
         
         // Update link click count (only non-bot clicks)
         if (!$is_bot) {
@@ -682,7 +647,6 @@ class SkyInsightsUTMTracker {
             'timestamp' => time()
         );
         
-        // Debug logging removed for performance
     }
     
     /**
@@ -693,8 +657,7 @@ class SkyInsightsUTMTracker {
             setcookie($name, $value, $expire, '/', $domain, $secure, false);
             $_COOKIE[$name] = $value; // Set immediately for this request
         } catch (Exception $e) {
-            // Debug logging removed for performance
-        }
+            }
     }
     
     /**
@@ -839,7 +802,6 @@ class SkyInsightsUTMTracker {
         }
         
         // Debug log
-        // Debug logging removed for performance
     }
     
     /**
@@ -878,8 +840,6 @@ class SkyInsightsUTMTracker {
         
         global $wpdb;
         
-        // Debug logging removed for performance
-        // Debug logging removed for performance
         
         // Get link ID from order or cookies/session
         $link_id = $order->get_meta('_sky_utm_link_id');
@@ -889,8 +849,7 @@ class SkyInsightsUTMTracker {
         }
         
         if (!$link_id) {
-            // Debug logging removed for performance
-            return;
+                return;
         }
         
         // Mark order as tracked
@@ -912,8 +871,7 @@ class SkyInsightsUTMTracker {
             );
             
             if ($conversion_update !== false) {
-                // Debug logging removed for performance
-            }
+                    }
         } elseif ($session_id && $link_id) {
             $conversion_update = $wpdb->update(
                 $this->clicks_table,
@@ -938,7 +896,6 @@ class SkyInsightsUTMTracker {
         $this->clear_utm_cookies();
         
         // Debug log
-        // Debug logging removed for performance
     }
     
     /**
@@ -1822,8 +1779,7 @@ class SkyInsightsUTMTracker {
         
         // Log cleanup
         if ($deleted > 0) {
-            // Debug logging removed for performance
-        }
+            }
         
         return $deleted;
     }
