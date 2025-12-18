@@ -286,15 +286,15 @@ class Sky_SEO_Two_Step_Core {
 
     /**
      * Generate device fingerprint for identification.
+     * Uses only user agent for stability - HTTP_ACCEPT_LANGUAGE can vary between requests.
      *
      * @return string
      */
     private static function generate_device_fingerprint() {
         $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
-        $accept_language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_ACCEPT_LANGUAGE'])) : '';
 
-        // Create a fingerprint from browser characteristics
-        return wp_hash($user_agent . $accept_language);
+        // Create a fingerprint from browser user agent only (more stable than including accept-language)
+        return wp_hash($user_agent);
     }
 
     /**
@@ -382,19 +382,37 @@ class Sky_SEO_Two_Step_Core {
         // Save to user meta
         update_user_meta($user_id, self::TRUSTED_DEVICES_META_KEY, $trusted_devices);
 
-        // Set cookie
-        setcookie(
-            self::REMEMBER_COOKIE_NAME,
-            $token,
-            array(
-                'expires' => $expiration,
-                'path' => COOKIEPATH,
-                'domain' => COOKIE_DOMAIN,
-                'secure' => is_ssl(),
-                'httponly' => true,
-                'samesite' => 'Lax'
-            )
-        );
+        // Get cookie path - use '/' if COOKIEPATH is empty or not defined
+        $cookie_path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+        $cookie_domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+
+        // Set cookie using both methods for maximum compatibility
+        // Method 1: Modern array syntax (PHP 7.3+)
+        if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+            setcookie(
+                self::REMEMBER_COOKIE_NAME,
+                $token,
+                array(
+                    'expires' => $expiration,
+                    'path' => $cookie_path,
+                    'domain' => $cookie_domain,
+                    'secure' => is_ssl(),
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                )
+            );
+        } else {
+            // Method 2: Legacy syntax for older PHP versions
+            setcookie(
+                self::REMEMBER_COOKIE_NAME,
+                $token,
+                $expiration,
+                $cookie_path,
+                $cookie_domain,
+                is_ssl(),
+                true
+            );
+        }
 
         return $token;
     }
@@ -409,18 +427,34 @@ class Sky_SEO_Two_Step_Core {
 
         // Clear cookie
         if (isset($_COOKIE[self::REMEMBER_COOKIE_NAME])) {
-            setcookie(
-                self::REMEMBER_COOKIE_NAME,
-                '',
-                array(
-                    'expires' => time() - 3600,
-                    'path' => COOKIEPATH,
-                    'domain' => COOKIE_DOMAIN,
-                    'secure' => is_ssl(),
-                    'httponly' => true,
-                    'samesite' => 'Lax'
-                )
-            );
+            // Get cookie path - use '/' if COOKIEPATH is empty or not defined
+            $cookie_path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+            $cookie_domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+
+            if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+                setcookie(
+                    self::REMEMBER_COOKIE_NAME,
+                    '',
+                    array(
+                        'expires' => time() - 3600,
+                        'path' => $cookie_path,
+                        'domain' => $cookie_domain,
+                        'secure' => is_ssl(),
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    )
+                );
+            } else {
+                setcookie(
+                    self::REMEMBER_COOKIE_NAME,
+                    '',
+                    time() - 3600,
+                    $cookie_path,
+                    $cookie_domain,
+                    is_ssl(),
+                    true
+                );
+            }
         }
     }
 

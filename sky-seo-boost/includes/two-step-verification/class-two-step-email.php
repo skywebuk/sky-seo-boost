@@ -248,8 +248,10 @@ class Sky_SEO_Two_Step_Email {
      * @param WP_User $user The user object.
      */
     public function authentication_page($user) {
-        // Check for resend action
-        if (isset($_POST['sky-seo-two-step-resend-nonce']) &&
+        // Check for resend action - only if resend value is explicitly set to '1'
+        $is_resend = isset($_POST['sky-seo-two-step-resend']) && $_POST['sky-seo-two-step-resend'] === '1';
+
+        if ($is_resend && isset($_POST['sky-seo-two-step-resend-nonce']) &&
             wp_verify_nonce($_POST['sky-seo-two-step-resend-nonce'], 'sky-seo-two-step-resend-' . $user->ID)) {
             if ($this->generate_and_email_token($user)) {
                 echo '<p class="message">' . esc_html__('A new verification code has been sent to your email address.', 'sky-seo-boost') . '</p>';
@@ -367,16 +369,27 @@ class Sky_SEO_Two_Step_Email {
 
             <div class="sky-seo-two-step-resend">
                 <p><?php esc_html_e("Didn't receive the code?", 'sky-seo-boost'); ?></p>
-                <button type="submit"
-                        name="sky-seo-two-step-resend"
-                        class="button button-secondary"
-                        value="1">
+                <!-- Use type="button" to prevent Enter key from triggering resend -->
+                <button type="button"
+                        id="sky-seo-two-step-resend-btn"
+                        class="button button-secondary">
                     <?php esc_html_e('Resend Verification Code', 'sky-seo-boost'); ?>
                 </button>
+                <input type="hidden"
+                       name="sky-seo-two-step-resend"
+                       id="sky-seo-two-step-resend-input"
+                       value="" />
                 <input type="hidden"
                        name="sky-seo-two-step-resend-nonce"
                        value="<?php echo esc_attr(wp_create_nonce('sky-seo-two-step-resend-' . $user->ID)); ?>" />
             </div>
+            <script>
+            // Handle resend button click - set value and submit form
+            document.getElementById('sky-seo-two-step-resend-btn').addEventListener('click', function() {
+                document.getElementById('sky-seo-two-step-resend-input').value = '1';
+                this.closest('form').submit();
+            });
+            </script>
         </div>
         <?php
     }
