@@ -107,7 +107,7 @@ class Sky_SEO_WhatsApp_Tracking {
             }
             
             // Get user data
-            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
             $ip_address = $this->get_user_ip();
             
             // Get device info
@@ -179,7 +179,7 @@ class Sky_SEO_WhatsApp_Tracking {
         if (!$table_exists) {
             ?>
             <div class="notice notice-error">
-                <p><?php _e('WhatsApp tracking table does not exist. Please deactivate and reactivate the plugin.', 'sky-seo-boost'); ?></p>
+                <p><?php esc_html_e('WhatsApp tracking table does not exist. Please deactivate and reactivate the plugin.', 'sky-seo-boost'); ?></p>
             </div>
             <?php
             return;
@@ -193,22 +193,22 @@ class Sky_SEO_WhatsApp_Tracking {
                     <div class="sky-seo-date-controls">
                         <div class="sky-seo-period-selector">
                             <button type="button" data-period="7days">
-                                <?php _e('7 Days', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('7 Days', 'sky-seo-boost'); ?>
                             </button>
                             <button type="button" data-period="30days">
-                                <?php _e('30 Days', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('30 Days', 'sky-seo-boost'); ?>
                             </button>
                             <button type="button" data-period="thismonth" class="active">
-                                <?php _e('This Month', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('This Month', 'sky-seo-boost'); ?>
                             </button>
                             <button type="button" data-period="lastmonth">
-                                <?php _e('Last Month', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Last Month', 'sky-seo-boost'); ?>
                             </button>
                             <button type="button" data-period="90days">
-                                <?php _e('90 Days', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('90 Days', 'sky-seo-boost'); ?>
                             </button>
                             <button type="button" data-period="custom">
-                                <?php _e('Custom', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Custom', 'sky-seo-boost'); ?>
                             </button>
                         </div>
                     </div>
@@ -220,7 +220,7 @@ class Sky_SEO_WhatsApp_Tracking {
                 <!-- Total Clicks -->
                 <div class="sky-seo-metric-card total-clicks">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Total Clicks', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Total Clicks', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-admin-links"></span>
                         </div>
@@ -230,13 +230,13 @@ class Sky_SEO_WhatsApp_Tracking {
                         <span class="dashicons dashicons-arrow-up-alt"></span>
                         <span>0%</span>
                     </div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('vs previous period', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('vs previous period', 'sky-seo-boost'); ?></div>
                 </div>
                 
                 <!-- Unique Users -->
                 <div class="sky-seo-metric-card unique-users">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Unique Users', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Unique Users', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-groups"></span>
                         </div>
@@ -246,67 +246,67 @@ class Sky_SEO_WhatsApp_Tracking {
                         <span class="dashicons dashicons-arrow-up-alt"></span>
                         <span>0%</span>
                     </div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('unique visitors', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('unique visitors', 'sky-seo-boost'); ?></div>
                 </div>
                 
                 <!-- Desktop Clicks -->
                 <div class="sky-seo-metric-card desktop-clicks">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Desktop Clicks', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Desktop Clicks', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-desktop"></span>
                         </div>
                     </div>
                     <div class="sky-seo-metric-value">0</div>
                     <div class="sky-seo-metric-percentage">0%</div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('of total clicks', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('of total clicks', 'sky-seo-boost'); ?></div>
                 </div>
-                
+
                 <!-- Mobile Clicks -->
                 <div class="sky-seo-metric-card mobile-clicks">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Mobile Clicks', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Mobile Clicks', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-smartphone"></span>
                         </div>
                     </div>
                     <div class="sky-seo-metric-value">0</div>
                     <div class="sky-seo-metric-percentage">0%</div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('of total clicks', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('of total clicks', 'sky-seo-boost'); ?></div>
                 </div>
-                
+
                 <!-- Widget Clicks -->
                 <div class="sky-seo-metric-card widget-clicks">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Widget Clicks', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Widget Clicks', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-format-chat"></span>
                         </div>
                     </div>
                     <div class="sky-seo-metric-value">0</div>
                     <div class="sky-seo-metric-percentage">0%</div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('floating widget', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('floating widget', 'sky-seo-boost'); ?></div>
                 </div>
                 
                 <!-- Button Clicks -->
                 <div class="sky-seo-metric-card button-clicks">
                     <div class="sky-seo-metric-header">
-                        <h3 class="sky-seo-metric-title"><?php _e('Button Clicks', 'sky-seo-boost'); ?></h3>
+                        <h3 class="sky-seo-metric-title"><?php esc_html_e('Button Clicks', 'sky-seo-boost'); ?></h3>
                         <div class="sky-seo-metric-icon">
                             <span class="dashicons dashicons-admin-links"></span>
                         </div>
                     </div>
                     <div class="sky-seo-metric-value">0</div>
                     <div class="sky-seo-metric-percentage">0%</div>
-                    <div class="sky-seo-metric-subtitle"><?php _e('button links', 'sky-seo-boost'); ?></div>
+                    <div class="sky-seo-metric-subtitle"><?php esc_html_e('button links', 'sky-seo-boost'); ?></div>
                 </div>
             </div>
 
             <!-- Click Heatmap -->
             <div class="sky-seo-heatmap-section">
                 <div class="sky-seo-heatmap-header">
-                    <h3 class="sky-seo-heatmap-title"><?php _e('Click Activity Heatmap', 'sky-seo-boost'); ?></h3>
-                    <p class="sky-seo-heatmap-subtitle"><?php _e('See when your users are most active', 'sky-seo-boost'); ?></p>
+                    <h3 class="sky-seo-heatmap-title"><?php esc_html_e('Click Activity Heatmap', 'sky-seo-boost'); ?></h3>
+                    <p class="sky-seo-heatmap-subtitle"><?php esc_html_e('See when your users are most active', 'sky-seo-boost'); ?></p>
                 </div>
                 <div class="sky-seo-heatmap-grid">
                     <!-- Populated by JS -->
@@ -314,19 +314,19 @@ class Sky_SEO_WhatsApp_Tracking {
                 <div class="sky-seo-heatmap-legend">
                     <span class="sky-seo-legend-item">
                         <span class="sky-seo-legend-color" style="background: #f9fafb;"></span>
-                        <?php _e('Low', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Low', 'sky-seo-boost'); ?>
                     </span>
                     <span class="sky-seo-legend-item">
                         <span class="sky-seo-legend-color" style="background: #86efac;"></span>
-                        <?php _e('Medium', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Medium', 'sky-seo-boost'); ?>
                     </span>
                     <span class="sky-seo-legend-item">
                         <span class="sky-seo-legend-color" style="background: #22c55e;"></span>
-                        <?php _e('High', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('High', 'sky-seo-boost'); ?>
                     </span>
                     <span class="sky-seo-legend-item">
                         <span class="sky-seo-legend-color" style="background: #16a34a;"></span>
-                        <?php _e('Very High', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Very High', 'sky-seo-boost'); ?>
                     </span>
                 </div>
             </div>
@@ -334,22 +334,22 @@ class Sky_SEO_WhatsApp_Tracking {
             <!-- Pages Summary Table -->
             <div class="sky-seo-conversations-section">
                 <div class="sky-seo-conversations-header">
-                    <h3 class="sky-seo-conversations-title"><?php _e('Page Performance', 'sky-seo-boost'); ?></h3>
+                    <h3 class="sky-seo-conversations-title"><?php esc_html_e('Page Performance', 'sky-seo-boost'); ?></h3>
                     <div class="sky-seo-table-filters">
                         <div class="sky-seo-search-box">
                             <span class="dashicons dashicons-search sky-seo-search-icon"></span>
                             <input type="text" 
                                    id="conversation-search" 
                                    class="sky-seo-search-input" 
-                                   placeholder="<?php _e('Search pages...', 'sky-seo-boost'); ?>">
+                                   placeholder="<?php esc_attr_e('Search pages...', 'sky-seo-boost'); ?>">
                         </div>
                         <select class="sky-seo-filter-dropdown" data-filter="device">
-                            <option value="all"><?php _e('All Devices', 'sky-seo-boost'); ?></option>
-                            <option value="mobile"><?php _e('Mobile', 'sky-seo-boost'); ?></option>
-                            <option value="desktop"><?php _e('Desktop', 'sky-seo-boost'); ?></option>
+                            <option value="all"><?php esc_html_e('All Devices', 'sky-seo-boost'); ?></option>
+                            <option value="mobile"><?php esc_html_e('Mobile', 'sky-seo-boost'); ?></option>
+                            <option value="desktop"><?php esc_html_e('Desktop', 'sky-seo-boost'); ?></option>
                         </select>
                         <select class="sky-seo-filter-dropdown" data-filter="country">
-                            <option value="all"><?php _e('All Countries', 'sky-seo-boost'); ?></option>
+                            <option value="all"><?php esc_html_e('All Countries', 'sky-seo-boost'); ?></option>
                         </select>
                     </div>
                 </div>
@@ -357,13 +357,13 @@ class Sky_SEO_WhatsApp_Tracking {
                 <table class="sky-seo-conversations-table">
                     <thead>
                         <tr>
-                            <th class="sortable" data-sort="page_title"><?php _e('Page Title', 'sky-seo-boost'); ?></th>
-                            <th class="sortable" data-sort="total_clicks"><?php _e('Total Clicks', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Widget', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Button', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Top City', 'sky-seo-boost'); ?></th>
-                            <th class="sortable" data-sort="last_click"><?php _e('Last Activity', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Actions', 'sky-seo-boost'); ?></th>
+                            <th class="sortable" data-sort="page_title"><?php esc_html_e('Page Title', 'sky-seo-boost'); ?></th>
+                            <th class="sortable" data-sort="total_clicks"><?php esc_html_e('Total Clicks', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Widget', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Button', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Top City', 'sky-seo-boost'); ?></th>
+                            <th class="sortable" data-sort="last_click"><?php esc_html_e('Last Activity', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Actions', 'sky-seo-boost'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -373,7 +373,7 @@ class Sky_SEO_WhatsApp_Tracking {
                 
                 <div class="sky-seo-table-pagination">
                     <div class="sky-seo-pagination-info">
-                        <?php _e('Showing 0 pages', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Showing 0 pages', 'sky-seo-boost'); ?>
                     </div>
                     <div class="sky-seo-pagination-controls">
                         <!-- Populated by JS -->
@@ -383,11 +383,11 @@ class Sky_SEO_WhatsApp_Tracking {
                 <div class="sky-seo-export-controls">
                     <a href="#" class="sky-seo-export-button" data-format="csv">
                         <span class="dashicons dashicons-download"></span>
-                        <?php _e('Export CSV', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Export CSV', 'sky-seo-boost'); ?>
                     </a>
                     <a href="#" class="sky-seo-export-button" data-format="excel">
                         <span class="dashicons dashicons-media-spreadsheet"></span>
-                        <?php _e('Export Excel', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Export Excel', 'sky-seo-boost'); ?>
                     </a>
                 </div>
             </div>
@@ -397,7 +397,7 @@ class Sky_SEO_WhatsApp_Tracking {
         <div id="sky-whatsapp-details-modal" class="sky-modal" style="display: none;">
             <div class="sky-modal-content">
                 <div class="sky-modal-header">
-                    <h3 class="sky-modal-title"><?php _e('Page Details', 'sky-seo-boost'); ?></h3>
+                    <h3 class="sky-modal-title"><?php esc_html_e('Page Details', 'sky-seo-boost'); ?></h3>
                     <button class="sky-modal-close">&times;</button>
                 </div>
                 <div class="sky-modal-body">
@@ -1138,7 +1138,7 @@ class Sky_SEO_WhatsApp_Tracking {
             $source = isset($_POST['source']) ? sanitize_text_field($_POST['source']) : '';
             
             // Get user data
-            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
             $ip_address = $this->get_user_ip();
             
             // Get device info
@@ -1218,7 +1218,7 @@ class Sky_SEO_WhatsApp_Tracking {
             }
         }
         
-        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+        return isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '127.0.0.1';
     }
     
     /**
@@ -1370,16 +1370,16 @@ class Sky_SEO_WhatsApp_Tracking {
      * Try CloudFlare headers as last resort
      */
     private function try_cloudflare_headers() {
-        $country = isset($_SERVER['HTTP_CF_IPCOUNTRY']) ? $_SERVER['HTTP_CF_IPCOUNTRY'] : '';
-        $city = isset($_SERVER['HTTP_CF_IPCITY']) ? $_SERVER['HTTP_CF_IPCITY'] : '';
-        
+        $country = isset($_SERVER['HTTP_CF_IPCOUNTRY']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_CF_IPCOUNTRY'])) : '';
+        $city = isset($_SERVER['HTTP_CF_IPCITY']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_CF_IPCITY'])) : '';
+
         if ($country || $city) {
             return [
                 'country' => $country ?: 'Unknown',
                 'city' => $city ?: 'Unknown',
             ];
         }
-        
+
         return ['country' => '', 'city' => ''];
     }
     

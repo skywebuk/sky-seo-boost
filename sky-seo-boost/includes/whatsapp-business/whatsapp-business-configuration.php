@@ -82,7 +82,7 @@ class Sky_SEO_WhatsApp_Configuration {
                         <div class="sky-seo-config-card-header">
                             <h3>
                                 <span class="dashicons dashicons-admin-users"></span>
-                                <?php _e('WhatsApp Account', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('WhatsApp Account', 'sky-seo-boost'); ?>
                             </h3>
                         </div>
                         
@@ -99,7 +99,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                         <span class="sky-seo-slider"></span>
                                     </label>
                                     <label for="widget-enabled" class="sky-seo-toggle-label">
-                                        <?php _e('Enable WhatsApp Widget', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('Enable WhatsApp Widget', 'sky-seo-boost'); ?>
                                     </label>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@ class Sky_SEO_WhatsApp_Configuration {
                             <!-- Phone Number -->
                             <div class="sky-seo-form-group">
                                 <label for="whatsapp_phone">
-                                    <?php _e('WhatsApp Phone Number', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('WhatsApp Phone Number', 'sky-seo-boost'); ?>
                                     <span class="required">*</span>
                                 </label>
                                 <input type="tel" 
@@ -119,14 +119,14 @@ class Sky_SEO_WhatsApp_Configuration {
                                        class="sky-seo-input" 
                                        required>
                                 <p class="sky-seo-field-description">
-                                    <?php _e('Enter with country code (e.g., +447123456789 for UK)', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Enter with country code (e.g., +447123456789 for UK)', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
                             
                             <!-- Display Name -->
                             <div class="sky-seo-form-group">
                                 <label for="display_name">
-                                    <?php _e('Display Name', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Display Name', 'sky-seo-boost'); ?>
                                 </label>
                                 <input type="text" 
                                        id="display_name" 
@@ -135,14 +135,14 @@ class Sky_SEO_WhatsApp_Configuration {
                                        placeholder="<?php echo esc_attr(get_bloginfo('name')); ?>"
                                        class="sky-seo-input">
                                 <p class="sky-seo-field-description">
-                                    <?php _e('The name shown in the WhatsApp popup', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('The name shown in the WhatsApp popup', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
-                            
+
                             <!-- Profile Photo -->
                             <div class="sky-seo-form-group">
                                 <label for="profile_photo">
-                                    <?php _e('Profile Photo', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Profile Photo', 'sky-seo-boost'); ?>
                                 </label>
                                 <div class="sky-seo-media-upload">
                                     <input type="hidden" 
@@ -160,123 +160,123 @@ class Sky_SEO_WhatsApp_Configuration {
                                     </div>
                                     <div class="sky-seo-upload-actions">
                                         <button type="button" class="button button-secondary upload-button">
-                                            <?php _e('Select Image', 'sky-seo-boost'); ?>
+                                            <?php esc_html_e('Select Image', 'sky-seo-boost'); ?>
                                         </button>
-                                        <button type="button" class="button button-link remove-button" 
+                                        <button type="button" class="button button-link remove-button"
                                                 <?php echo empty($settings['profile_photo']) ? 'style="display:none;"' : ''; ?>>
-                                            <?php _e('Remove', 'sky-seo-boost'); ?>
+                                            <?php esc_html_e('Remove', 'sky-seo-boost'); ?>
                                         </button>
                                     </div>
                                 </div>
                                 <p class="sky-seo-field-description">
-                                    <?php _e('Recommended: 200 by 200px square image', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Recommended: 200 by 200px square image', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
-                            
+
                             <!-- Status -->
                             <div class="sky-seo-form-group">
                                 <label for="status">
-                                    <?php _e('Availability Status', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Availability Status', 'sky-seo-boost'); ?>
                                 </label>
-                                <select id="status" 
-                                        name="<?php echo $this->option_name; ?>[status]" 
+                                <select id="status"
+                                        name="<?php echo esc_attr($this->option_name); ?>[status]"
                                         class="sky-seo-filter-select">
                                     <option value="online" <?php selected($settings['status'], 'online'); ?>>
-                                        <?php _e('Online - Available to chat', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('Online - Available to chat', 'sky-seo-boost'); ?>
                                     </option>
                                     <option value="offline" <?php selected($settings['status'], 'offline'); ?>>
-                                        <?php _e('Offline - Currently unavailable', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('Offline - Currently unavailable', 'sky-seo-boost'); ?>
                                     </option>
                                 </select>
                             </div>
-                            
+
                             <!-- Status Text - NEW FIELD -->
                             <div class="sky-seo-form-group">
                                 <label for="status_text">
-                                    <?php _e('Status Text', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Status Text', 'sky-seo-boost'); ?>
                                 </label>
                                 <input type="text" 
                                        id="status_text" 
                                        name="<?php echo $this->option_name; ?>[status_text]" 
                                        value="<?php echo esc_attr($settings['status_text'] ?? __('Typically replies instantly', 'sky-seo-boost')); ?>" 
-                                       placeholder="<?php _e('Typically replies instantly', 'sky-seo-boost'); ?>"
+                                       placeholder="<?php esc_attr_e('Typically replies instantly', 'sky-seo-boost'); ?>"
                                        class="sky-seo-input">
                                 <p class="sky-seo-field-description">
-                                    <?php _e('Text shown below your name in the popup header', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Text shown below your name in the popup header', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
-                            
+
                             <!-- Verified Badge -->
                             <div class="sky-seo-form-group">
                                 <div class="sky-seo-checkbox-field">
                                     <label>
-                                        <input type="checkbox" 
-                                               name="<?php echo $this->option_name; ?>[show_verified]" 
-                                               value="1" 
+                                        <input type="checkbox"
+                                               name="<?php echo esc_attr($this->option_name); ?>[show_verified]"
+                                               value="1"
                                                <?php checked(!empty($settings['show_verified'])); ?>>
-                                        <?php _e('Show Verified Badge', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('Show Verified Badge', 'sky-seo-boost'); ?>
                                     </label>
                                     <p class="sky-seo-field-description">
-                                        <?php _e('Display a blue checkmark next to your business name', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('Display a blue checkmark next to your business name', 'sky-seo-boost'); ?>
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Message Settings -->
                     <div class="sky-seo-config-card">
                         <div class="sky-seo-config-card-header">
                             <h3>
                                 <span class="dashicons dashicons-format-chat"></span>
-                                <?php _e('Message Settings', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Message Settings', 'sky-seo-boost'); ?>
                             </h3>
                         </div>
-                        
+
                         <div class="sky-seo-config-card-body">
                             <!-- Welcome Message -->
                             <div class="sky-seo-form-group">
                                 <label for="description">
-                                    <?php _e('Welcome Message', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Welcome Message', 'sky-seo-boost'); ?>
                                 </label>
                                 <textarea id="description" 
                                           name="<?php echo $this->option_name; ?>[description]" 
                                           rows="4" 
                                           class="sky-seo-textarea"
-                                          placeholder="<?php _e('Hi there! How can I help you?', 'sky-seo-boost'); ?>"><?php echo esc_textarea($settings['description']); ?></textarea>
+                                          placeholder="<?php esc_attr_e('Hi there! How can I help you?', 'sky-seo-boost'); ?>"><?php echo esc_textarea($settings['description']); ?></textarea>
                                 <p class="sky-seo-field-description">
-                                    <?php _e('Message shown in the popup before users start a chat', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Message shown in the popup before users start a chat', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
-                            
+
                             <!-- Default Chat Message -->
                             <div class="sky-seo-form-group">
                                 <label for="default_message">
-                                    <?php _e('Pre-filled Chat Message', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Pre-filled Chat Message', 'sky-seo-boost'); ?>
                                 </label>
                                 <textarea id="default_message" 
                                           name="<?php echo $this->option_name; ?>[default_message]" 
                                           rows="3" 
                                           class="sky-seo-textarea"
-                                          placeholder="<?php _e('Hello, I would like to know more about your services.', 'sky-seo-boost'); ?>"><?php echo esc_textarea($settings['default_message'] ?? ''); ?></textarea>
+                                          placeholder="<?php esc_attr_e('Hello, I would like to know more about your services.', 'sky-seo-boost'); ?>"><?php echo esc_textarea($settings['default_message'] ?? ''); ?></textarea>
                                 <p class="sky-seo-field-description">
-                                    <?php _e('This message will be pre-filled when users start a chat', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('This message will be pre-filled when users start a chat', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
-                            
+
                             <!-- Start Chat Button Text - NEW FIELD -->
                             <div class="sky-seo-form-group">
                                 <label for="start_chat_text">
-                                    <?php _e('Start Chat Button Text', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Start Chat Button Text', 'sky-seo-boost'); ?>
                                 </label>
                                 <input type="text" 
                                        id="start_chat_text" 
                                        name="<?php echo $this->option_name; ?>[start_chat_text]" 
                                        value="<?php echo esc_attr($settings['start_chat_text'] ?? __('Start Chat', 'sky-seo-boost')); ?>" 
-                                       placeholder="<?php _e('Start Chat', 'sky-seo-boost'); ?>"
+                                       placeholder="<?php esc_attr_e('Start Chat', 'sky-seo-boost'); ?>"
                                        class="sky-seo-input">
                                 <p class="sky-seo-field-description">
-                                    <?php _e('Text shown on the start chat button in the popup', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Text shown on the start chat button in the popup', 'sky-seo-boost'); ?>
                                 </p>
                             </div>
                         </div>
@@ -288,13 +288,13 @@ class Sky_SEO_WhatsApp_Configuration {
                     <div class="sky-seo-trackable-link-header">
                         <h3>
                             <span class="dashicons dashicons-admin-links"></span>
-                            <?php _e('Trackable WhatsApp Link', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Trackable WhatsApp Link', 'sky-seo-boost'); ?>
                         </h3>
                     </div>
                     
                     <div class="sky-seo-trackable-link-body">
                         <p class="sky-seo-field-description" style="margin-bottom: 20px;">
-                            <?php _e('Use this permanent link on any button or link element on your website. All clicks will be tracked as "Button Click" in the analytics with the page information.', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Use this permanent link on any button or link element on your website. All clicks will be tracked as "Button Click" in the analytics with the page information.', 'sky-seo-boost'); ?>
                         </p>
                         
                         <?php 
@@ -306,7 +306,7 @@ class Sky_SEO_WhatsApp_Configuration {
                         
                         <!-- Always Visible Link Display -->
                         <div class="sky-seo-generated-link">
-                            <label><?php _e('Your Trackable WhatsApp Link:', 'sky-seo-boost'); ?></label>
+                            <label><?php esc_html_e('Your Trackable WhatsApp Link:', 'sky-seo-boost'); ?></label>
                             <div class="sky-seo-link-display">
                                 <input type="text" 
                                        id="trackable-link" 
@@ -314,7 +314,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                        value="<?php echo esc_url($trackable_link); ?>"
                                        readonly>
                                 <button type="button" id="copy-trackable-link" class="button button-secondary">
-                                    <?php _e('Copy', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Copy', 'sky-seo-boost'); ?>
                                 </button>
                             </div>
                         </div>
@@ -326,14 +326,14 @@ class Sky_SEO_WhatsApp_Configuration {
                     <div class="sky-seo-config-card-header">
                         <h3>
                             <span class="dashicons dashicons-admin-settings"></span>
-                            <?php _e('Widget Behavior', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Widget Behavior', 'sky-seo-boost'); ?>
                         </h3>
                     </div>
                     
                     <div class="sky-seo-config-card-body">
                         <!-- Position -->
                         <div class="sky-seo-form-group">
-                            <label><?php _e('Widget Position', 'sky-seo-boost'); ?></label>
+                            <label><?php esc_html_e('Widget Position', 'sky-seo-boost'); ?></label>
                             <div class="sky-seo-position-selector">
                                 <label class="sky-seo-position-option">
                                     <input type="radio" 
@@ -341,7 +341,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                            value="bottom-left" 
                                            <?php checked($settings['float_position'], 'bottom-left'); ?>>
                                     <div class="sky-seo-position-preview">
-                                        <span class="sky-seo-position-label"><?php _e('Bottom Left', 'sky-seo-boost'); ?></span>
+                                        <span class="sky-seo-position-label"><?php esc_html_e('Bottom Left', 'sky-seo-boost'); ?></span>
                                     </div>
                                 </label>
                                 
@@ -351,7 +351,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                            value="bottom-right" 
                                            <?php checked($settings['float_position'], 'bottom-right'); ?>>
                                     <div class="sky-seo-position-preview">
-                                        <span class="sky-seo-position-label"><?php _e('Bottom Right', 'sky-seo-boost'); ?></span>
+                                        <span class="sky-seo-position-label"><?php esc_html_e('Bottom Right', 'sky-seo-boost'); ?></span>
                                     </div>
                                 </label>
                             </div>
@@ -359,174 +359,174 @@ class Sky_SEO_WhatsApp_Configuration {
                         
                         <!-- Popup Settings -->
                         <div class="sky-seo-form-group">
-                            <label><?php _e('Popup Settings', 'sky-seo-boost'); ?></label>
-                            
+                            <label><?php esc_html_e('Popup Settings', 'sky-seo-boost'); ?></label>
+
                             <div class="sky-seo-checkbox-field">
                                 <label>
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_popup]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_popup]"
+                                           value="1"
                                            <?php checked(!empty($settings['show_popup'])); ?>>
-                                    <?php _e('Show Welcome Popup on Click', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Show Welcome Popup on Click', 'sky-seo-boost'); ?>
                                 </label>
                             </div>
-                            
+
                             <div class="sky-seo-inline-field" style="margin-top: 15px;">
                                 <label for="popup_delay" style="margin-right: 10px;">
-                                    <?php _e('Auto-show popup after', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Auto-show popup after', 'sky-seo-boost'); ?>
                                 </label>
-                                <input type="number" 
-                                       id="popup_delay" 
-                                       name="<?php echo $this->option_name; ?>[popup_delay]" 
-                                       value="<?php echo esc_attr($settings['popup_delay'] ?? 0); ?>" 
-                                       min="0" 
-                                       max="300" 
+                                <input type="number"
+                                       id="popup_delay"
+                                       name="<?php echo esc_attr($this->option_name); ?>[popup_delay]"
+                                       value="<?php echo esc_attr($settings['popup_delay'] ?? 0); ?>"
+                                       min="0"
+                                       max="300"
                                        class="sky-seo-input-small">
-                                <span><?php _e('seconds', 'sky-seo-boost'); ?></span>
+                                <span><?php esc_html_e('seconds', 'sky-seo-boost'); ?></span>
                             </div>
                             <p class="sky-seo-field-description">
-                                <?php _e('Set to 0 to disable auto-popup. Maximum: 300 seconds', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Set to 0 to disable auto-popup. Maximum: 300 seconds', 'sky-seo-boost'); ?>
                             </p>
                         </div>
-                        
+
                         <!-- Device Visibility -->
                         <div class="sky-seo-form-group">
-                            <label><?php _e('Device Visibility', 'sky-seo-boost'); ?></label>
+                            <label><?php esc_html_e('Device Visibility', 'sky-seo-boost'); ?></label>
                             <div class="sky-seo-checkbox-group">
                                 <label>
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_mobile]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_mobile]"
+                                           value="1"
                                            <?php checked($settings['show_on_mobile'] ?? true, true); ?>>
-                                    <?php _e('Show on Mobile', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Show on Mobile', 'sky-seo-boost'); ?>
                                 </label>
-                                
+
                                 <label>
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_desktop]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_desktop]"
+                                           value="1"
                                            <?php checked($settings['show_on_desktop'] ?? true, true); ?>>
-                                    <?php _e('Show on Desktop', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Show on Desktop', 'sky-seo-boost'); ?>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Display Rules -->
                 <div class="sky-seo-config-card">
                     <div class="sky-seo-config-card-header">
                         <h3>
                             <span class="dashicons dashicons-visibility"></span>
-                            <?php _e('Display Rules', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Display Rules', 'sky-seo-boost'); ?>
                         </h3>
                     </div>
-                    
+
                     <div class="sky-seo-config-card-body">
                         <!-- Page Type Selection -->
                         <div class="sky-seo-form-group">
-                            <label><?php _e('Show Widget On', 'sky-seo-boost'); ?></label>
+                            <label><?php esc_html_e('Show Widget On', 'sky-seo-boost'); ?></label>
                             <div class="sky-seo-page-types-grid">
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_home]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_home]"
+                                           value="1"
                                            <?php checked($settings['show_on_home'] ?? true, true); ?>>
-                                    <span><?php _e('Homepage', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Homepage', 'sky-seo-boost'); ?></span>
                                 </label>
-                                
+
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_pages]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_pages]"
+                                           value="1"
                                            <?php checked($settings['show_on_pages'] ?? true, true); ?>>
-                                    <span><?php _e('Pages', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Pages', 'sky-seo-boost'); ?></span>
                                 </label>
-                                
+
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_posts]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_posts]"
+                                           value="1"
                                            <?php checked($settings['show_on_posts'] ?? true, true); ?>>
-                                    <span><?php _e('Posts', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Posts', 'sky-seo-boost'); ?></span>
                                 </label>
-                                
+
                                 <?php if (class_exists('WooCommerce')): ?>
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_products]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_products]"
+                                           value="1"
                                            <?php checked($settings['show_on_products'] ?? true, true); ?>>
-                                    <span><?php _e('Products', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Products', 'sky-seo-boost'); ?></span>
                                 </label>
                                 <?php endif; ?>
-                                
+
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_sky_areas]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_sky_areas]"
+                                           value="1"
                                            <?php checked($settings['show_on_sky_areas'] ?? true, true); ?>>
-                                    <span><?php _e('Areas', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Areas', 'sky-seo-boost'); ?></span>
                                 </label>
-                                
+
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_sky_trending]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_sky_trending]"
+                                           value="1"
                                            <?php checked($settings['show_on_sky_trending'] ?? true, true); ?>>
-                                    <span><?php _e('Trending', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Trending', 'sky-seo-boost'); ?></span>
                                 </label>
-                                
+
                                 <label class="sky-seo-page-type-option">
-                                    <input type="checkbox" 
-                                           name="<?php echo $this->option_name; ?>[show_on_sky_sectors]" 
-                                           value="1" 
+                                    <input type="checkbox"
+                                           name="<?php echo esc_attr($this->option_name); ?>[show_on_sky_sectors]"
+                                           value="1"
                                            <?php checked($settings['show_on_sky_sectors'] ?? true, true); ?>>
-                                    <span><?php _e('Sectors', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Sectors', 'sky-seo-boost'); ?></span>
                                 </label>
                             </div>
                         </div>
-                        
+
                         <!-- Exclude Pages -->
                         <div class="sky-seo-form-group">
                             <label for="exclude_pages">
-                                <?php _e('Exclude Specific Pages', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Exclude Specific Pages', 'sky-seo-boost'); ?>
                             </label>
-                            <select id="exclude_pages" 
-                                    name="<?php echo $this->option_name; ?>[exclude_pages][]" 
-                                    multiple 
-                                    class="sky-seo-select2" 
-                                    data-placeholder="<?php _e('Select pages to exclude...', 'sky-seo-boost'); ?>">
+                            <select id="exclude_pages"
+                                    name="<?php echo esc_attr($this->option_name); ?>[exclude_pages][]"
+                                    multiple
+                                    class="sky-seo-select2"
+                                    data-placeholder="<?php esc_attr_e('Select pages to exclude...', 'sky-seo-boost'); ?>">
                                 <?php
                                 $pages = get_pages(['hierarchical' => true, 'sort_column' => 'menu_order, post_title']);
                                 $excluded = $settings['exclude_pages'] ?? [];
                                 
                                 foreach ($pages as $page) {
                                     $depth = count(get_ancestors($page->ID, 'page'));
-                                    $indent = str_repeat('— ', $depth);
+                                    $indent = str_repeat('â€” ', $depth);
                                     $selected = in_array($page->ID, $excluded) ? 'selected' : '';
-                                    echo '<option value="' . $page->ID . '" ' . $selected . '>' . 
-                                         $indent . esc_html($page->post_title) . '</option>';
+                                    echo '<option value="' . esc_attr($page->ID) . '" ' . esc_attr($selected) . '>' .
+                                         esc_html($indent . $page->post_title) . '</option>';
                                 }
                                 ?>
                             </select>
                             <p class="sky-seo-field-description">
-                                <?php _e('Select pages where the WhatsApp widget should not appear', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Select pages where the WhatsApp widget should not appear', 'sky-seo-boost'); ?>
                             </p>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Save Button -->
                 <div class="sky-seo-form-actions">
                     <button type="submit" name="submit" class="button button-primary button-large">
                         <span class="dashicons dashicons-saved"></span>
-                        <?php _e('Save Settings', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Save Settings', 'sky-seo-boost'); ?>
                     </button>
                     <span class="spinner"></span>
                     <span class="sky-seo-success-message" style="display:none;">
                         <span class="dashicons dashicons-yes-alt"></span>
-                        <?php _e('Settings saved successfully!', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Settings saved successfully!', 'sky-seo-boost'); ?>
                     </span>
                 </div>
             </form>

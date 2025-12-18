@@ -228,7 +228,7 @@ class Sky_SEO_WhatsApp_Business {
                 add_action('admin_notices', function() {
                     ?>
                     <div class="notice notice-success is-dismissible">
-                        <p><?php _e('Sky SEO WhatsApp: Database structure updated successfully.', 'sky-seo-boost'); ?></p>
+                        <p><?php esc_html_e('Sky SEO WhatsApp: Database structure updated successfully.', 'sky-seo-boost'); ?></p>
                     </div>
                     <?php
                 });
@@ -266,13 +266,13 @@ class Sky_SEO_WhatsApp_Business {
         <div class="wrap sky-seo-whatsapp-wrap">
             <!-- Tab Navigation - CHANGED: Tab order -->
             <nav class="nav-tab-wrapper sky-seo-nav-tabs">
-                <a href="?page=sky-seo-whatsapp&tab=tracking" 
+                <a href="?page=sky-seo-whatsapp&tab=tracking"
                    class="nav-tab <?php echo $current_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Tracking', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Tracking', 'sky-seo-boost'); ?>
                 </a>
-                <a href="?page=sky-seo-whatsapp&tab=configuration" 
+                <a href="?page=sky-seo-whatsapp&tab=configuration"
                    class="nav-tab <?php echo $current_tab === 'configuration' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Configuration', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Configuration', 'sky-seo-boost'); ?>
                 </a>
             </nav>
             
@@ -286,7 +286,7 @@ class Sky_SEO_WhatsApp_Business {
                         } else {
                             echo '<div class="sky-seo-empty-state">';
                             echo '<div class="sky-seo-empty-icon"><span class="dashicons dashicons-warning"></span></div>';
-                            echo '<p>' . __('Configuration module not loaded.', 'sky-seo-boost') . '</p>';
+                            echo '<p>' . esc_html__('Configuration module not loaded.', 'sky-seo-boost') . '</p>';
                             echo '</div>';
                         }
                         break;
@@ -298,7 +298,7 @@ class Sky_SEO_WhatsApp_Business {
                         } else {
                             echo '<div class="sky-seo-empty-state">';
                             echo '<div class="sky-seo-empty-icon"><span class="dashicons dashicons-warning"></span></div>';
-                            echo '<p>' . __('Tracking module not loaded.', 'sky-seo-boost') . '</p>';
+                            echo '<p>' . esc_html__('Tracking module not loaded.', 'sky-seo-boost') . '</p>';
                             echo '</div>';
                         }
                         break;
@@ -604,7 +604,7 @@ class Sky_SEO_WhatsApp_Business {
                                 <?php echo esc_html($display_name ?: __('WhatsApp Support', 'sky-seo-boost')); ?>
                                 <?php if ($show_verified): ?>
                                     <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>" 
-                                         alt="<?php _e('Verified', 'sky-seo-boost'); ?>" 
+                                         alt="<?php esc_attr_e('Verified', 'sky-seo-boost'); ?>" 
                                          class="sky-whatsapp-verified">
                                 <?php endif; ?>
                             </h4>
@@ -623,7 +623,7 @@ class Sky_SEO_WhatsApp_Business {
                                         <?php if ($show_verified): ?>
                                             <span class="sky-whatsapp-message-verified">
                                                 <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>" 
-                                                     alt="<?php _e('Verified', 'sky-seo-boost'); ?>">
+                                                     alt="<?php esc_attr_e('Verified', 'sky-seo-boost'); ?>">
                                             </span>
                                         <?php endif; ?>
                                     </div>
@@ -631,7 +631,7 @@ class Sky_SEO_WhatsApp_Business {
                                         $desc_parts = explode('\n', $description);
                                         echo implode('<br>', array_map('esc_html', $desc_parts));
                                     ?></p>
-                                    <span class="message-time"><?php echo date('g:i'); ?></span>
+                                    <span class="message-time"><?php echo esc_html(wp_date('g:i')); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -670,7 +670,7 @@ class Sky_SEO_WhatsApp_Business {
         $message = isset($settings['default_message']) ? $settings['default_message'] : '';
         
         if (empty($phone)) {
-            wp_die(__('WhatsApp not configured. Please configure your WhatsApp phone number.', 'sky-seo-boost'));
+            wp_die(esc_html__('WhatsApp not configured. Please configure your WhatsApp phone number.', 'sky-seo-boost'));
         }
         
         // Get referrer page info for tracking
@@ -721,8 +721,8 @@ class Sky_SEO_WhatsApp_Business {
                         'referrer_url' => $referrer_url,
                         'click_type' => 'button',
                         'source' => 'Button Click',
-                        'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
-                        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+                        'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '',
+                        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '',
                         'device_type' => wp_is_mobile() ? 'mobile' : 'desktop',
                         'session_id' => isset($_COOKIE['sky_whatsapp_session']) ? $_COOKIE['sky_whatsapp_session'] : wp_generate_uuid4()
                     ]);
