@@ -1133,3 +1133,227 @@ body[dir="rtl"] .sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-popup .sky-w
     margin-right: 8px !important;
     text-align: right !important;
 }
+
+/* ==========================================================================
+   NEW FEATURES - Typing Animation, Social Proof, Business Hours, Status
+   ========================================================================== */
+
+/* Typing Animation Indicator */
+.sky-whatsapp-typing {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    background: #ffffff;
+    padding: 12px 16px;
+    border-radius: 7.5px;
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+    margin-left: 8px;
+    max-width: 80px;
+    position: relative;
+}
+
+/* Message tail for typing indicator */
+.sky-whatsapp-typing::before {
+    position: absolute;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAmCAMAAADp2asXAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAACQUExURUxpccPDw9ra2m9vbwAAAAAAADExMf///wAAABoaGk9PT7q6uqurqwsLCycnJz4+PtDQ0JycnIyMjPf3915eXvz8/E9PT/39/RMTE4CAgAAAAJqamv////////r6+u/v7yUlJeXl5f///5ycnOXl5XNzc/Hx8f///xUVFf///+zs7P///+bm5gAAAM7Ozv///2fVensAAAAvdFJOUwCow1cBCCnqAhNAnY0WIDW2f2/hSeo99g1lBYT87vDXG8/6d8oL4sgM5szrkgl660OiZwAAAHRJREFUKM/ty7cSggAABNFVUQFzwizmjPz/39k4YuFWtm55bw7eHR6ny63+alnswT3/rIDzUSC7CrAziPYCJCsB+gbVkgDtVIDh+DsE9OTBpCtAbSBAZSEQNgWIygJ0RgJMDWYNAdYbAeKtAHODlkHIv997AkLqIVOXVU84AAAAAElFTkSuQmCC");
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: "";
+    top: 0px;
+    left: -12px;
+    width: 12px;
+    height: 19px;
+}
+
+/* Typing dots animation */
+.sky-whatsapp-typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #9e9ea1;
+    border-radius: 50%;
+    animation: typingDotPulse 1.4s infinite ease-in-out both;
+}
+
+.sky-whatsapp-typing-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.sky-whatsapp-typing-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+.sky-whatsapp-typing-dot:nth-child(3) {
+    animation-delay: 0s;
+}
+
+@keyframes typingDotPulse {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Social Proof Counter */
+.sky-whatsapp-social-proof {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #5f6368;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sky-whatsapp-social-proof .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #25D366;
+}
+
+.sky-whatsapp-social-proof-text {
+    flex: 1;
+}
+
+/* Status Indicator (Online/Offline dots) */
+.sky-whatsapp-status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.sky-whatsapp-status-indicator.online {
+    background: #25D366;
+    box-shadow: 0 0 6px rgba(37, 211, 102, 0.6);
+}
+
+.sky-whatsapp-status-indicator.offline {
+    background: #9e9ea1;
+}
+
+/* Offline Badge on Button */
+.sky-whatsapp-offline-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    background: #9e9ea1;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+/* Offline Notice in Popup */
+.sky-whatsapp-offline-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-left: 3px solid #f59e0b;
+}
+
+.sky-whatsapp-offline-notice .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #f59e0b;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.sky-whatsapp-offline-notice p {
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #6b7280 !important;
+}
+
+/* Widget Offline State */
+.sky-whatsapp-widget.sky-whatsapp-offline .sky-whatsapp-button {
+    background: #6b7280 !important;
+}
+
+.sky-whatsapp-widget.sky-whatsapp-offline .sky-whatsapp-button:hover {
+    background: #6b7280 !important;
+}
+
+/* Status text variations */
+.sky-whatsapp-status.offline {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Mobile adjustments for new features */
+@media (max-width: 480px) {
+    .sky-whatsapp-typing {
+        padding: 10px 14px;
+    }
+
+    .sky-whatsapp-typing-dot {
+        width: 7px;
+        height: 7px;
+    }
+
+    .sky-whatsapp-social-proof {
+        font-size: 11px;
+        padding: 8px 12px;
+    }
+
+    .sky-whatsapp-offline-notice {
+        padding: 10px 12px;
+    }
+
+    .sky-whatsapp-offline-notice p {
+        font-size: 12px !important;
+    }
+}
+
+/* RTL support for new features */
+html[dir="rtl"] .sky-whatsapp-typing,
+body.rtl .sky-whatsapp-typing,
+.sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-typing {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+html[dir="rtl"] .sky-whatsapp-typing::before,
+body.rtl .sky-whatsapp-typing::before,
+.sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-typing::before {
+    left: auto;
+    right: -12px;
+    transform: scaleX(-1);
+}
+
+html[dir="rtl"] .sky-whatsapp-status-indicator,
+body.rtl .sky-whatsapp-status-indicator,
+.sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-status-indicator {
+    margin-right: 0;
+    margin-left: 6px;
+}
+
+html[dir="rtl"] .sky-whatsapp-offline-notice,
+body.rtl .sky-whatsapp-offline-notice,
+.sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-offline-notice {
+    border-left: none;
+    border-right: 3px solid #f59e0b;
+}
+
+html[dir="rtl"] .sky-whatsapp-social-proof,
+body.rtl .sky-whatsapp-social-proof,
+.sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-social-proof {
+    flex-direction: row-reverse;
+}

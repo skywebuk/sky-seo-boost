@@ -203,10 +203,10 @@ class Sky_SEO_Two_Step_Core {
         $token = wp_generate_password(43, false);
         $expiration = time() + (5 * MINUTE_IN_SECONDS); // 5 minute validity
 
-        // Encrypt the password for temporary storage using WordPress salt
+        // Encrypt the password for temporary storage using OpenSSL
         $encrypted_password = '';
         if (!empty($password)) {
-            $encrypted_password = base64_encode($password);
+            $encrypted_password = self::encrypt_password($password);
         }
 
         update_user_meta($user_id, self::INTERIM_AUTH_META_KEY, array(
@@ -216,6 +216,36 @@ class Sky_SEO_Two_Step_Core {
         ));
 
         return $token;
+    }
+
+    /**
+     * Encrypt a password for temporary storage.
+     *
+     * @param string $password The password to encrypt.
+     * @return string The encrypted password.
+     */
+    private static function encrypt_password($password) {
+        $key = wp_salt('auth');
+        $iv = openssl_random_pseudo_bytes(16);
+        $encrypted = openssl_encrypt($password, 'AES-256-CBC', $key, 0, $iv);
+        return base64_encode($iv . '::' . $encrypted);
+    }
+
+    /**
+     * Decrypt a password from temporary storage.
+     *
+     * @param string $encrypted_password The encrypted password.
+     * @return string The decrypted password.
+     */
+    private static function decrypt_password($encrypted_password) {
+        $key = wp_salt('auth');
+        $data = base64_decode($encrypted_password);
+        $parts = explode('::', $data, 2);
+        if (count($parts) !== 2) {
+            return '';
+        }
+        list($iv, $encrypted) = $parts;
+        return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
     }
 
     /**
@@ -256,15 +286,15 @@ class Sky_SEO_Two_Step_Core {
 
     /**
      * Generate device fingerprint for identification.
+     * Uses only user agent for stability - HTTP_ACCEPT_LANGUAGE can vary between requests.
      *
      * @return string
      */
     private static function generate_device_fingerprint() {
-        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-        $accept_language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
 
-        // Create a fingerprint from browser characteristics
-        return wp_hash($user_agent . $accept_language);
+        // Create a fingerprint from browser user agent only (more stable than including accept-language)
+        return wp_hash($user_agent);
     }
 
     /**
@@ -336,8 +366,8 @@ class Sky_SEO_Two_Step_Core {
             'fingerprint' => $device_fingerprint,
             'created' => time(),
             'expiration' => $expiration,
-            'ip' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '',
-            'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '',
+            'ip' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '',
+            'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '',
         );
 
         // Limit to 10 devices per user
@@ -352,19 +382,37 @@ class Sky_SEO_Two_Step_Core {
         // Save to user meta
         update_user_meta($user_id, self::TRUSTED_DEVICES_META_KEY, $trusted_devices);
 
-        // Set cookie
-        setcookie(
-            self::REMEMBER_COOKIE_NAME,
-            $token,
-            array(
-                'expires' => $expiration,
-                'path' => COOKIEPATH,
-                'domain' => COOKIE_DOMAIN,
-                'secure' => is_ssl(),
-                'httponly' => true,
-                'samesite' => 'Lax'
-            )
-        );
+        // Get cookie path - use '/' if COOKIEPATH is empty or not defined
+        $cookie_path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+        $cookie_domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+
+        // Set cookie using both methods for maximum compatibility
+        // Method 1: Modern array syntax (PHP 7.3+)
+        if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+            setcookie(
+                self::REMEMBER_COOKIE_NAME,
+                $token,
+                array(
+                    'expires' => $expiration,
+                    'path' => $cookie_path,
+                    'domain' => $cookie_domain,
+                    'secure' => is_ssl(),
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                )
+            );
+        } else {
+            // Method 2: Legacy syntax for older PHP versions
+            setcookie(
+                self::REMEMBER_COOKIE_NAME,
+                $token,
+                $expiration,
+                $cookie_path,
+                $cookie_domain,
+                is_ssl(),
+                true
+            );
+        }
 
         return $token;
     }
@@ -379,18 +427,34 @@ class Sky_SEO_Two_Step_Core {
 
         // Clear cookie
         if (isset($_COOKIE[self::REMEMBER_COOKIE_NAME])) {
-            setcookie(
-                self::REMEMBER_COOKIE_NAME,
-                '',
-                array(
-                    'expires' => time() - 3600,
-                    'path' => COOKIEPATH,
-                    'domain' => COOKIE_DOMAIN,
-                    'secure' => is_ssl(),
-                    'httponly' => true,
-                    'samesite' => 'Lax'
-                )
-            );
+            // Get cookie path - use '/' if COOKIEPATH is empty or not defined
+            $cookie_path = defined('COOKIEPATH') && COOKIEPATH ? COOKIEPATH : '/';
+            $cookie_domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+
+            if (version_compare(PHP_VERSION, '7.3.0', '>=')) {
+                setcookie(
+                    self::REMEMBER_COOKIE_NAME,
+                    '',
+                    array(
+                        'expires' => time() - 3600,
+                        'path' => $cookie_path,
+                        'domain' => $cookie_domain,
+                        'secure' => is_ssl(),
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    )
+                );
+            } else {
+                setcookie(
+                    self::REMEMBER_COOKIE_NAME,
+                    '',
+                    time() - 3600,
+                    $cookie_path,
+                    $cookie_domain,
+                    is_ssl(),
+                    true
+                );
+            }
         }
     }
 
@@ -506,8 +570,8 @@ class Sky_SEO_Two_Step_Core {
 
             // Handle resend
             if (isset($_POST['sky-seo-two-step-resend'])) {
-                $username = isset($_POST['log']) ? $_POST['log'] : '';
-                $password = isset($_POST['pwd']) ? $_POST['pwd'] : '';
+                $username = isset($_POST['log']) ? sanitize_user(wp_unslash($_POST['log'])) : '';
+                $password = isset($_POST['pwd']) ? wp_unslash($_POST['pwd']) : '';
                 self::show_two_step_form($user, $username, $password);
                 exit;
             }
@@ -557,12 +621,12 @@ class Sky_SEO_Two_Step_Core {
         // Note: Email will be sent by authentication_page() when the form is displayed
         // No need to send it here to avoid duplicate emails
 
-        // Get the original redirect destination
-        $redirect_to = isset($_REQUEST['redirect_to']) ? $_REQUEST['redirect_to'] : '';
+        // Get the original redirect destination (sanitize to prevent open redirect)
+        $redirect_to = isset($_REQUEST['redirect_to']) ? esc_url_raw(wp_unslash($_REQUEST['redirect_to'])) : '';
 
         // If no redirect is specified, try to capture the page they came from
         if (empty($redirect_to) && !empty($_SERVER['HTTP_REFERER'])) {
-            $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
+            $referer = esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER']));
             // Only use referer if it's from the same site (security check)
             if (strpos($referer, home_url()) === 0) {
                 $redirect_to = $referer;
@@ -614,8 +678,8 @@ class Sky_SEO_Two_Step_Core {
             // Create a login nonce for this session
             $login_nonce = self::create_login_nonce($user->ID);
 
-            // Get the redirect URL
-            $redirect_to = isset($_REQUEST['redirect_to']) ? $_REQUEST['redirect_to'] : admin_url();
+            // Get the redirect URL (sanitize to prevent open redirect)
+            $redirect_to = isset($_REQUEST['redirect_to']) ? esc_url_raw(wp_unslash($_REQUEST['redirect_to'])) : admin_url();
 
             // Start output buffering to capture the login page
             ob_start();
@@ -1015,10 +1079,10 @@ class Sky_SEO_Two_Step_Core {
             exit;
         }
 
-        // Decrypt the password
+        // Decrypt the password using proper decryption
         $password = '';
         if (!empty($token_data['password'])) {
-            $password = base64_decode($token_data['password']);
+            $password = self::decrypt_password($token_data['password']);
         }
 
         // Create a login nonce for this session
@@ -1027,7 +1091,7 @@ class Sky_SEO_Two_Step_Core {
         // Get the redirect URL with intelligent fallback
         // Priority: 1) Explicit redirect_to param, 2) Captured referer, 3) WooCommerce account, 4) Home
         if (isset($_GET['redirect_to']) && !empty($_GET['redirect_to'])) {
-            $redirect_to = urldecode($_GET['redirect_to']);
+            $redirect_to = esc_url_raw(urldecode($_GET['redirect_to']));
         } else {
             // No redirect specified - use smart defaults for front-end logins
             // Check if WooCommerce is active and redirect to My Account page (works with custom slugs)

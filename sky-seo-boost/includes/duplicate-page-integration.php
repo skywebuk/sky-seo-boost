@@ -222,18 +222,20 @@ class Sky_SEO_Duplicate_Post_Feature {
      */
     private function get_duplicate_url($post_id) {
         $action = 'sky_seo_duplicate_post';
+        // Sanitize REQUEST_URI to prevent XSS and injection attacks
+        $redirect_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
         $url = wp_nonce_url(
             add_query_arg(
                 [
                     'action' => $action,
                     'post' => $post_id,
-                    'redirect' => urlencode($_SERVER['REQUEST_URI'])
+                    'redirect' => urlencode($redirect_uri)
                 ],
                 admin_url('admin.php')
             ),
             'sky-seo-duplicate-' . $post_id
         );
-        
+
         return $url;
     }
     

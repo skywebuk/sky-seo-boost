@@ -11,14 +11,17 @@
 
     // WhatsApp Frontend Handler
     const SkySeoWhatsAppFront = {
-        
+
         // Configuration
         config: {},
         popupShown: false,
         sessionStarted: false,
         isProcessingClick: false,
         clickDebounceTimer: null,
-        
+        typingAnimationPlayed: false,
+        smartTriggersInitialized: false,
+        smartTriggerFired: false,
+
         // Initialize
         init: function() {
             // Get config from localized data
@@ -34,6 +37,9 @@
             this.bindEvents();
             this.initAutoPopup();
             this.checkMobileApp();
+
+            // NEW: Initialize smart triggers
+            this.initSmartTriggers();
         },
 
         // Detect RTL languages and apply appropriate classes
@@ -253,6 +259,9 @@
 
             this.popupShown = true;
 
+            // NEW: Handle typing animation
+            this.playTypingAnimation(popup);
+
             // Re-apply RTL styles if needed (in case they were lost)
             const html = document.documentElement;
             const body = document.body;
@@ -294,6 +303,34 @@
             setTimeout(function() {
                 popup.find('.sky-whatsapp-close').focus();
             }, 300);
+        },
+
+        // NEW: Play typing animation
+        playTypingAnimation: function(popup) {
+            const self = this;
+
+            // Check if typing animation is enabled
+            if (!this.config.typingAnimation || this.typingAnimationPlayed) {
+                return;
+            }
+
+            const typingIndicator = popup.find('.sky-whatsapp-typing');
+            const messageElement = popup.find('.sky-whatsapp-message');
+            const typingDuration = this.config.typingDuration || 1500;
+
+            if (typingIndicator.length && messageElement.length) {
+                // Show typing indicator
+                typingIndicator.css('display', 'flex');
+                messageElement.hide();
+
+                // After duration, hide typing and show message
+                setTimeout(function() {
+                    typingIndicator.fadeOut(200, function() {
+                        messageElement.fadeIn(300);
+                    });
+                    self.typingAnimationPlayed = true;
+                }, typingDuration);
+            }
         },
         
         // Close popup
@@ -497,9 +534,9 @@
             if (!this.config.showPopup || this.popupShown) {
                 return;
             }
-            
+
             const popupDelay = parseInt(this.config.popupDelay) || 0;
-            
+
             if (popupDelay > 0) {
                 setTimeout(function() {
                     if (!SkySeoWhatsAppFront.popupShown && !SkySeoWhatsAppFront.getCookie('sky_whatsapp_popup_closed')) {
@@ -509,6 +546,107 @@
                         }
                     }
                 }, popupDelay * 1000);
+            }
+        },
+
+        // NEW: Initialize smart triggers
+        initSmartTriggers: function() {
+            const triggers = this.config.smartTriggers;
+
+            if (!triggers || !triggers.enabled || this.smartTriggersInitialized) {
+                return;
+            }
+
+            this.smartTriggersInitialized = true;
+            const self = this;
+
+            // Check if popup was already dismissed
+            if (this.getCookie('sky_whatsapp_popup_closed') === 'true') {
+                return;
+            }
+
+            // 1. Scroll percentage trigger
+            if (triggers.scroll && triggers.scroll.enabled) {
+                const targetPercentage = triggers.scroll.percentage || 50;
+
+                $(window).on('scroll.smartTrigger', function() {
+                    if (self.smartTriggerFired) return;
+
+                    const scrollTop = $(window).scrollTop();
+                    const docHeight = $(document).height() - $(window).height();
+                    const scrollPercentage = (scrollTop / docHeight) * 100;
+
+                    if (scrollPercentage >= targetPercentage) {
+                        self.fireSmartTrigger('scroll');
+                    }
+                });
+            }
+
+            // 2. Exit intent trigger (mouse leaving viewport)
+            if (triggers.exitIntent) {
+                $(document).on('mouseleave.smartTrigger', function(e) {
+                    if (self.smartTriggerFired) return;
+
+                    // Only trigger when mouse exits from top of viewport
+                    if (e.clientY < 10) {
+                        self.fireSmartTrigger('exit_intent');
+                    }
+                });
+            }
+
+            // 3. Time on page trigger
+            if (triggers.timeOnPage && triggers.timeOnPage.enabled) {
+                const seconds = triggers.timeOnPage.seconds || 30;
+
+                setTimeout(function() {
+                    if (!self.smartTriggerFired) {
+                        self.fireSmartTrigger('time_on_page');
+                    }
+                }, seconds * 1000);
+            }
+
+            // 4. Page views trigger (uses sessionStorage)
+            if (triggers.pageViews && triggers.pageViews.enabled) {
+                const requiredViews = triggers.pageViews.count || 2;
+
+                // Get current page view count
+                let pageViews = parseInt(sessionStorage.getItem('sky_whatsapp_page_views') || '0');
+                pageViews++;
+                sessionStorage.setItem('sky_whatsapp_page_views', pageViews);
+
+                if (pageViews >= requiredViews) {
+                    // Small delay to not trigger immediately on page load
+                    setTimeout(function() {
+                        if (!self.smartTriggerFired) {
+                            self.fireSmartTrigger('page_views');
+                        }
+                    }, 1000);
+                }
+            }
+        },
+
+        // NEW: Fire smart trigger and show popup
+        fireSmartTrigger: function(triggerType) {
+            if (this.smartTriggerFired || this.popupShown) {
+                return;
+            }
+
+            // Check if popup was already dismissed
+            if (this.getCookie('sky_whatsapp_popup_closed') === 'true') {
+                return;
+            }
+
+            this.smartTriggerFired = true;
+
+            // Unbind all smart trigger events
+            $(window).off('.smartTrigger');
+            $(document).off('.smartTrigger');
+
+            // Show popup
+            const popup = $('.sky-whatsapp-popup').first();
+            if (popup.length) {
+                this.showPopup(popup);
+                this.trackEvent('smart_trigger', { trigger: triggerType });
             }
         },
         

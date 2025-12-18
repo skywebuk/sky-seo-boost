@@ -228,7 +228,7 @@ class Sky_SEO_WhatsApp_Business {
                 add_action('admin_notices', function() {
                     ?>
                     <div class="notice notice-success is-dismissible">
-                        <p><?php _e('Sky SEO WhatsApp: Database structure updated successfully.', 'sky-seo-boost'); ?></p>
+                        <p><?php esc_html_e('Sky SEO WhatsApp: Database structure updated successfully.', 'sky-seo-boost'); ?></p>
                     </div>
                     <?php
                 });
@@ -266,13 +266,13 @@ class Sky_SEO_WhatsApp_Business {
         <div class="wrap sky-seo-whatsapp-wrap">
             <!-- Tab Navigation - CHANGED: Tab order -->
             <nav class="nav-tab-wrapper sky-seo-nav-tabs">
-                <a href="?page=sky-seo-whatsapp&tab=tracking" 
+                <a href="?page=sky-seo-whatsapp&tab=tracking"
                    class="nav-tab <?php echo $current_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Tracking', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Tracking', 'sky-seo-boost'); ?>
                 </a>
-                <a href="?page=sky-seo-whatsapp&tab=configuration" 
+                <a href="?page=sky-seo-whatsapp&tab=configuration"
                    class="nav-tab <?php echo $current_tab === 'configuration' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Configuration', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Configuration', 'sky-seo-boost'); ?>
                 </a>
             </nav>
             
@@ -286,7 +286,7 @@ class Sky_SEO_WhatsApp_Business {
                         } else {
                             echo '<div class="sky-seo-empty-state">';
                             echo '<div class="sky-seo-empty-icon"><span class="dashicons dashicons-warning"></span></div>';
-                            echo '<p>' . __('Configuration module not loaded.', 'sky-seo-boost') . '</p>';
+                            echo '<p>' . esc_html__('Configuration module not loaded.', 'sky-seo-boost') . '</p>';
                             echo '</div>';
                         }
                         break;
@@ -298,7 +298,7 @@ class Sky_SEO_WhatsApp_Business {
                         } else {
                             echo '<div class="sky-seo-empty-state">';
                             echo '<div class="sky-seo-empty-icon"><span class="dashicons dashicons-warning"></span></div>';
-                            echo '<p>' . __('Tracking module not loaded.', 'sky-seo-boost') . '</p>';
+                            echo '<p>' . esc_html__('Tracking module not loaded.', 'sky-seo-boost') . '</p>';
                             echo '</div>';
                         }
                         break;
@@ -415,27 +415,30 @@ class Sky_SEO_WhatsApp_Business {
     }
     
     /**
-     * Enqueue frontend assets
+     * Enqueue frontend assets - ENHANCED WITH NEW FEATURES
      */
     public function enqueue_frontend_assets() {
         // Get settings
         $settings = get_option('sky_seo_whatsapp_config', []);
-        
+
         // Check if enabled
         if (empty($settings['enabled']) || $settings['status'] === 'offline') {
             return;
         }
-        
+
         $version = defined('SKY_SEO_BOOST_VERSION') ? SKY_SEO_BOOST_VERSION : '1.0.0';
-        
+
+        // Enqueue Dashicons for frontend (needed for social proof icon)
+        wp_enqueue_style('dashicons');
+
         // Enqueue CSS
         wp_enqueue_style(
             'sky-seo-whatsapp-frontend',
             $this->module_url . 'assets/css/whatsapp-frontend.css',
-            [],
+            ['dashicons'],
             $version
         );
-        
+
         // Enqueue JS
         wp_enqueue_script(
             'sky-seo-whatsapp-frontend',
@@ -444,8 +447,26 @@ class Sky_SEO_WhatsApp_Business {
             $version,
             true
         );
-        
-        // Localize script
+
+        // Build smart triggers config
+        $smart_triggers = [
+            'enabled' => !empty($settings['enable_smart_triggers']),
+            'scroll' => [
+                'enabled' => !empty($settings['trigger_scroll_enabled']),
+                'percentage' => isset($settings['trigger_scroll_percentage']) ? intval($settings['trigger_scroll_percentage']) : 50,
+            ],
+            'exitIntent' => !empty($settings['trigger_exit_intent']),
+            'timeOnPage' => [
+                'enabled' => !empty($settings['trigger_time_on_page']),
+                'seconds' => isset($settings['trigger_time_seconds']) ? intval($settings['trigger_time_seconds']) : 30,
+            ],
+            'pageViews' => [
+                'enabled' => !empty($settings['trigger_page_views']),
+                'count' => isset($settings['trigger_page_views_count']) ? intval($settings['trigger_page_views_count']) : 2,
+            ],
+        ];
+
+        // Localize script with enhanced config
         wp_localize_script('sky-seo-whatsapp-frontend', 'skySeoWhatsAppFront', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('sky_seo_whatsapp_track_nonce'),
@@ -454,7 +475,12 @@ class Sky_SEO_WhatsApp_Business {
                 'message' => isset($settings['default_message']) ? $settings['default_message'] : '',
                 'position' => isset($settings['float_position']) ? $settings['float_position'] : 'bottom-right',
                 'showPopup' => isset($settings['show_popup']) ? $settings['show_popup'] : true,
-                'popupDelay' => isset($settings['popup_delay']) ? $settings['popup_delay'] : 0,
+                'popupDelay' => isset($settings['popup_delay']) ? intval($settings['popup_delay']) : 0,
+                // NEW: Typing animation
+                'typingAnimation' => !empty($settings['enable_typing_animation']),
+                'typingDuration' => isset($settings['typing_duration']) ? intval($settings['typing_duration']) : 1500,
+                // NEW: Smart triggers
+                'smartTriggers' => $smart_triggers,
             ]
         ]);
     }
@@ -534,58 +560,104 @@ class Sky_SEO_WhatsApp_Business {
     }
     
     /**
-     * Render floating widget - UPDATED WITH NEW TEXT OPTIONS
+     * Render floating widget - ENHANCED WITH ALL NEW FEATURES
      */
     public function render_floating_widget() {
         $settings = get_option('sky_seo_whatsapp_config', []);
-        
+
         // Check if enabled
         if (empty($settings['enabled'])) {
             return;
         }
-        
+
         // Don't show in admin
         if (is_admin()) {
             return;
         }
-        
+
         // Check display rules
         if (!$this->should_display_widget()) {
             return;
         }
-        
+
         // Get configuration
         $phone = isset($settings['phone']) ? $settings['phone'] : '';
         $display_name = isset($settings['display_name']) ? $settings['display_name'] : '';
         $profile_photo = isset($settings['profile_photo']) ? $settings['profile_photo'] : '';
-        $description = isset($settings['description']) ? $settings['description'] : '';
         $show_verified = isset($settings['show_verified']) ? $settings['show_verified'] : false;
         $position = isset($settings['float_position']) ? $settings['float_position'] : 'bottom-right';
         $show_popup = isset($settings['show_popup']) ? $settings['show_popup'] : true;
         $status = isset($settings['status']) ? $settings['status'] : 'online';
         $default_message = isset($settings['default_message']) ? $settings['default_message'] : '';
-        
-        // NEW: Get custom text fields
+
+        // Get custom text fields
         $status_text = isset($settings['status_text']) ? $settings['status_text'] : __('Typically replies instantly', 'sky-seo-boost');
         $start_chat_text = isset($settings['start_chat_text']) ? $settings['start_chat_text'] : __('Start Chat', 'sky-seo-boost');
-        
+
+        // NEW: Check business hours
+        $business_hours = $this->check_business_hours();
+        $is_open = $business_hours['is_open'];
+        $offline_message = $business_hours['offline_message'];
+
+        // NEW: Get personalized greeting (or default description)
+        $description = $this->get_personalized_greeting();
+        if (empty($description)) {
+            $description = isset($settings['description']) ? $settings['description'] : '';
+        }
+
+        // NEW: Get social proof
+        $social_proof = $this->get_social_proof();
+
+        // NEW: Typing animation settings
+        $enable_typing = !empty($settings['enable_typing_animation']);
+        $typing_duration = isset($settings['typing_duration']) ? intval($settings['typing_duration']) : 1500;
+
+        // NEW: Smart triggers settings
+        $smart_triggers = [
+            'enabled' => !empty($settings['enable_smart_triggers']),
+            'scroll' => [
+                'enabled' => !empty($settings['trigger_scroll_enabled']),
+                'percentage' => isset($settings['trigger_scroll_percentage']) ? intval($settings['trigger_scroll_percentage']) : 50,
+            ],
+            'exit_intent' => !empty($settings['trigger_exit_intent']),
+            'time_on_page' => [
+                'enabled' => !empty($settings['trigger_time_on_page']),
+                'seconds' => isset($settings['trigger_time_seconds']) ? intval($settings['trigger_time_seconds']) : 30,
+            ],
+            'page_views' => [
+                'enabled' => !empty($settings['trigger_page_views']),
+                'count' => isset($settings['trigger_page_views_count']) ? intval($settings['trigger_page_views_count']) : 2,
+            ],
+        ];
+
         if (empty($phone)) {
             return;
         }
-        
+
         // Position classes
         $position_class = 'sky-whatsapp-' . $position;
-        
+
+        // Status class (online/offline based on business hours)
+        $status_class = $is_open ? 'sky-whatsapp-online' : 'sky-whatsapp-offline';
+
         ?>
-        <div class="sky-whatsapp-widget <?php echo esc_attr($position_class); ?>" 
+        <div class="sky-whatsapp-widget <?php echo esc_attr($position_class); ?> <?php echo esc_attr($status_class); ?>"
              data-phone="<?php echo esc_attr($phone); ?>"
-             data-message="<?php echo esc_attr($default_message); ?>">
+             data-message="<?php echo esc_attr($default_message); ?>"
+             data-typing="<?php echo $enable_typing ? 'true' : 'false'; ?>"
+             data-typing-duration="<?php echo esc_attr($typing_duration); ?>"
+             data-is-open="<?php echo $is_open ? 'true' : 'false'; ?>"
+             data-smart-triggers="<?php echo esc_attr(wp_json_encode($smart_triggers)); ?>">
+
             <div class="sky-whatsapp-button">
                 <svg viewBox="0 0 24 24" width="24" height="24">
                     <path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                 </svg>
+                <?php if (!$is_open): ?>
+                    <span class="sky-whatsapp-offline-badge" title="<?php esc_attr_e('Currently offline', 'sky-seo-boost'); ?>"></span>
+                <?php endif; ?>
             </div>
-            
+
             <?php if ($show_popup): ?>
             <div class="sky-whatsapp-popup">
                 <div class="sky-whatsapp-popup-inner">
@@ -603,44 +675,77 @@ class Sky_SEO_WhatsApp_Business {
                             <h4>
                                 <?php echo esc_html($display_name ?: __('WhatsApp Support', 'sky-seo-boost')); ?>
                                 <?php if ($show_verified): ?>
-                                    <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>" 
-                                         alt="<?php _e('Verified', 'sky-seo-boost'); ?>" 
+                                    <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>"
+                                         alt="<?php esc_attr_e('Verified', 'sky-seo-boost'); ?>"
                                          class="sky-whatsapp-verified">
                                 <?php endif; ?>
                             </h4>
-                            <p class="sky-whatsapp-status">
-                                <?php echo esc_html($status_text); // UPDATED: Using custom status text ?>
+                            <p class="sky-whatsapp-status <?php echo $is_open ? 'online' : 'offline'; ?>">
+                                <?php if (!$is_open): ?>
+                                    <span class="sky-whatsapp-status-indicator offline"></span>
+                                    <?php esc_html_e('Offline', 'sky-seo-boost'); ?>
+                                <?php else: ?>
+                                    <span class="sky-whatsapp-status-indicator online"></span>
+                                    <?php echo esc_html($status_text); ?>
+                                <?php endif; ?>
                             </p>
                         </div>
-                        <button class="sky-whatsapp-close" aria-label="Close">&times;</button>
+                        <button class="sky-whatsapp-close" aria-label="<?php esc_attr_e('Close', 'sky-seo-boost'); ?>">&times;</button>
                     </div>
-                    <?php if ($description): ?>
-                        <div class="sky-whatsapp-popup-body">
+
+                    <div class="sky-whatsapp-popup-body">
+                        <?php if (!$is_open && $offline_message): ?>
+                            <!-- Offline Message -->
+                            <div class="sky-whatsapp-offline-notice">
+                                <span class="dashicons dashicons-clock"></span>
+                                <p><?php echo esc_html($offline_message); ?></p>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($description): ?>
                             <div class="sky-whatsapp-message-container">
-                                <div class="sky-whatsapp-message">
+                                <?php if ($enable_typing): ?>
+                                    <!-- Typing Animation -->
+                                    <div class="sky-whatsapp-typing" style="display: none;">
+                                        <span class="sky-whatsapp-typing-dot"></span>
+                                        <span class="sky-whatsapp-typing-dot"></span>
+                                        <span class="sky-whatsapp-typing-dot"></span>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="sky-whatsapp-message" <?php echo $enable_typing ? 'style="display: none;"' : ''; ?>>
                                     <div class="sky-whatsapp-message-header">
-                                        <span class="sky-whatsapp-message-name"><?php echo esc_html($display_name ?: __('Sky Web Design', 'sky-seo-boost')); ?></span>
+                                        <span class="sky-whatsapp-message-name"><?php echo esc_html($display_name ?: __('Support', 'sky-seo-boost')); ?></span>
                                         <?php if ($show_verified): ?>
                                             <span class="sky-whatsapp-message-verified">
-                                                <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>" 
-                                                     alt="<?php _e('Verified', 'sky-seo-boost'); ?>">
+                                                <img src="<?php echo esc_url($this->module_url . 'assets/icon/verified.svg'); ?>"
+                                                     alt="<?php esc_attr_e('Verified', 'sky-seo-boost'); ?>">
                                             </span>
                                         <?php endif; ?>
                                     </div>
-                                    <p><?php 
+                                    <p><?php
                                         $desc_parts = explode('\n', $description);
                                         echo implode('<br>', array_map('esc_html', $desc_parts));
                                     ?></p>
-                                    <span class="message-time"><?php echo date('g:i'); ?></span>
+                                    <span class="message-time"><?php echo esc_html(wp_date('g:i')); ?></span>
                                 </div>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if ($social_proof['enabled']): ?>
+                            <!-- Social Proof Counter -->
+                            <div class="sky-whatsapp-social-proof">
+                                <span class="dashicons dashicons-groups"></span>
+                                <span class="sky-whatsapp-social-proof-text"><?php echo esc_html($social_proof['text']); ?></span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <div class="sky-whatsapp-popup-footer">
-                        <button class="sky-whatsapp-start-chat" 
+                        <button class="sky-whatsapp-start-chat"
                                 data-phone="<?php echo esc_attr($phone); ?>"
                                 data-message="<?php echo esc_attr($default_message); ?>">
-                            <?php echo esc_html($start_chat_text); // UPDATED: Using custom button text ?>
+                            <?php echo esc_html($start_chat_text); ?>
                         </button>
                     </div>
                 </div>
@@ -670,7 +775,7 @@ class Sky_SEO_WhatsApp_Business {
         $message = isset($settings['default_message']) ? $settings['default_message'] : '';
         
         if (empty($phone)) {
-            wp_die(__('WhatsApp not configured. Please configure your WhatsApp phone number.', 'sky-seo-boost'));
+            wp_die(esc_html__('WhatsApp not configured. Please configure your WhatsApp phone number.', 'sky-seo-boost'));
         }
         
         // Get referrer page info for tracking
@@ -721,8 +826,8 @@ class Sky_SEO_WhatsApp_Business {
                         'referrer_url' => $referrer_url,
                         'click_type' => 'button',
                         'source' => 'Button Click',
-                        'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '',
-                        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+                        'ip_address' => isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '',
+                        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '',
                         'device_type' => wp_is_mobile() ? 'mobile' : 'desktop',
                         'session_id' => isset($_COOKIE['sky_whatsapp_session']) ? $_COOKIE['sky_whatsapp_session'] : wp_generate_uuid4()
                     ]);
@@ -775,6 +880,111 @@ class Sky_SEO_WhatsApp_Business {
         }
     }
     
+    /**
+     * Check if currently within business hours
+     *
+     * @return array ['is_open' => bool, 'offline_message' => string]
+     */
+    private function check_business_hours() {
+        $settings = get_option('sky_seo_whatsapp_config', []);
+
+        // If business hours not enabled, always open
+        if (empty($settings['enable_business_hours'])) {
+            return ['is_open' => true, 'offline_message' => ''];
+        }
+
+        $business_hours = isset($settings['business_hours']) ? $settings['business_hours'] : [];
+        $timezone = isset($settings['timezone']) ? $settings['timezone'] : wp_timezone_string();
+        $offline_message = isset($settings['offline_message']) ? $settings['offline_message'] : __('We are currently offline. Please leave a message and we\'ll get back to you.', 'sky-seo-boost');
+
+        // Get current time in configured timezone
+        $tz = new DateTimeZone($timezone);
+        $now = new DateTime('now', $tz);
+        $current_day = strtolower($now->format('l'));
+        $current_time = $now->format('H:i');
+
+        // Check if today is enabled
+        if (empty($business_hours[$current_day]['enabled'])) {
+            return ['is_open' => false, 'offline_message' => $offline_message];
+        }
+
+        $open_time = isset($business_hours[$current_day]['open']) ? $business_hours[$current_day]['open'] : '09:00';
+        $close_time = isset($business_hours[$current_day]['close']) ? $business_hours[$current_day]['close'] : '17:00';
+
+        // Compare times
+        $is_open = ($current_time >= $open_time && $current_time <= $close_time);
+
+        return [
+            'is_open' => $is_open,
+            'offline_message' => $is_open ? '' : $offline_message
+        ];
+    }
+
+    /**
+     * Get personalized greeting based on time of day
+     *
+     * @return string Greeting message
+     */
+    private function get_personalized_greeting() {
+        $settings = get_option('sky_seo_whatsapp_config', []);
+
+        // If personalized greeting not enabled, return default description
+        if (empty($settings['enable_personalized_greeting'])) {
+            return isset($settings['description']) ? $settings['description'] : '';
+        }
+
+        $timezone = isset($settings['timezone']) ? $settings['timezone'] : wp_timezone_string();
+        $tz = new DateTimeZone($timezone);
+        $now = new DateTime('now', $tz);
+        $hour = (int) $now->format('G');
+
+        // Morning: 5am - 12pm
+        if ($hour >= 5 && $hour < 12) {
+            return isset($settings['greeting_morning']) ? $settings['greeting_morning'] : __('Good morning! ☀️ How can we help you today?', 'sky-seo-boost');
+        }
+        // Afternoon: 12pm - 5pm
+        elseif ($hour >= 12 && $hour < 17) {
+            return isset($settings['greeting_afternoon']) ? $settings['greeting_afternoon'] : __('Good afternoon! How can we assist you?', 'sky-seo-boost');
+        }
+        // Evening: 5pm - 9pm
+        elseif ($hour >= 17 && $hour < 21) {
+            return isset($settings['greeting_evening']) ? $settings['greeting_evening'] : __('Good evening! How can we help you?', 'sky-seo-boost');
+        }
+        // Night: 9pm - 5am
+        else {
+            return isset($settings['greeting_night']) ? $settings['greeting_night'] : __('Hello! Thanks for reaching out. How can we help?', 'sky-seo-boost');
+        }
+    }
+
+    /**
+     * Generate social proof count
+     *
+     * @return array ['enabled' => bool, 'text' => string, 'count' => int]
+     */
+    private function get_social_proof() {
+        $settings = get_option('sky_seo_whatsapp_config', []);
+
+        if (empty($settings['enable_social_proof'])) {
+            return ['enabled' => false, 'text' => '', 'count' => 0];
+        }
+
+        $text = isset($settings['social_proof_text']) ? $settings['social_proof_text'] : __('%count% people contacted us today', 'sky-seo-boost');
+        $min = isset($settings['social_proof_min']) ? intval($settings['social_proof_min']) : 5;
+        $max = isset($settings['social_proof_max']) ? intval($settings['social_proof_max']) : 25;
+
+        // Generate a consistent random number based on the day (changes daily)
+        $seed = date('Ymd');
+        mt_srand(crc32($seed));
+        $count = mt_rand($min, $max);
+        mt_srand(); // Reset seed
+
+        return [
+            'enabled' => true,
+            'text' => str_replace('%count%', $count, $text),
+            'count' => $count
+        ];
+    }
+
     /**
      * Check if widget should be displayed on current page
      */
