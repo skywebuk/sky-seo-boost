@@ -653,11 +653,8 @@ class SkyInsightsUTMTracker {
      * Set cookie with compatibility
      */
     private function set_cookie($name, $value, $expire, $domain, $secure) {
-        try {
-            setcookie($name, $value, $expire, '/', $domain, $secure, false);
-            $_COOKIE[$name] = $value; // Set immediately for this request
-        } catch (Exception $e) {
-            }
+        setcookie($name, $value, $expire, '/', $domain, $secure, false);
+        $_COOKIE[$name] = $value; // Set immediately for this request
     }
     
     /**
