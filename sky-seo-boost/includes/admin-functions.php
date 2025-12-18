@@ -155,32 +155,21 @@ function sky_seo_enqueue_admin_scripts($hook) {
        ]);
        
        // Load tab-specific styles
-       $tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
+       $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
 
-       // Load tracking config CSS for tracking tab
-       if ($tab === 'tracking') {
+       // Load tracking config CSS for tracking and analytics tabs
+       if (in_array($tab, ['tracking', 'analytics-tab'], true)) {
            wp_enqueue_style('sky-seo-tracking-config', $plugin_url . '/assets/css/tracking-config.css', ['sky-seo-admin'], $version);
-       }
 
-       // Load general settings CSS for SEO integration tab
-       if ($tab === 'seo-integration') {
-           wp_enqueue_style('sky-seo-general-settings', $plugin_url . '/assets/css/general-settings.css', ['sky-seo-admin'], $version);
+           // Localize analytics dashboard script for AJAX if on analytics tab
+           if ($tab === 'analytics-tab') {
+               wp_localize_script('sky-seo-analytics-dashboard', 'skySeoAjax', [
+                   'ajaxurl' => admin_url('admin-ajax.php'),
+                   'nonce' => wp_create_nonce('sky_seo_analytics_nonce')
+               ]);
+           }
        }
-
-       // Load general settings CSS for duplicate tab
-       if ($tab === 'duplicate') {
-           wp_enqueue_style('sky-seo-general-settings', $plugin_url . '/assets/css/general-settings.css', ['sky-seo-admin'], $version);
-       }
-       
-       if ($tab === 'analytics-tab') {
-               wp_enqueue_style('sky-seo-tracking-config', $plugin_url . '/assets/css/tracking-config.css', ['sky-seo-admin'], $version);
-           
-           // Localize script for AJAX
-           wp_localize_script('sky-seo-analytics-dashboard', 'skySeoAjax', [
-               'ajaxurl' => admin_url('admin-ajax.php'),
-               'nonce' => wp_create_nonce('sky_seo_analytics_nonce')
-           ]);
-       }
+       // Note: sky-seo-general-settings CSS is already loaded above for all settings tabs
    }
 }
 
@@ -324,30 +313,65 @@ function sky_seo_make_clicks_sortable($columns) {
 // Handle sorting
 add_action('pre_get_posts', 'sky_seo_orderby_clicks');
 
+// Global variables for click sorting filters
+$sky_seo_clicks_join_added = false;
+$sky_seo_clicks_orderby_added = false;
+
 function sky_seo_orderby_clicks($query) {
+    global $sky_seo_clicks_join_added, $sky_seo_clicks_orderby_added;
+
     if (!is_admin() || !$query->is_main_query()) {
         return;
     }
-    
+
     if ($query->get('orderby') === 'sky_seo_clicks') {
-        global $wpdb;
-        $clicks_table = $wpdb->prefix . 'sky_seo_clicks';
-        
-        // Use a subquery to sort by total clicks
-        add_filter('posts_join', function($join) use ($wpdb, $clicks_table) {
-            $join .= " LEFT JOIN (
-                SELECT post_id, SUM(clicks) as total_clicks 
-                FROM {$clicks_table} 
-                GROUP BY post_id
-            ) as clicks_data ON {$wpdb->posts}.ID = clicks_data.post_id";
-            return $join;
-        });
-        
-        add_filter('posts_orderby', function($orderby) use ($query) {
-            $order = $query->get('order') ?: 'DESC';
-            return "COALESCE(clicks_data.total_clicks, 0) {$order}";
-        });
+        // Add filters only once
+        if (!$sky_seo_clicks_join_added) {
+            add_filter('posts_join', 'sky_seo_clicks_join_filter');
+            $sky_seo_clicks_join_added = true;
+        }
+        if (!$sky_seo_clicks_orderby_added) {
+            add_filter('posts_orderby', 'sky_seo_clicks_orderby_filter');
+            $sky_seo_clicks_orderby_added = true;
+        }
+
+        // Store order for the orderby filter
+        $GLOBALS['sky_seo_clicks_order'] = $query->get('order') ?: 'DESC';
+
+        // Remove filters after the query is done to prevent affecting other queries
+        add_action('the_posts', 'sky_seo_remove_clicks_filters', 10, 2);
     }
+}
+
+function sky_seo_clicks_join_filter($join) {
+    global $wpdb;
+    $clicks_table = $wpdb->prefix . 'sky_seo_clicks';
+    $join .= " LEFT JOIN (
+        SELECT post_id, SUM(clicks) as total_clicks
+        FROM {$clicks_table}
+        GROUP BY post_id
+    ) as clicks_data ON {$wpdb->posts}.ID = clicks_data.post_id";
+    return $join;
+}
+
+function sky_seo_clicks_orderby_filter($orderby) {
+    $order = isset($GLOBALS['sky_seo_clicks_order']) ? $GLOBALS['sky_seo_clicks_order'] : 'DESC';
+    return "COALESCE(clicks_data.total_clicks, 0) {$order}";
+}
+
+function sky_seo_remove_clicks_filters($posts, $query) {
+    global $sky_seo_clicks_join_added, $sky_seo_clicks_orderby_added;
+
+    // Only remove filters if this is the main admin query
+    if (is_admin() && $query->is_main_query()) {
+        remove_filter('posts_join', 'sky_seo_clicks_join_filter');
+        remove_filter('posts_orderby', 'sky_seo_clicks_orderby_filter');
+        remove_action('the_posts', 'sky_seo_remove_clicks_filters', 10);
+        $sky_seo_clicks_join_added = false;
+        $sky_seo_clicks_orderby_added = false;
+        unset($GLOBALS['sky_seo_clicks_order']);
+    }
+    return $posts;
 }
 
 // Add styles for the clicks column
@@ -532,6 +556,3 @@ function sky_seo_trending_feed() {
 function sky_seo_sectors_feed() {
     load_template(SKY_SEO_BOOST_PLUGIN_DIR . 'templates/feed-sectors.php');
 }
-do_action('sky_seo_analytics_sections');
-
-?>

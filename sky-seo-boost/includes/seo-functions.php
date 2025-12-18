@@ -289,7 +289,7 @@ function sky_seo_record_click($is_bot = false, $is_spam = false) {
     set_transient($cache_key, $current_time, SKY_SEO_DUPLICATE_VIEW_WINDOW);
     
     // Also check for rapid-fire clicks from same IP (anti-spam)
-    $ip = sky_seo_get_user_ip();
+    // Note: $ip is already defined above from sky_seo_get_user_ip()
     $rate_key = 'sky_seo_click_' . md5($ip . '_' . $post_id);
     $last_click = get_transient($rate_key);
     
@@ -1008,15 +1008,17 @@ function sky_seo_is_cloudflare_request() {
 // Async click verification via AJAX - helps detect JavaScript-enabled browsers
 add_action('wp_footer', function() {
     if (is_singular(sky_seo_get_tracked_post_types())) {
+        $nonce = wp_create_nonce('sky_seo_verify_human_' . get_the_ID());
         ?>
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Send verification after 2 seconds (real users stay on page)
             setTimeout(function() {
                 if (typeof jQuery !== 'undefined') {
-                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                    jQuery.post('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', {
                         action: 'sky_seo_verify_human',
-                        post_id: <?php echo get_the_ID(); ?>
+                        post_id: <?php echo get_the_ID(); ?>,
+                        nonce: '<?php echo esc_js($nonce); ?>'
                     });
                 }
             }, 2000);
@@ -1033,7 +1035,12 @@ add_action('wp_ajax_nopriv_sky_seo_verify_human', 'sky_seo_handle_human_verifica
 function sky_seo_handle_human_verification() {
     // This confirms JavaScript execution - likely a real browser
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    
+
+    // Verify nonce for security
+    if ($post_id && !wp_verify_nonce($_POST['nonce'] ?? '', 'sky_seo_verify_human_' . $post_id)) {
+        wp_die('Security check failed');
+    }
+
     if ($post_id) {
         // This is confirmed human interaction, update the last record if it was marked as unknown
         global $wpdb;
