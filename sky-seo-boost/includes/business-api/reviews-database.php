@@ -970,9 +970,13 @@ class Sky_SEO_Reviews_Database {
     }
     
     /**
-     * Format review data for output - UPDATED with platform
+     * Format review data for output - UPDATED with platform and dynamic time
      */
     private function format_review_data($row) {
+        // Calculate relative time dynamically based on review_time instead of using stored text
+        $review_timestamp = strtotime($row['review_time']);
+        $relative_time = human_time_diff($review_timestamp, current_time('timestamp')) . ' ' . __('ago', 'sky-seo-boost');
+
         return [
             'id' => intval($row['id']),
             'review_id' => $row['review_id'],
@@ -982,7 +986,8 @@ class Sky_SEO_Reviews_Database {
             'author_url' => $row['author_url'],
             'rating' => intval($row['rating']),
             'text' => $row['text'],
-            'time' => $row['relative_time'],
+            'time' => $relative_time,
+            'relative_time' => $relative_time,
             'review_time' => $row['review_time'],
             'is_visible' => (bool) $row['is_visible'],
             'is_manual' => (bool) ($row['is_manual'] ?? 0),

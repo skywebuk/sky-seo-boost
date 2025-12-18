@@ -737,6 +737,10 @@ private function render_action_buttons($review_stats) {
                         <option value="google" <?php selected($filter_platform, 'google'); ?>><?php _e('Google', 'sky-seo-boost'); ?></option>
                         <option value="facebook" <?php selected($filter_platform, 'facebook'); ?>><?php _e('Facebook', 'sky-seo-boost'); ?></option>
                         <option value="trustpilot" <?php selected($filter_platform, 'trustpilot'); ?>><?php _e('Trustpilot', 'sky-seo-boost'); ?></option>
+                        <option value="yelp" <?php selected($filter_platform, 'yelp'); ?>><?php _e('Yelp', 'sky-seo-boost'); ?></option>
+                        <option value="tripadvisor" <?php selected($filter_platform, 'tripadvisor'); ?>><?php _e('TripAdvisor', 'sky-seo-boost'); ?></option>
+                        <option value="booking" <?php selected($filter_platform, 'booking'); ?>><?php _e('Booking.com', 'sky-seo-boost'); ?></option>
+                        <option value="other" <?php selected($filter_platform, 'other'); ?>><?php _e('Other', 'sky-seo-boost'); ?></option>
                     </select>
                     
                     <select name="rating" class="filter-select">
@@ -862,6 +866,60 @@ private function render_action_buttons($review_stats) {
             'trustpilot' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="18" height="18" rx="2" fill="#00B67A"/>
                         <path d="M9 2L11.2 7.2H16.8L12.3 10.8L14.5 16L9 12.4L3.5 16L5.7 10.8L1.2 7.2H6.8L9 2Z" fill="white"/>
+                    </svg>',
+            'yelp' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#D32323"/>
+                        <path d="M9 4L6 9H9V14L12 9H9V4Z" fill="white"/>
+                    </svg>',
+            'tripadvisor' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="9" cy="9" r="9" fill="#34E0A1"/>
+                        <circle cx="6" cy="9" r="2" fill="white"/>
+                        <circle cx="12" cy="9" r="2" fill="white"/>
+                        <circle cx="6" cy="9" r="1" fill="#000"/>
+                        <circle cx="12" cy="9" r="1" fill="#000"/>
+                    </svg>',
+            'booking' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#003580"/>
+                        <text x="4" y="13" fill="white" font-size="10" font-weight="bold">B.</text>
+                    </svg>',
+            'houzz' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#4DBC15"/>
+                        <path d="M9 3V15M5 7H9V11H5V7ZM9 7H13V11H9" stroke="white" stroke-width="2"/>
+                    </svg>',
+            'bbb' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#005A8C"/>
+                        <text x="2" y="13" fill="white" font-size="8" font-weight="bold">BBB</text>
+                    </svg>',
+            'angi' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#FF6138"/>
+                        <text x="4" y="13" fill="white" font-size="10" font-weight="bold">A</text>
+                    </svg>',
+            'homeadvisor' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#F68B1E"/>
+                        <path d="M9 3L3 9H5V15H13V9H15L9 3Z" fill="white"/>
+                    </svg>',
+            'thumbtack' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#009FD9"/>
+                        <circle cx="9" cy="7" r="3" fill="white"/>
+                        <path d="M9 10V15" stroke="white" stroke-width="2"/>
+                    </svg>',
+            'zillow' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#006AFF"/>
+                        <text x="5" y="13" fill="white" font-size="10" font-weight="bold">Z</text>
+                    </svg>',
+            'airbnb' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#FF5A5F"/>
+                        <path d="M9 4C7 7 6 9 6 11C6 13 7.5 14 9 14C10.5 14 12 13 12 11C12 9 11 7 9 4Z" fill="white"/>
+                    </svg>',
+            'amazon' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#FF9900"/>
+                        <text x="4" y="13" fill="white" font-size="10" font-weight="bold">a</text>
+                    </svg>',
+            'other' => '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="18" height="18" rx="2" fill="#6B7280"/>
+                        <circle cx="5" cy="9" r="1.5" fill="white"/>
+                        <circle cx="9" cy="9" r="1.5" fill="white"/>
+                        <circle cx="13" cy="9" r="1.5" fill="white"/>
                     </svg>'
         ];
         ?>
@@ -1044,6 +1102,18 @@ private function render_action_buttons($review_stats) {
                                     <option value="google"><?php _e('Google', 'sky-seo-boost'); ?></option>
                                     <option value="facebook"><?php _e('Facebook', 'sky-seo-boost'); ?></option>
                                     <option value="trustpilot"><?php _e('Trustpilot', 'sky-seo-boost'); ?></option>
+                                    <option value="yelp"><?php _e('Yelp', 'sky-seo-boost'); ?></option>
+                                    <option value="tripadvisor"><?php _e('TripAdvisor', 'sky-seo-boost'); ?></option>
+                                    <option value="booking"><?php _e('Booking.com', 'sky-seo-boost'); ?></option>
+                                    <option value="houzz"><?php _e('Houzz', 'sky-seo-boost'); ?></option>
+                                    <option value="bbb"><?php _e('BBB', 'sky-seo-boost'); ?></option>
+                                    <option value="angi"><?php _e('Angi', 'sky-seo-boost'); ?></option>
+                                    <option value="homeadvisor"><?php _e('HomeAdvisor', 'sky-seo-boost'); ?></option>
+                                    <option value="thumbtack"><?php _e('Thumbtack', 'sky-seo-boost'); ?></option>
+                                    <option value="zillow"><?php _e('Zillow', 'sky-seo-boost'); ?></option>
+                                    <option value="airbnb"><?php _e('Airbnb', 'sky-seo-boost'); ?></option>
+                                    <option value="amazon"><?php _e('Amazon', 'sky-seo-boost'); ?></option>
+                                    <option value="other"><?php _e('Other', 'sky-seo-boost'); ?></option>
                                 </select>
                             </td>
                         </tr>
