@@ -28,7 +28,7 @@ function sky_seo_two_step_add_settings_tab($active_tab) {
     <a href="?page=sky-seo-settings&tab=two-step"
        class="nav-tab <?php echo $active_tab === 'two-step' ? 'nav-tab-active' : ''; ?>">
         <span class="dashicons dashicons-shield" style="vertical-align: middle;"></span>
-        <?php _e('Two-Step Verification', 'sky-seo-boost'); ?>
+        <?php esc_html_e('Two-Step Verification', 'sky-seo-boost'); ?>
     </a>
     <?php
 }
@@ -63,13 +63,13 @@ function sky_seo_two_step_render_settings($active_tab) {
 
     ?>
     <div class="sky-seo-two-step-settings">
-        <h2><?php _e('Two-Step Verification Settings', 'sky-seo-boost'); ?></h2>
+        <h2><?php esc_html_e('Two-Step Verification Settings', 'sky-seo-boost'); ?></h2>
 
         <div class="sky-seo-card">
-            <h3><?php _e('Email-Based Two-Step Verification', 'sky-seo-boost'); ?></h3>
+            <h3><?php esc_html_e('Email-Based Two-Step Verification', 'sky-seo-boost'); ?></h3>
 
             <p class="description">
-                <?php _e('Two-step verification adds an extra layer of security to your WordPress site. When enabled, users will receive a verification code via email each time they log in.', 'sky-seo-boost'); ?>
+                <?php esc_html_e('Two-step verification adds an extra layer of security to your WordPress site. When enabled, users will receive a verification code via email each time they log in.', 'sky-seo-boost'); ?>
             </p>
 
             <form method="post" action="">
@@ -79,7 +79,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     <tr>
                         <th scope="row">
                             <label for="two_step_enabled">
-                                <?php _e('Enable Two-Step Verification', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Enable Two-Step Verification', 'sky-seo-boost'); ?>
                             </label>
                         </th>
                         <td>
@@ -92,19 +92,19 @@ function sky_seo_two_step_render_settings($active_tab) {
                                 <span class="sky-seo-toggle-slider"></span>
                             </label>
                             <p class="description">
-                                <?php _e('Enable email-based two-step verification system for your WordPress site.', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Enable email-based two-step verification system for your WordPress site.', 'sky-seo-boost'); ?>
                             </p>
                         </td>
                     </tr>
 
                     <tr class="two-step-enforce-row" <?php echo !$is_enabled ? 'style="display:none;"' : ''; ?>>
                         <th scope="row">
-                            <?php _e('Enforce for User Roles', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Enforce for User Roles', 'sky-seo-boost'); ?>
                         </th>
                         <td>
                             <fieldset>
                                 <legend class="screen-reader-text">
-                                    <span><?php _e('Select user roles', 'sky-seo-boost'); ?></span>
+                                    <span><?php esc_html_e('Select user roles', 'sky-seo-boost'); ?></span>
                                 </legend>
 
                                 <div class="sky-seo-role-checkboxes">
@@ -120,7 +120,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                                 </div>
 
                                 <p class="description">
-                                    <?php _e('Users with these roles will be required to use two-step verification. Individual users can also enable it voluntarily from their profile.', 'sky-seo-boost'); ?>
+                                    <?php esc_html_e('Users with these roles will be required to use two-step verification. Individual users can also enable it voluntarily from their profile.', 'sky-seo-boost'); ?>
                                 </p>
                             </fieldset>
                         </td>
@@ -129,7 +129,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     <tr class="two-step-token-row" <?php echo !$is_enabled ? 'style="display:none;"' : ''; ?>>
                         <th scope="row">
                             <label for="two_step_token_length">
-                                <?php _e('Verification Code Length', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Verification Code Length', 'sky-seo-boost'); ?>
                             </label>
                         </th>
                         <td>
@@ -141,7 +141,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                                    max="12"
                                    class="small-text" />
                             <p class="description">
-                                <?php _e('Number of characters in the verification code. Default: 6', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Number of characters in the verification code. Default: 6', 'sky-seo-boost'); ?>
                             </p>
                         </td>
                     </tr>
@@ -149,7 +149,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     <tr class="two-step-ttl-row" <?php echo !$is_enabled ? 'style="display:none;"' : ''; ?>>
                         <th scope="row">
                             <label for="two_step_token_ttl">
-                                <?php _e('Code Expiration Time', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Code Expiration Time', 'sky-seo-boost'); ?>
                             </label>
                         </th>
                         <td>
@@ -160,9 +160,9 @@ function sky_seo_two_step_render_settings($active_tab) {
                                    min="5"
                                    max="60"
                                    class="small-text" />
-                            <?php _e('minutes', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('minutes', 'sky-seo-boost'); ?>
                             <p class="description">
-                                <?php _e('How long verification codes remain valid. Default: 15 minutes', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('How long verification codes remain valid. Default: 15 minutes', 'sky-seo-boost'); ?>
                             </p>
                         </td>
                     </tr>
@@ -174,7 +174,7 @@ function sky_seo_two_step_render_settings($active_tab) {
 
         <?php if ($is_enabled) : ?>
         <div class="sky-seo-card" style="margin-top: 20px;">
-            <h3><?php _e('Two-Step Verification Statistics', 'sky-seo-boost'); ?></h3>
+            <h3><?php esc_html_e('Two-Step Verification Statistics', 'sky-seo-boost'); ?></h3>
 
             <div class="sky-seo-stats-grid">
                 <div class="sky-seo-stat-box">
@@ -183,7 +183,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     </div>
                     <div class="stat-content">
                         <div class="stat-value"><?php echo number_format_i18n($stats['total_enabled']); ?></div>
-                        <div class="stat-label"><?php _e('Users with 2FA Enabled', 'sky-seo-boost'); ?></div>
+                        <div class="stat-label"><?php esc_html_e('Users with 2FA Enabled', 'sky-seo-boost'); ?></div>
                     </div>
                 </div>
 
@@ -193,7 +193,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     </div>
                     <div class="stat-content">
                         <div class="stat-value"><?php echo number_format_i18n($stats['enforced_count']); ?></div>
-                        <div class="stat-label"><?php _e('Users with Enforced 2FA', 'sky-seo-boost'); ?></div>
+                        <div class="stat-label"><?php esc_html_e('Users with Enforced 2FA', 'sky-seo-boost'); ?></div>
                     </div>
                 </div>
 
@@ -203,7 +203,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     </div>
                     <div class="stat-content">
                         <div class="stat-value"><?php echo number_format_i18n($stats['voluntary_count']); ?></div>
-                        <div class="stat-label"><?php _e('Voluntary 2FA Users', 'sky-seo-boost'); ?></div>
+                        <div class="stat-label"><?php esc_html_e('Voluntary 2FA Users', 'sky-seo-boost'); ?></div>
                     </div>
                 </div>
 
@@ -213,7 +213,7 @@ function sky_seo_two_step_render_settings($active_tab) {
                     </div>
                     <div class="stat-content">
                         <div class="stat-value"><?php echo number_format_i18n($stats['not_enabled_count']); ?></div>
-                        <div class="stat-label"><?php _e('Users Without 2FA', 'sky-seo-boost'); ?></div>
+                        <div class="stat-label"><?php esc_html_e('Users Without 2FA', 'sky-seo-boost'); ?></div>
                     </div>
                 </div>
             </div>
@@ -428,30 +428,56 @@ function sky_seo_two_step_get_statistics() {
         );
     }
 
-    $users = get_users();
-    $stats = array(
-        'total_enabled' => 0,
-        'enforced_count' => 0,
-        'voluntary_count' => 0,
-        'not_enabled_count' => 0,
-    );
+    // Use count_users() for total count (much more efficient on large sites)
+    $user_counts = count_users();
+    $total_users = $user_counts['total_users'];
 
-    foreach ($users as $user) {
-        $is_enabled = Sky_SEO_Two_Step_Core::is_enabled_for_user($user);
-        $is_enforced = Sky_SEO_Two_Step_Core::is_enforced_for_user($user);
+    // Use optimized meta query to count users with 2FA enabled
+    $enabled_users = get_users(array(
+        'meta_key' => Sky_SEO_Two_Step_Core::ENABLED_META_KEY,
+        'meta_value' => '1',
+        'fields' => 'ID',
+        'number' => -1,
+    ));
+    $voluntary_count = count($enabled_users);
 
-        if ($is_enabled || $is_enforced) {
-            $stats['total_enabled']++;
-        } else {
-            $stats['not_enabled_count']++;
-        }
+    // Get enforced roles from settings
+    $settings = get_option('sky_seo_settings', array());
+    $enforce_roles = isset($settings['two_step_enforce_roles']) ? $settings['two_step_enforce_roles'] : array();
 
-        if ($is_enforced) {
-            $stats['enforced_count']++;
-        } elseif ($is_enabled) {
-            $stats['voluntary_count']++;
+    // Count enforced users (users with enforced roles)
+    $enforced_count = 0;
+    if (!empty($enforce_roles)) {
+        foreach ($enforce_roles as $role) {
+            if (isset($user_counts['avail_roles'][$role])) {
+                $enforced_count += $user_counts['avail_roles'][$role];
+            }
         }
     }
+
+    // Calculate total enabled (voluntary + enforced, but avoid double counting)
+    // Users who have both enabled AND enforced role are counted once
+    $total_enabled = $voluntary_count + $enforced_count;
+
+    // Subtract any overlap (users with voluntary enabled who are also in enforced roles)
+    if ($enforced_count > 0 && $voluntary_count > 0 && !empty($enforce_roles)) {
+        $overlap_users = get_users(array(
+            'meta_key' => Sky_SEO_Two_Step_Core::ENABLED_META_KEY,
+            'meta_value' => '1',
+            'role__in' => $enforce_roles,
+            'fields' => 'ID',
+            'number' => -1,
+        ));
+        $overlap = count($overlap_users);
+        $total_enabled = $voluntary_count + $enforced_count - $overlap;
+    }
+
+    $stats = array(
+        'total_enabled' => $total_enabled,
+        'enforced_count' => $enforced_count,
+        'voluntary_count' => $voluntary_count,
+        'not_enabled_count' => max(0, $total_users - $total_enabled),
+    );
 
     return $stats;
 }
