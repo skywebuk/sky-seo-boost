@@ -1,0 +1,859 @@
+/**
+ * Sky SEO Boost - WhatsApp Business Admin Styles
+ *
+ * @package Sky_SEO_Boost
+ * @subpackage WhatsApp_Business
+ * @version 1.3.0
+ *
+ * Table of Contents:
+ * 1. CSS Variables Import
+ * 2. Reset & Base Styles
+ * 3. Main Container
+ * 4. Header & Navigation
+ * 5. Settings Cards
+ * 6. Form Elements
+ * 7. Toggle Switches
+ * 8. Position Selector
+ * 9. Preview Components
+ * 10. Responsive Design
+ */
+
+/* ========================================
+   1. CSS VARIABLES IMPORT
+   ======================================== */
+
+@import url('../../../../assets/css/variables.css');
+
+/* ========================================
+   2. RESET & BASE STYLES
+   ======================================== */
+
+/* Reset for WhatsApp admin area */
+.sky-seo-whatsapp-wrap *,
+.sky-seo-whatsapp-wrap *::before,
+.sky-seo-whatsapp-wrap *::after {
+    box-sizing: border-box;
+}
+
+/* Main Container */
+.wrap.sky-seo-whatsapp-wrap {
+	padding: 0;
+	max-width: none;
+	background: #f0f2f5;
+	min-height: 100vh;
+	padding: 10px 0px 0px 0px;
+}
+
+/* Main Dashboard Container - Matching Tracking Style */
+.sky-seo-analytics-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: transparent;
+}
+
+.sky-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sky-header-top h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #111827;
+}
+
+/* Tab Navigation - Modern Style */
+.nav-tab-wrapper.sky-seo-nav-tabs {
+    margin: 0 0 24px 0;
+    padding: 0;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 15px 15px 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    gap: 32px;
+}
+
+.sky-seo-nav-tabs .nav-tab {
+    margin: 0;
+    padding: 16px 0;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #6b7280;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+    position: relative;
+    margin-bottom: -1px;
+}
+
+.sky-seo-nav-tabs .nav-tab:hover {
+    background: transparent;
+    color: #374151;
+    border-bottom-color: #e5e7eb;
+}
+
+.sky-seo-nav-tabs .nav-tab-active,
+.sky-seo-nav-tabs .nav-tab-active:hover,
+.sky-seo-nav-tabs .nav-tab-active:focus {
+    background: transparent;
+    border-bottom: 3px solid #25D366;
+    color: #25D366;
+    font-weight: 600;
+    box-shadow: none;
+    outline: none;
+}
+
+/* Tab Content Area */
+.sky-seo-tab-content {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+/* Configuration Grid - Modern Card Layout */
+.sky-seo-config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+/* Modern Card Style */
+.sky-seo-config-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.sky-seo-config-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.sky-seo-config-card-header {
+    background: #fff;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.sky-seo-config-card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sky-seo-config-card-header .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #25D366;
+}
+
+.sky-seo-config-card-body {
+    padding: 24px;
+}
+
+/* Form Groups - Enhanced Style */
+.sky-seo-form-group {
+    margin-bottom: 24px;
+}
+
+.sky-seo-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.sky-seo-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #374151;
+}
+
+.sky-seo-form-group .required {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+/* Input Fields - Modern Style */
+.sky-seo-input,
+.sky-seo-textarea,
+.sky-seo-filter-select {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 14px;
+    line-height: 1.5;
+    min-height: 42px;
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    color: #111827;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.sky-seo-input:focus,
+.sky-seo-textarea:focus,
+.sky-seo-filter-select:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    outline: none;
+}
+
+.sky-seo-textarea {
+    padding: 12px 14px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.sky-seo-input-small {
+    width: 80px;
+}
+
+/* Field Description */
+.sky-seo-field-description {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+/* Toggle Switch - Modern Style */
+.sky-seo-toggle-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sky-seo-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.sky-seo-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sky-seo-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.sky-seo-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .sky-seo-slider {
+    background-color: #25D366;
+}
+
+input:checked + .sky-seo-slider:before {
+    transform: translateX(24px);
+}
+
+.sky-seo-toggle-label {
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    color: #374151;
+}
+
+/* Media Upload - Enhanced */
+.sky-seo-media-upload {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.sky-seo-image-preview {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #e5e7eb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f9fafb;
+    transition: all 0.2s;
+}
+
+.sky-seo-image-preview:hover {
+    border-color: #25D366;
+    background: #f0fdf4;
+}
+
+.sky-seo-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sky-seo-placeholder {
+    text-align: center;
+    color: #9ca3af;
+}
+
+.sky-seo-placeholder .dashicons {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+.sky-seo-upload-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sky-seo-upload-actions .button {
+    margin: 0;
+}
+
+/* Checkbox Fields - Modern Style */
+.sky-seo-checkbox-field label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    cursor: pointer;
+    color: #374151;
+}
+
+.sky-seo-checkbox-field input[type="checkbox"] {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.sky-seo-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 12px;
+}
+
+/* Position Selector - Enhanced */
+.sky-seo-position-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.sky-seo-position-option {
+    position: relative;
+}
+
+.sky-seo-position-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.sky-seo-position-preview {
+    display: block;
+    padding: 16px;
+    text-align: center;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.sky-seo-position-option:hover .sky-seo-position-preview {
+    border-color: #d1d5db;
+    background: #f3f4f6;
+}
+
+.sky-seo-position-option input[type="radio"]:checked + .sky-seo-position-preview {
+    border-color: #25D366;
+    background: #f0fdf4;
+    color: #25D366;
+}
+
+/* Inline Fields */
+.sky-seo-inline-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Trackable Link Section - Modern Card */
+.sky-seo-trackable-link-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    margin-bottom: 24px;
+}
+
+.sky-seo-trackable-link-header {
+    background: #f0fdf4;
+    padding: 20px 24px;
+    border-bottom: 1px solid #bbf7d0;
+}
+
+.sky-seo-trackable-link-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #14532d;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sky-seo-trackable-link-header .dashicons {
+    color: #22c55e;
+}
+
+.sky-seo-trackable-link-body {
+    padding: 24px;
+}
+
+/* Generated Link Display */
+.sky-seo-generated-link {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+}
+
+.sky-seo-generated-link label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #14532d;
+    font-size: 14px;
+}
+
+.sky-seo-link-display {
+    display: flex;
+    gap: 10px;
+}
+
+.sky-seo-link-display input {
+    flex: 1;
+    background: #fff;
+    border-color: #86efac;
+}
+
+.sky-seo-link-display .button {
+    white-space: nowrap;
+}
+
+/* Page Types Grid - Enhanced */
+.sky-seo-page-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.sky-seo-page-type-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sky-seo-page-type-option:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.sky-seo-page-type-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.sky-seo-page-type-option input[type="checkbox"]:checked ~ span {
+    font-weight: 600;
+    color: #25D366;
+}
+
+.sky-seo-page-type-option.selected {
+    background: #f0fdf4;
+    border-color: #25D366;
+}
+
+/* Form Actions - Fixed Bottom Bar */
+.sky-seo-form-actions {
+    margin: 40px -20px -20px;
+    padding: 20px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+/* Buttons - Modern Style */
+.button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.button-primary {
+    background: #25D366 !important;
+    border-color: #25D366 !important;
+    color: #fff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.button-primary:hover {
+    background: #20c05c !important;
+    border-color: #20c05c !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-secondary {
+    background: #fff !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+}
+
+.button-secondary:hover {
+    background: #f9fafb !important;
+    border-color: #9ca3af !important;
+}
+
+.button-link {
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    padding: 4px 8px;
+}
+
+.button-link:hover {
+    color: #dc2626 !important;
+    text-decoration: underline;
+}
+
+/* Success Message */
+.sky-seo-success-message {
+    color: #059669;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.sky-seo-success-message .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* Spinner */
+.sky-seo-form-actions .spinner {
+    float: none;
+    margin: 0;
+}
+
+/* Empty State */
+.sky-seo-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+}
+
+.sky-seo-empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sky-seo-empty-icon .dashicons {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: #d1d5db;
+}
+
+/* Notices - Modern Style */
+.notice {
+    margin: 16px 0;
+    border-radius: 8px;
+    border-left-width: 4px;
+}
+
+.notice-success {
+    background: #f0fdf4;
+    border-color: #22c55e;
+    color: #14532d;
+}
+
+.notice-error {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #7f1d1d;
+}
+
+.notice p {
+    margin: 0.5em 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* Select2 Overrides - Modern Style */
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container .select2-selection--multiple {
+    min-height: 42px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    padding: 4px;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    outline: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin: 4px;
+    font-size: 13px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #6b7280;
+    margin-right: 6px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1400px) {
+    .sky-seo-config-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .sky-seo-analytics-dashboard {
+        padding: 10px;
+    }
+    
+    .sky-seo-dashboard-header {
+        padding: 16px 20px;
+    }
+    
+    .sky-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .nav-tab-wrapper.sky-seo-nav-tabs {
+        padding: 8px 16px 0;
+        gap: 20px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .sky-seo-config-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .sky-seo-position-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .sky-seo-page-types-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sky-seo-media-upload {
+        flex-direction: column;
+    }
+    
+    .sky-seo-link-display {
+        flex-direction: column;
+    }
+    
+    .sky-seo-link-display .button {
+        width: 100%;
+    }
+    
+    .sky-seo-form-actions {
+        flex-wrap: wrap;
+        justify-content: stretch;
+    }
+    
+    .sky-seo-form-actions .button {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    /* Add dark mode styles here if needed */
+}
+
+/* Print Styles */
+@media print {
+    .sky-seo-form-actions,
+    .nav-tab-wrapper,
+    .sky-seo-upload-actions,
+    .button {
+        display: none !important;
+    }
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sky-seo-config-card {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Field Error States */
+.sky-seo-form-group.has-error .sky-seo-input,
+.sky-seo-form-group.has-error .sky-seo-textarea,
+.sky-seo-form-group.has-error .sky-seo-filter-select {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+.field-error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Loading States */
+.sky-seo-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.sky-seo-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #25D366;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Accessibility */
+.screen-reader-text {
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* Focus Styles */
+.sky-seo-whatsapp-wrap :focus {
+    outline: 2px solid #25D366;
+    outline-offset: 2px;
+}
+
+.sky-seo-whatsapp-wrap button:focus,
+.sky-seo-whatsapp-wrap .button:focus {
+    outline-offset: 0;
+}
+
+/* WordPress Admin Compatibility */
+.sky-seo-whatsapp-wrap input[type="text"],
+.sky-seo-whatsapp-wrap input[type="tel"],
+.sky-seo-whatsapp-wrap input[type="number"],
+.sky-seo-whatsapp-wrap select,
+.sky-seo-whatsapp-wrap textarea {
+    margin: 0;
+}
