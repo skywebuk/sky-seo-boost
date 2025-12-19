@@ -857,3 +857,272 @@ input:checked + .sky-seo-slider:before {
 .sky-seo-whatsapp-wrap textarea {
     margin: 0;
 }
+
+/* ========================================
+   NEW FEATURES - Business Hours, Triggers, etc.
+   ======================================== */
+
+/* Business Hours Schedule */
+.sky-seo-business-hours-wrapper {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.sky-seo-schedule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.sky-seo-schedule-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.sky-seo-schedule-row:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.sky-seo-day-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.sky-seo-day-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.sky-seo-day-name {
+    font-weight: 500;
+    color: #374151;
+}
+
+.sky-seo-day-toggle input[type="checkbox"]:checked + .sky-seo-day-name {
+    color: #25D366;
+    font-weight: 600;
+}
+
+.sky-seo-time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sky-seo-time-input {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 120px;
+    background: #fff;
+}
+
+.sky-seo-time-input:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    outline: none;
+}
+
+.sky-seo-time-separator {
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* Inline Fields Container */
+.sky-seo-inline-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.sky-seo-inline-fields .sky-seo-inline-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sky-seo-inline-fields .sky-seo-inline-field label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+/* Greeting Grid */
+.sky-seo-greeting-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.sky-seo-greeting-grid .sky-seo-form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sky-seo-greeting-grid .dashicons {
+    color: #25D366;
+}
+
+/* QR Code Generator */
+.sky-seo-qr-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 20px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.sky-seo-qr-preview {
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sky-seo-qr-preview img {
+    display: block;
+    max-width: 200px;
+    height: auto;
+}
+
+.sky-seo-qr-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sky-seo-qr-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sky-seo-qr-actions .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Notice/Warning Box */
+.sky-seo-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    color: #92400e;
+    font-size: 14px;
+}
+
+.sky-seo-notice .dashicons {
+    color: #f59e0b;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Smart Triggers */
+.sky-seo-trigger-option {
+    padding: 16px 20px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.sky-seo-trigger-option:last-child {
+    margin-bottom: 0;
+}
+
+.sky-seo-checkbox-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.sky-seo-checkbox-inline input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.sky-seo-trigger-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 8px 28px;
+}
+
+.sky-seo-trigger-value span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.sky-seo-trigger-option .sky-seo-field-description {
+    margin: 0 0 0 28px;
+}
+
+/* Responsive adjustments for new features */
+@media screen and (max-width: 782px) {
+    .sky-seo-schedule-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .sky-seo-time-inputs {
+        width: 100%;
+    }
+
+    .sky-seo-time-input {
+        flex: 1;
+        min-width: auto;
+    }
+
+    .sky-seo-qr-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sky-seo-qr-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .sky-seo-greeting-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sky-seo-inline-fields {
+        flex-direction: column;
+    }
+}

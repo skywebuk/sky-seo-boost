@@ -251,17 +251,22 @@ class Sky_SEO_Two_Step_Email {
         // Check for resend action - only if resend value is explicitly set to '1'
         $is_resend = isset($_POST['sky-seo-two-step-resend']) && $_POST['sky-seo-two-step-resend'] === '1';
 
+        // Check if user is trying to verify (has entered a code) - don't regenerate token
+        $is_verification_attempt = isset($_POST['sky-seo-two-step-email-code']) && !empty($_POST['sky-seo-two-step-email-code']);
+
         if ($is_resend && isset($_POST['sky-seo-two-step-resend-nonce']) &&
             wp_verify_nonce($_POST['sky-seo-two-step-resend-nonce'], 'sky-seo-two-step-resend-' . $user->ID)) {
+            // Resend button clicked - generate new token
             if ($this->generate_and_email_token($user)) {
                 echo '<p class="message">' . esc_html__('A new verification code has been sent to your email address.', 'sky-seo-boost') . '</p>';
             } else {
                 echo '<p class="message error">' . esc_html__('Failed to send verification code. Please try again.', 'sky-seo-boost') . '</p>';
             }
-        } else {
-            // Generate and send initial token
+        } elseif (!$is_verification_attempt) {
+            // Initial page load (not a verification attempt) - generate and send token
             $this->generate_and_email_token($user);
         }
+        // If $is_verification_attempt is true, don't generate new token - user is trying to verify
 
         $failed_attempts = $this->get_failed_attempts($user);
 

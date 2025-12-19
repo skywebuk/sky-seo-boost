@@ -568,8 +568,8 @@ class Sky_SEO_Two_Step_Core {
                 );
             }
 
-            // Handle resend
-            if (isset($_POST['sky-seo-two-step-resend'])) {
+            // Handle resend - only if value is explicitly '1' (button was clicked)
+            if (isset($_POST['sky-seo-two-step-resend']) && $_POST['sky-seo-two-step-resend'] === '1') {
                 $username = isset($_POST['log']) ? sanitize_user(wp_unslash($_POST['log'])) : '';
                 $password = isset($_POST['pwd']) ? wp_unslash($_POST['pwd']) : '';
                 self::show_two_step_form($user, $username, $password);
