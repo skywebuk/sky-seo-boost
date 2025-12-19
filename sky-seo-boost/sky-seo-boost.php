@@ -3,7 +3,7 @@
  * Plugin Name: Sky SEO Boost
  * Plugin URI: https://skywebdesign.co.uk/sky-seo-boost
  * Description: Custom SEO-optimized content management with Areas, Trending Searches, and Sectors as main post types, with analytics and tracking.
- * Version: 4.4.4
+ * Version: 4.4.5
  * Author: Sky Web Design
  * Author URI: https://skywebdesign.co.uk
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('SKY_SEO_BOOST_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SKY_SEO_BOOST_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('SKY_SEO_BOOST_VERSION', '4.4.4');
+define('SKY_SEO_BOOST_VERSION', '4.4.5');
 define('SKY_SEO_BOOST_FILE', __FILE__);
 
 // Include additional PHP files
