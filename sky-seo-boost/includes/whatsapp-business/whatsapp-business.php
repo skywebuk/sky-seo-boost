@@ -735,7 +735,7 @@ class Sky_SEO_WhatsApp_Business {
                         <?php if ($social_proof['enabled']): ?>
                             <!-- Social Proof Counter -->
                             <div class="sky-whatsapp-social-proof">
-                                <span class="dashicons dashicons-groups"></span>
+                                <svg class="sky-whatsapp-social-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-6 2c-1.66 0-3-1.34-3-3s1.34-3 3-3c.68 0 1.3.23 1.8.61-.46.95-.72 2.02-.72 3.14 0 .82.14 1.6.39 2.33-.45.56-1.13.92-1.47.92zm12 0c-.34 0-1.02-.36-1.47-.92.25-.73.39-1.51.39-2.33 0-1.12-.26-2.19-.72-3.14.5-.38 1.12-.61 1.8-.61 1.66 0 3 1.34 3 3s-1.34 3-3 3zm-6 1c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-8 0c-.29 0-.62.02-.97.05.02.01.97.95.97 1.95v2H1v-1.5C1 14.9 3.13 14.6 4.97 14.18c.1-.41.21-.8.35-1.18zm14.03 0c.14.38.25.77.35 1.18 1.84.42 3.97.72 3.97 2.32V18h-3v-2c0-1-.95-1.94-.97-1.95-.35-.03-.68-.05-.97-.05z"/></svg>
                                 <span class="sky-whatsapp-social-proof-text"><?php echo esc_html($social_proof['text']); ?></span>
                             </div>
                         <?php endif; ?>

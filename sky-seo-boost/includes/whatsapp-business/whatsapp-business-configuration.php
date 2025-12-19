@@ -757,7 +757,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                     <textarea id="greeting_morning"
                                               name="<?php echo esc_attr($this->option_name); ?>[greeting_morning]"
                                               rows="2"
-                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_morning'] ?? ''); ?></textarea>
+                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_morning'] ?? __('Good morning! ☀️ How can we help you today?', 'sky-seo-boost')); ?></textarea>
                                 </div>
                                 <div class="sky-seo-form-group">
                                     <label for="greeting_afternoon">
@@ -767,7 +767,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                     <textarea id="greeting_afternoon"
                                               name="<?php echo esc_attr($this->option_name); ?>[greeting_afternoon]"
                                               rows="2"
-                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_afternoon'] ?? ''); ?></textarea>
+                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_afternoon'] ?? __('Good afternoon! How can we assist you?', 'sky-seo-boost')); ?></textarea>
                                 </div>
                                 <div class="sky-seo-form-group">
                                     <label for="greeting_evening">
@@ -777,7 +777,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                     <textarea id="greeting_evening"
                                               name="<?php echo esc_attr($this->option_name); ?>[greeting_evening]"
                                               rows="2"
-                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_evening'] ?? ''); ?></textarea>
+                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_evening'] ?? __('Good evening! How can we help you?', 'sky-seo-boost')); ?></textarea>
                                 </div>
                                 <div class="sky-seo-form-group">
                                     <label for="greeting_night">
@@ -787,7 +787,7 @@ class Sky_SEO_WhatsApp_Configuration {
                                     <textarea id="greeting_night"
                                               name="<?php echo esc_attr($this->option_name); ?>[greeting_night]"
                                               rows="2"
-                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_night'] ?? ''); ?></textarea>
+                                              class="sky-seo-textarea"><?php echo esc_textarea($settings['greeting_night'] ?? __('Hello! Thanks for reaching out. How can we help?', 'sky-seo-boost')); ?></textarea>
                                 </div>
                             </div>
                         </div>

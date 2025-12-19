@@ -1213,11 +1213,13 @@ body[dir="rtl"] .sky-whatsapp-widget.sky-whatsapp-rtl .sky-whatsapp-popup .sky-w
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.sky-whatsapp-social-proof .dashicons {
+.sky-whatsapp-social-proof .dashicons,
+.sky-whatsapp-social-proof .sky-whatsapp-social-icon {
     font-size: 16px;
     width: 16px;
     height: 16px;
     color: #25D366;
+    flex-shrink: 0;
 }
 
 .sky-whatsapp-social-proof-text {
