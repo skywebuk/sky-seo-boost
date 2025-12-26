@@ -146,8 +146,11 @@ EOD;
                 $public_key,
                 OPENSSL_ALGO_SHA256
             );
- 
-            openssl_free_key($public_key);
+
+            // Note: openssl_free_key() is deprecated in PHP 8.0+ and keys are freed automatically
+            if (PHP_VERSION_ID < 80000) {
+                openssl_free_key($public_key);
+            }
  
             if ($result === 1) {
                 // Signature valid
@@ -318,8 +321,11 @@ EOD;
         if ($public_key === false) {
             return false;
         }
- 
-        openssl_free_key($public_key);
+
+        // Note: openssl_free_key() is deprecated in PHP 8.0+ and keys are freed automatically
+        if (PHP_VERSION_ID < 80000) {
+            openssl_free_key($public_key);
+        }
         return true;
     }
 }

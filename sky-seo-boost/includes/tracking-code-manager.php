@@ -233,4 +233,3 @@ function sky_seo_get_order_id() {
     
     return '';
 }
-?>

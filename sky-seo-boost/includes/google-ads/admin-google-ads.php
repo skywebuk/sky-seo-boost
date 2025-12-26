@@ -52,7 +52,14 @@ function sky_seo_render_google_ads_page() {
 
         update_option('sky_seo_settings', $settings);
 
-        echo '<div class="notice notice-success is-dismissible"><p>' . __('Settings saved successfully.', 'sky-seo-boost') . '</p></div>';
+        // Use WordPress standard admin notices
+        add_settings_error(
+            'sky_seo_google_ads_settings',
+            'settings_saved',
+            __('Settings saved successfully.', 'sky-seo-boost'),
+            'success'
+        );
+        settings_errors('sky_seo_google_ads_settings');
 
         // Refresh values
         $google_ads_enabled = $settings['google_ads_enabled'];

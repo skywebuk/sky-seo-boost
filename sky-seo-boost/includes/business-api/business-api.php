@@ -198,8 +198,9 @@ class Sky_SEO_Business_API {
      * Enqueue admin scripts
      */
     public function enqueue_admin_scripts($hook) {
-        $current_page = isset($_GET['page']) ? $_GET['page'] : '';
-        
+        // Sanitize the page parameter to prevent XSS
+        $current_page = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+
         // Include business API page regardless of tab
         if ($current_page !== 'sky-seo-business-api') {
             return;
@@ -300,7 +301,24 @@ class Sky_SEO_Business_API {
      * Sanitize advanced settings
      */
     public function sanitize_advanced_settings($input) {
-        return $input;
+        if (!is_array($input)) {
+            return [];
+        }
+
+        $sanitized = [];
+        foreach ($input as $key => $value) {
+            if (is_array($value)) {
+                $sanitized[sanitize_key($key)] = array_map('sanitize_text_field', $value);
+            } elseif (is_bool($value)) {
+                $sanitized[sanitize_key($key)] = (bool) $value;
+            } elseif (is_numeric($value)) {
+                $sanitized[sanitize_key($key)] = intval($value);
+            } else {
+                $sanitized[sanitize_key($key)] = sanitize_text_field($value);
+            }
+        }
+
+        return $sanitized;
     }
 }
 

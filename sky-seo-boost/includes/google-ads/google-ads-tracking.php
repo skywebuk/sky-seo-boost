@@ -327,7 +327,9 @@ class Sky_SEO_Enhanced_Google_Ads {
         if (!$existing_record) {
             $order_date = $order->get_date_created();
             if ($order_date) {
-                $time_window_start = $order_date->modify('-2 hours')->format('Y-m-d H:i:s');
+                // Clone the DateTime object to avoid mutating the original
+                $order_date_clone = clone $order_date;
+                $time_window_start = $order_date_clone->modify('-2 hours')->format('Y-m-d H:i:s');
                 $time_window_end = $order_date->format('Y-m-d H:i:s');
                 $customer_ip = $order->get_customer_ip_address();
                 

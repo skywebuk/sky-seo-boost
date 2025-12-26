@@ -611,17 +611,36 @@ class Sky_SEO_Indexing_Boost {
      */
     private function create_indexnow_key_file($key) {
         $file_path = ABSPATH . $key . '.txt';
-        
+
         if (!file_exists($file_path)) {
-            $file_handle = @fopen($file_path, 'w');
+            // Check if directory is writable before attempting to create file
+            if (!is_writable(ABSPATH)) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Sky SEO Boost: Cannot create IndexNow key file - ABSPATH is not writable');
+                }
+                return false;
+            }
+
+            $file_handle = fopen($file_path, 'w');
             if ($file_handle) {
                 fwrite($file_handle, $key);
                 fclose($file_handle);
-                
-                // Set proper permissions
-                @chmod($file_path, 0644);
+
+                // Set proper permissions with error logging
+                if (!chmod($file_path, 0644)) {
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        error_log('Sky SEO Boost: Failed to set permissions on IndexNow key file');
+                    }
+                }
+                return true;
+            } else {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log('Sky SEO Boost: Failed to create IndexNow key file');
+                }
+                return false;
             }
         }
+        return true;
     }
     
     /**
