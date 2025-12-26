@@ -6,7 +6,8 @@ if (!defined('ABSPATH')) {
 
 // Analytics Check Tab
 function sky_seo_analytics_check_tab() {
-    $refresh = isset($_GET['refresh']) && $_GET['refresh'] === '1';
+    // Sanitize GET parameter
+    $refresh = isset($_GET['refresh']) && sanitize_text_field(wp_unslash($_GET['refresh'])) === '1';
     $transient_key = 'sky_seo_analytics_check';
     $results = $refresh ? false : get_transient($transient_key);
 
@@ -516,4 +517,3 @@ function sky_seo_check_analytics_codes() {
 
     return $results;
 }
-?>
