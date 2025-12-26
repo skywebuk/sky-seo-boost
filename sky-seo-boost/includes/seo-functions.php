@@ -49,17 +49,17 @@ function sky_seo_record_click($is_bot = false, $is_spam = false) {
     $post_id = get_the_ID();
     $table_name = $wpdb->prefix . 'sky_seo_clicks';
     
-    // Get user agent
-    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : '';
-    
+    // Get user agent - sanitize for security
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? substr(sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])), 0, 255) : '';
+
     // Get location data
     $location = sky_seo_get_location_from_ip();
     $country_code = $location['country_code'];
     $country_name = $location['country_name'];
     $city_name = $location['city_name'];
     
-    // Get referrer
-    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    // Get referrer - sanitize for security
+    $referer = isset($_SERVER['HTTP_REFERER']) ? esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
     
     // Categorize referer - IMPROVED LOGIC
     $google_domains = [
@@ -427,7 +427,7 @@ function sky_seo_record_click($is_bot = false, $is_spam = false) {
 
 // Check if visitor is a bot - IMPROVED VERSION
 function sky_seo_is_bot() {
-    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']))) : '';
     
     // Bot patterns - more comprehensive list
     $bot_patterns = [
@@ -499,7 +499,7 @@ function sky_seo_is_bot() {
     
     // 1. Check for missing expected browser features
     if (isset($_SERVER['HTTP_ACCEPT'])) {
-        $accept = strtolower($_SERVER['HTTP_ACCEPT']);
+        $accept = strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_ACCEPT'])));
         // Real browsers usually accept HTML
         if (strpos($accept, 'text/html') === false && strpos($accept, '*/*') === false) {
             return true;
@@ -582,8 +582,8 @@ function sky_seo_is_bot_ip($ip) {
 
 // Basic spam traffic detection
 function sky_seo_is_spam_traffic() {
-    // Check referrer spam
-    $referrer = isset($_SERVER['HTTP_REFERER']) ? strtolower($_SERVER['HTTP_REFERER']) : '';
+    // Check referrer spam - sanitize for security
+    $referrer = isset($_SERVER['HTTP_REFERER']) ? strtolower(esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER']))) : '';
     
     if (!empty($referrer)) {
         $spam_domains = [
@@ -662,9 +662,8 @@ function sky_seo_detect_suspicious_behavior() {
     }
     
     // Check for missing or suspicious Accept header
-    if (!isset($_SERVER['HTTP_ACCEPT']) || 
-        $_SERVER['HTTP_ACCEPT'] === '*/*' ||
-        strlen($_SERVER['HTTP_ACCEPT']) < 10) {
+    $http_accept = isset($_SERVER['HTTP_ACCEPT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_ACCEPT'])) : '';
+    if (empty($http_accept) || $http_accept === '*/*' || strlen($http_accept) < 10) {
         $suspicious_score += 1;
     }
     
@@ -1564,5 +1563,3 @@ function sky_seo_ping_search_engines_immediately($post_id) {
 add_action('publish_sky_areas', 'sky_seo_ping_search_engines_immediately');
 add_action('publish_sky_trending', 'sky_seo_ping_search_engines_immediately');
 add_action('publish_sky_sectors', 'sky_seo_ping_search_engines_immediately');
-
-?>

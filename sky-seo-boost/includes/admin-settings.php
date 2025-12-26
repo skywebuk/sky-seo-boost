@@ -657,21 +657,21 @@ function sky_seo_seo_integration_tab() {
             
             <!-- SEO Plugin Selection -->
             <div class="sky-seo-settings-card">
-                <h3><?php _e('SEO Plugin Integration', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('SEO Plugin Integration', 'sky-seo-boost'); ?></h3>
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><?php _e('Active SEO Plugin', 'sky-seo-boost'); ?></th>
+                        <th scope="row"><?php esc_html_e('Active SEO Plugin', 'sky-seo-boost'); ?></th>
                         <td>
                             <select name="sky_seo_settings[active_seo_plugin]" id="active_seo_plugin">
-                                <option value="none" <?php selected($settings['active_seo_plugin'] ?? 'none', 'none'); ?>><?php _e('None', 'sky-seo-boost'); ?></option>
-                                <option value="yoast" <?php selected($settings['active_seo_plugin'] ?? 'none', 'yoast'); ?>><?php _e('Yoast SEO', 'sky-seo-boost'); ?></option>
-                                <option value="rankmath" <?php selected($settings['active_seo_plugin'] ?? 'none', 'rankmath'); ?>><?php _e('RankMath', 'sky-seo-boost'); ?></option>
-                                <option value="seopress" <?php selected($settings['active_seo_plugin'] ?? 'none', 'seopress'); ?>><?php _e('SEOPress', 'sky-seo-boost'); ?></option>
-                                <option value="tsf" <?php selected($settings['active_seo_plugin'] ?? 'none', 'tsf'); ?>><?php _e('The SEO Framework', 'sky-seo-boost'); ?></option>
-                                <option value="aioseo" <?php selected($settings['active_seo_plugin'] ?? 'none', 'aioseo'); ?>><?php _e('All in One SEO', 'sky-seo-boost'); ?></option>
-                                <option value="squirrly" <?php selected($settings['active_seo_plugin'] ?? 'none', 'squirrly'); ?>><?php _e('Squirrly SEO', 'sky-seo-boost'); ?></option>
+                                <option value="none" <?php selected($settings['active_seo_plugin'] ?? 'none', 'none'); ?>><?php esc_html_e('None', 'sky-seo-boost'); ?></option>
+                                <option value="yoast" <?php selected($settings['active_seo_plugin'] ?? 'none', 'yoast'); ?>><?php esc_html_e('Yoast SEO', 'sky-seo-boost'); ?></option>
+                                <option value="rankmath" <?php selected($settings['active_seo_plugin'] ?? 'none', 'rankmath'); ?>><?php esc_html_e('RankMath', 'sky-seo-boost'); ?></option>
+                                <option value="seopress" <?php selected($settings['active_seo_plugin'] ?? 'none', 'seopress'); ?>><?php esc_html_e('SEOPress', 'sky-seo-boost'); ?></option>
+                                <option value="tsf" <?php selected($settings['active_seo_plugin'] ?? 'none', 'tsf'); ?>><?php esc_html_e('The SEO Framework', 'sky-seo-boost'); ?></option>
+                                <option value="aioseo" <?php selected($settings['active_seo_plugin'] ?? 'none', 'aioseo'); ?>><?php esc_html_e('All in One SEO', 'sky-seo-boost'); ?></option>
+                                <option value="squirrly" <?php selected($settings['active_seo_plugin'] ?? 'none', 'squirrly'); ?>><?php esc_html_e('Squirrly SEO', 'sky-seo-boost'); ?></option>
                             </select>
-                            <p class="description"><?php _e('Select your active SEO plugin to enable meta tag integration.', 'sky-seo-boost'); ?></p>
+                            <p class="description"><?php esc_html_e('Select your active SEO plugin to enable meta tag integration.', 'sky-seo-boost'); ?></p>
                         </td>
                     </tr>
                 </table>
@@ -684,7 +684,7 @@ function sky_seo_seo_integration_tab() {
             
             <!-- Status Card -->
             <div class="sky-seo-settings-card">
-                <h3><?php _e('Integration Status', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('Integration Status', 'sky-seo-boost'); ?></h3>
                 <div id="seo-integration-status">
                     <?php sky_seo_display_integration_status(); ?>
                 </div>
@@ -692,42 +692,42 @@ function sky_seo_seo_integration_tab() {
 
             <!-- Sitemap Diagnostics Card -->
             <div class="sky-seo-settings-card">
-                <h3><?php _e('Sitemap Diagnostics & Tools', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('Sitemap Diagnostics & Tools', 'sky-seo-boost'); ?></h3>
                 <div id="sitemap-diagnostics">
                     <?php sky_seo_display_sitemap_diagnostics(); ?>
                 </div>
 
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
-                    <h4><?php _e('Quick Fixes', 'sky-seo-boost'); ?></h4>
-                    <p class="description"><?php _e('Try these fixes if your sitemaps are showing 404 errors:', 'sky-seo-boost'); ?></p>
+                    <h4><?php esc_html_e('Quick Fixes', 'sky-seo-boost'); ?></h4>
+                    <p class="description"><?php esc_html_e('Try these fixes if your sitemaps are showing 404 errors:', 'sky-seo-boost'); ?></p>
 
                     <div style="margin-top: 15px;">
                         <button type="button" id="sky-seo-flush-rewrite" class="button button-secondary">
                             <span class="dashicons dashicons-update" style="margin-top: 3px;"></span>
-                            <?php _e('Flush Rewrite Rules', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Flush Rewrite Rules', 'sky-seo-boost'); ?>
                         </button>
                         <p class="description" style="margin-top: 5px;">
-                            <?php _e('This refreshes WordPress permalinks and can fix 404 errors on sitemaps.', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('This refreshes WordPress permalinks and can fix 404 errors on sitemaps.', 'sky-seo-boost'); ?>
                         </p>
                     </div>
 
                     <div style="margin-top: 15px;">
                         <button type="button" id="sky-seo-auto-detect-plugin" class="button button-secondary">
                             <span class="dashicons dashicons-search" style="margin-top: 3px;"></span>
-                            <?php _e('Auto-Detect SEO Plugin', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Auto-Detect SEO Plugin', 'sky-seo-boost'); ?>
                         </button>
                         <p class="description" style="margin-top: 5px;">
-                            <?php _e('Automatically detect and configure your installed SEO plugin.', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Automatically detect and configure your installed SEO plugin.', 'sky-seo-boost'); ?>
                         </p>
                     </div>
 
                     <div style="margin-top: 15px;">
                         <button type="button" id="sky-seo-test-sitemaps" class="button button-secondary">
                             <span class="dashicons dashicons-admin-site" style="margin-top: 3px;"></span>
-                            <?php _e('Test Sitemaps', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Test Sitemaps', 'sky-seo-boost'); ?>
                         </button>
                         <p class="description" style="margin-top: 5px;">
-                            <?php _e('Check if all your sitemap URLs are accessible (no 404 errors).', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Check if all your sitemap URLs are accessible (no 404 errors).', 'sky-seo-boost'); ?>
                         </p>
                     </div>
 
@@ -925,8 +925,13 @@ function sky_seo_duplicate_settings_tab() {
 // Display SEO Integration Status
 function sky_seo_display_integration_status() {
     $settings = get_option('sky_seo_settings', []);
-    $active_plugin = isset($settings['active_seo_plugin']) ? $settings['active_seo_plugin'] : 'none';
-    
+
+    // Validate plugin key against whitelist
+    $valid_plugins = ['none', 'yoast', 'rankmath', 'seopress', 'tsf', 'aioseo', 'squirrly'];
+    $active_plugin = isset($settings['active_seo_plugin']) && in_array($settings['active_seo_plugin'], $valid_plugins, true)
+        ? $settings['active_seo_plugin']
+        : 'none';
+
     if ($active_plugin === 'none') {
         echo '<p>' . esc_html__('No SEO plugin integration active.', 'sky-seo-boost') . '</p>';
         return;
@@ -1025,26 +1030,26 @@ function sky_seo_display_sitemap_diagnostics() {
 
     ?>
     <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-        <h4 style="margin-top: 0;"><?php _e('SEO Plugin Detection', 'sky-seo-boost'); ?></h4>
+        <h4 style="margin-top: 0;"><?php esc_html_e('SEO Plugin Detection', 'sky-seo-boost'); ?></h4>
 
         <?php if (empty($detected_plugins)): ?>
             <div class="notice notice-warning inline" style="margin: 10px 0;">
-                <p><strong><?php _e('No SEO plugin detected!', 'sky-seo-boost'); ?></strong></p>
-                <p><?php _e('No compatible SEO plugin is currently active. Please install and activate Rank Math, Yoast SEO, or another supported SEO plugin.', 'sky-seo-boost'); ?></p>
+                <p><strong><?php esc_html_e('No SEO plugin detected!', 'sky-seo-boost'); ?></strong></p>
+                <p><?php esc_html_e('No compatible SEO plugin is currently active. Please install and activate Rank Math, Yoast SEO, or another supported SEO plugin.', 'sky-seo-boost'); ?></p>
             </div>
         <?php else: ?>
             <div class="notice notice-success inline" style="margin: 10px 0;">
-                <p><strong><?php _e('Detected SEO Plugins:', 'sky-seo-boost'); ?></strong></p>
+                <p><strong><?php esc_html_e('Detected SEO Plugins:', 'sky-seo-boost'); ?></strong></p>
                 <ul style="margin-left: 20px;">
                     <?php foreach ($detected_plugins as $key => $name): ?>
                         <li>
                             <?php echo esc_html($name); ?>
                             <?php if ($active_plugin === $key): ?>
                                 <span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span>
-                                <em><?php _e('(Currently selected)', 'sky-seo-boost'); ?></em>
+                                <em><?php esc_html_e('(Currently selected)', 'sky-seo-boost'); ?></em>
                             <?php else: ?>
                                 <span class="dashicons dashicons-warning" style="color: #ffb900;"></span>
-                                <em><?php _e('(Not selected in settings above)', 'sky-seo-boost'); ?></em>
+                                <em><?php esc_html_e('(Not selected in settings above)', 'sky-seo-boost'); ?></em>
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
@@ -1052,25 +1057,24 @@ function sky_seo_display_sitemap_diagnostics() {
             </div>
         <?php endif; ?>
 
-        <h4><?php _e('Sitemap URLs', 'sky-seo-boost'); ?></h4>
-        <p class="description"><?php _e('These are the common sitemap URLs used by SEO plugins. Click to test if they are accessible:', 'sky-seo-boost'); ?></p>
+        <h4><?php esc_html_e('Sitemap URLs', 'sky-seo-boost'); ?></h4>
+        <p class="description"><?php esc_html_e('These are the common sitemap URLs used by SEO plugins. Click to test if they are accessible:', 'sky-seo-boost'); ?></p>
 
         <table class="widefat" style="margin-top: 10px;">
             <thead>
                 <tr>
-                    <th><?php _e('Sitemap Type', 'sky-seo-boost'); ?></th>
-                    <th><?php _e('URL', 'sky-seo-boost'); ?></th>
-                    <th><?php _e('Action', 'sky-seo-boost'); ?></th>
+                    <th><?php esc_html_e('Sitemap Type', 'sky-seo-boost'); ?></th>
+                    <th><?php esc_html_e('URL', 'sky-seo-boost'); ?></th>
+                    <th><?php esc_html_e('Action', 'sky-seo-boost'); ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $sitemaps = [
                     'Main Sitemap Index' => home_url('/sitemap_index.xml'),
-                    'WordPress Sitemap' => home_url('/wp-sitemap.xml'),
-                    'Rank Math Sitemap' => home_url('/sitemap_index.xml'),
-                    'Yoast Sitemap' => home_url('/sitemap_index.xml'),
-                    'Custom Post Types Sitemap' => home_url('/post-sitemap.xml'),
+                    'WordPress Core Sitemap' => home_url('/wp-sitemap.xml'),
+                    'Posts Sitemap' => home_url('/post-sitemap.xml'),
+                    'Pages Sitemap' => home_url('/page-sitemap.xml'),
                 ];
 
                 foreach ($sitemaps as $label => $url):
@@ -1080,7 +1084,7 @@ function sky_seo_display_sitemap_diagnostics() {
                         <td><code><?php echo esc_html($url); ?></code></td>
                         <td>
                             <a href="<?php echo esc_url($url); ?>" target="_blank" class="button button-small">
-                                <?php _e('Open', 'sky-seo-boost'); ?>
+                                <?php esc_html_e('Open', 'sky-seo-boost'); ?>
                             </a>
                         </td>
                     </tr>
@@ -1091,19 +1095,19 @@ function sky_seo_display_sitemap_diagnostics() {
         <?php if ($active_plugin === 'none' && !empty($detected_plugins)): ?>
             <div class="notice notice-warning inline" style="margin-top: 15px;">
                 <p>
-                    <strong><?php _e('Action Required:', 'sky-seo-boost'); ?></strong>
-                    <?php _e('You have SEO plugin(s) installed but none selected above. Please select your SEO plugin from the dropdown above and save changes.', 'sky-seo-boost'); ?>
+                    <strong><?php esc_html_e('Action Required:', 'sky-seo-boost'); ?></strong>
+                    <?php esc_html_e('You have SEO plugin(s) installed but none selected above. Please select your SEO plugin from the dropdown above and save changes.', 'sky-seo-boost'); ?>
                 </p>
             </div>
         <?php endif; ?>
 
-        <h4 style="margin-top: 20px;"><?php _e('Custom Post Types in Sitemap', 'sky-seo-boost'); ?></h4>
-        <p class="description"><?php _e('These custom post types should be included in your sitemap:', 'sky-seo-boost'); ?></p>
+        <h4 style="margin-top: 20px;"><?php esc_html_e('Custom Post Types in Sitemap', 'sky-seo-boost'); ?></h4>
+        <p class="description"><?php esc_html_e('These custom post types should be included in your sitemap:', 'sky-seo-boost'); ?></p>
 
         <ul style="margin-left: 20px;">
-            <li><code>sky_areas</code> - <?php _e('Areas post type', 'sky-seo-boost'); ?></li>
-            <li><code>sky_trending</code> - <?php _e('Trending Insights post type', 'sky-seo-boost'); ?></li>
-            <li><code>sky_sectors</code> - <?php _e('Sectors post type', 'sky-seo-boost'); ?></li>
+            <li><code>sky_areas</code> - <?php esc_html_e('Areas post type', 'sky-seo-boost'); ?></li>
+            <li><code>sky_trending</code> - <?php esc_html_e('Trending Insights post type', 'sky-seo-boost'); ?></li>
+            <li><code>sky_sectors</code> - <?php esc_html_e('Sectors post type', 'sky-seo-boost'); ?></li>
         </ul>
 
         <?php if ($active_plugin !== 'none'): ?>
@@ -1242,7 +1246,7 @@ function sky_seo_ajax_test_sitemaps() {
     foreach ($sitemaps_to_test as $url) {
         $response = wp_remote_get($url, [
             'timeout' => 10,
-            'sslverify' => false // Allow self-signed certs in dev environments
+            'sslverify' => true // Enable SSL verification for security
         ]);
 
         if (is_wp_error($response)) {
@@ -1287,4 +1291,3 @@ function sky_seo_ajax_test_sitemaps() {
         'active_plugin' => $active_plugin
     ]);
 }
-?>
