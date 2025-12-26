@@ -841,114 +841,6 @@ class Sky_SEO_WhatsApp_Configuration {
                     </div>
                 </div>
 
-                <!-- Smart Triggers -->
-                <div class="sky-seo-config-card">
-                    <div class="sky-seo-config-card-header">
-                        <h3>
-                            <span class="dashicons dashicons-performance"></span>
-                            <?php esc_html_e('Smart Triggers', 'sky-seo-boost'); ?>
-                        </h3>
-                    </div>
-
-                    <div class="sky-seo-config-card-body">
-                        <div class="sky-seo-form-group">
-                            <div class="sky-seo-toggle-field">
-                                <label class="sky-seo-toggle-switch">
-                                    <input type="checkbox"
-                                           id="enable-smart-triggers"
-                                           name="<?php echo esc_attr($this->option_name); ?>[enable_smart_triggers]"
-                                           value="1"
-                                           <?php checked(!empty($settings['enable_smart_triggers'])); ?>>
-                                    <span class="sky-seo-slider"></span>
-                                </label>
-                                <label for="enable-smart-triggers" class="sky-seo-toggle-label">
-                                    <?php esc_html_e('Enable Smart Triggers', 'sky-seo-boost'); ?>
-                                </label>
-                            </div>
-                            <p class="sky-seo-field-description">
-                                <?php esc_html_e('Automatically show the popup based on visitor behavior', 'sky-seo-boost'); ?>
-                            </p>
-                        </div>
-
-                        <div id="smart-triggers-settings" style="<?php echo empty($settings['enable_smart_triggers']) ? 'display:none;' : ''; ?>">
-                            <!-- Scroll Trigger -->
-                            <div class="sky-seo-trigger-option">
-                                <label class="sky-seo-checkbox-inline">
-                                    <input type="checkbox"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_scroll_enabled]"
-                                           value="1"
-                                           <?php checked(!empty($settings['trigger_scroll_enabled'])); ?>>
-                                    <?php esc_html_e('Scroll Percentage', 'sky-seo-boost'); ?>
-                                </label>
-                                <div class="sky-seo-trigger-value">
-                                    <input type="number"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_scroll_percentage]"
-                                           value="<?php echo esc_attr($settings['trigger_scroll_percentage'] ?? 50); ?>"
-                                           min="10"
-                                           max="100"
-                                           class="sky-seo-input-small">
-                                    <span>%</span>
-                                </div>
-                                <p class="sky-seo-field-description"><?php esc_html_e('Show popup when visitor scrolls down this percentage of the page', 'sky-seo-boost'); ?></p>
-                            </div>
-
-                            <!-- Exit Intent -->
-                            <div class="sky-seo-trigger-option">
-                                <label class="sky-seo-checkbox-inline">
-                                    <input type="checkbox"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_exit_intent]"
-                                           value="1"
-                                           <?php checked(!empty($settings['trigger_exit_intent'])); ?>>
-                                    <?php esc_html_e('Exit Intent', 'sky-seo-boost'); ?>
-                                </label>
-                                <p class="sky-seo-field-description"><?php esc_html_e('Show popup when visitor moves mouse towards closing the tab (desktop only)', 'sky-seo-boost'); ?></p>
-                            </div>
-
-                            <!-- Time on Page -->
-                            <div class="sky-seo-trigger-option">
-                                <label class="sky-seo-checkbox-inline">
-                                    <input type="checkbox"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_time_on_page]"
-                                           value="1"
-                                           <?php checked(!empty($settings['trigger_time_on_page'])); ?>>
-                                    <?php esc_html_e('Time on Page', 'sky-seo-boost'); ?>
-                                </label>
-                                <div class="sky-seo-trigger-value">
-                                    <input type="number"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_time_seconds]"
-                                           value="<?php echo esc_attr($settings['trigger_time_seconds'] ?? 30); ?>"
-                                           min="5"
-                                           max="300"
-                                           class="sky-seo-input-small">
-                                    <span><?php esc_html_e('seconds', 'sky-seo-boost'); ?></span>
-                                </div>
-                                <p class="sky-seo-field-description"><?php esc_html_e('Show popup after visitor has been on the page for this duration', 'sky-seo-boost'); ?></p>
-                            </div>
-
-                            <!-- Page Views -->
-                            <div class="sky-seo-trigger-option">
-                                <label class="sky-seo-checkbox-inline">
-                                    <input type="checkbox"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_page_views]"
-                                           value="1"
-                                           <?php checked(!empty($settings['trigger_page_views'])); ?>>
-                                    <?php esc_html_e('Page Views', 'sky-seo-boost'); ?>
-                                </label>
-                                <div class="sky-seo-trigger-value">
-                                    <input type="number"
-                                           name="<?php echo esc_attr($this->option_name); ?>[trigger_page_views_count]"
-                                           value="<?php echo esc_attr($settings['trigger_page_views_count'] ?? 2); ?>"
-                                           min="1"
-                                           max="10"
-                                           class="sky-seo-input-small">
-                                    <span><?php esc_html_e('pages', 'sky-seo-boost'); ?></span>
-                                </div>
-                                <p class="sky-seo-field-description"><?php esc_html_e('Show popup after visitor has viewed this many pages', 'sky-seo-boost'); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Save Button -->
                 <div class="sky-seo-form-actions">
                     <button type="submit" name="submit" class="button button-primary button-large">
@@ -978,9 +870,6 @@ class Sky_SEO_WhatsApp_Configuration {
             });
             $('#enable-personalized-greeting').on('change', function() {
                 $('#personalized-greeting-settings').toggle(this.checked);
-            });
-            $('#enable-smart-triggers').on('change', function() {
-                $('#smart-triggers-settings').toggle(this.checked);
             });
         });
         </script>
@@ -1114,15 +1003,6 @@ class Sky_SEO_WhatsApp_Configuration {
             'greeting_afternoon' => __('Good afternoon! How can we assist you?', 'sky-seo-boost'),
             'greeting_evening' => __('Good evening! How can we help you?', 'sky-seo-boost'),
             'greeting_night' => __('Hello! Thanks for reaching out. How can we help?', 'sky-seo-boost'),
-            // Smart Triggers
-            'enable_smart_triggers' => false,
-            'trigger_scroll_enabled' => false,
-            'trigger_scroll_percentage' => 50,
-            'trigger_exit_intent' => false,
-            'trigger_time_on_page' => false,
-            'trigger_time_seconds' => 30,
-            'trigger_page_views' => false,
-            'trigger_page_views_count' => 2,
         ];
     }
     
@@ -1141,9 +1021,7 @@ class Sky_SEO_WhatsApp_Configuration {
             'show_on_sky_trending', 'show_on_sky_sectors',
             // New feature toggles
             'enable_business_hours', 'enable_typing_animation',
-            'enable_social_proof', 'enable_personalized_greeting',
-            'enable_smart_triggers', 'trigger_scroll_enabled',
-            'trigger_exit_intent', 'trigger_time_on_page', 'trigger_page_views'
+            'enable_social_proof', 'enable_personalized_greeting'
         ];
 
         foreach ($boolean_fields as $field) {
@@ -1234,14 +1112,6 @@ class Sky_SEO_WhatsApp_Configuration {
         $sanitized['greeting_afternoon'] = sanitize_textarea_field($input['greeting_afternoon'] ?? '');
         $sanitized['greeting_evening'] = sanitize_textarea_field($input['greeting_evening'] ?? '');
         $sanitized['greeting_night'] = sanitize_textarea_field($input['greeting_night'] ?? '');
-
-        // Smart Triggers
-        $sanitized['trigger_scroll_percentage'] = absint($input['trigger_scroll_percentage'] ?? 50);
-        if ($sanitized['trigger_scroll_percentage'] > 100) $sanitized['trigger_scroll_percentage'] = 100;
-        $sanitized['trigger_time_seconds'] = absint($input['trigger_time_seconds'] ?? 30);
-        if ($sanitized['trigger_time_seconds'] > 300) $sanitized['trigger_time_seconds'] = 300;
-        $sanitized['trigger_page_views_count'] = absint($input['trigger_page_views_count'] ?? 2);
-        if ($sanitized['trigger_page_views_count'] > 10) $sanitized['trigger_page_views_count'] = 10;
 
         return $sanitized;
     }
