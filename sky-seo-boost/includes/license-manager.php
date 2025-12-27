@@ -613,13 +613,15 @@ class Sky_SEO_License_Manager {
      */
     public function add_license_tab($active_tab) {
         ?>
-        <a href="?page=sky-seo-settings&tab=license"
-           class="nav-tab <?php echo $active_tab === 'license' ? 'nav-tab-active' : ''; ?>">
-            <?php _e('License', 'sky360'); ?>
-            <?php if (!$this->is_license_valid()) : ?>
-                <span style="color: #d63638; margin-left: 5px;">●</span>
-            <?php endif; ?>
-        </a>
+        <li>
+            <a href="?page=sky-seo-settings&tab=license" class="nav-link <?php echo $active_tab === 'license' ? 'active' : ''; ?>">
+                <span class="dashicons dashicons-admin-network"></span>
+                <?php _e('License', 'sky360'); ?>
+                <?php if (!$this->is_license_valid()) : ?>
+                    <span style="color: #d63638; margin-left: 5px;">●</span>
+                <?php endif; ?>
+            </a>
+        </li>
         <?php
     }
     
