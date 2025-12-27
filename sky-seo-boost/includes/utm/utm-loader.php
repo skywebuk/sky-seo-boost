@@ -618,31 +618,7 @@ function sky_seo_render_utm_interface() {
                     <div class="sky-utm-metric-value" id="sky-utm-avg-order-value"><?php echo function_exists('get_woocommerce_currency_symbol') ? get_woocommerce_currency_symbol() : '$'; ?>0</div>
                 </div>
             </div>
-            
-            <!-- Charts -->
-            <div class="sky-utm-charts">
-                <div class="sky-utm-chart-box">
-                    <h4><?php _e('Click & Conversion Trends (Last 7 Days)', 'sky360'); ?></h4>
-                    <div class="sky-utm-chart-container">
-                        <canvas id="sky-utm-performance-chart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="sky-utm-chart-box">
-                    <h4><?php _e('Top Traffic Sources (Last 7 Days)', 'sky360'); ?></h4>
-                    <div class="sky-utm-chart-container">
-                        <canvas id="sky-utm-source-chart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="sky-utm-chart-box">
-                    <h4><?php _e('Device Breakdown (Last 7 Days)', 'sky360'); ?></h4>
-                    <div class="sky-utm-chart-container">
-                        <canvas id="sky-utm-device-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
+
             <!-- Links Table -->
             <div class="sky-utm-links-container">
                 <div class="sky-utm-table-header">
