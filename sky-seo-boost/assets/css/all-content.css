@@ -136,6 +136,18 @@
     border-radius: 4px 4px 0 0;
 }
 
+.sky-seo-bulk-actions-bar > .alignleft,
+.sky-seo-bulk-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sky-seo-bulk-actions-bar > .alignleft > *,
+.sky-seo-bulk-actions-left > * {
+    flex-shrink: 0;
+}
+
 .sky-seo-bulk-select {
     margin-right: 8px;
 }
@@ -143,6 +155,43 @@
 .sky-seo-results-info {
     font-size: 13px;
     color: #646970;
+    flex-shrink: 0;
+}
+
+/* WordPress Tablenav - Force inline layout */
+.sky-seo-all-content-wrap .tablenav,
+.sky-seo-post-list-wrap .tablenav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+}
+
+.sky-seo-all-content-wrap .tablenav .actions,
+.sky-seo-post-list-wrap .tablenav .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+}
+
+.sky-seo-all-content-wrap .tablenav .actions select,
+.sky-seo-all-content-wrap .tablenav .actions .button,
+.sky-seo-post-list-wrap .tablenav .actions select,
+.sky-seo-post-list-wrap .tablenav .actions .button {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.sky-seo-all-content-wrap .tablenav .tablenav-pages,
+.sky-seo-post-list-wrap .tablenav .tablenav-pages {
+    margin: 0;
+    flex-shrink: 0;
 }
 
 /* Content Table */
