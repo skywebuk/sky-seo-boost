@@ -12,22 +12,17 @@
    ======================================== */
 
 .api-usage-dashboard {
-    background: #fff;
-    border: 1px solid var(--sky-gray-200, #e5e7eb);
-    border-radius: var(--sky-radius-xl, 12px);
+    background: transparent;
     padding: 0;
     margin: 0 0 24px 0;
-    box-shadow: var(--sky-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
-    overflow: hidden;
 }
 
 .api-usage-dashboard h2 {
-    margin: 0;
+    margin: 0 0 20px 0;
     font-size: 18px;
     font-weight: 600;
     color: var(--sky-gray-900, #111827);
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--sky-gray-100, #f3f4f6);
+    padding: 0;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -44,7 +39,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
-    padding: 24px;
+    padding: 0;
 }
 
 .usage-stat {
@@ -114,12 +109,9 @@
    ======================================== */
 
 .sky-hours-container {
-    background: #fff;
-    border: 1px solid var(--sky-gray-200, #e5e7eb);
-    border-radius: var(--sky-radius-xl, 12px);
-    padding: 24px;
+    background: transparent;
+    padding: 0;
     margin: 0 0 24px 0;
-    box-shadow: var(--sky-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
 }
 
 .hours-actions {
@@ -239,12 +231,9 @@
 
 /* Reviews Filters */
 .reviews-filters {
-    background: #fff;
-    border: 1px solid var(--sky-gray-200, #e5e7eb);
-    border-radius: var(--sky-radius-xl, 12px);
-    padding: 20px 24px;
+    background: transparent;
+    padding: 0;
     margin: 20px 0;
-    box-shadow: var(--sky-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
 }
 
 .filter-row {
@@ -266,11 +255,8 @@
 
 /* Reviews Table */
 .reviews-table {
-    background: #fff;
-    border: 1px solid var(--sky-gray-200, #e5e7eb);
-    border-radius: var(--sky-radius-xl, 12px);
-    overflow: hidden;
-    box-shadow: var(--sky-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 0;
 }
 
@@ -398,9 +384,11 @@
 }
 
 /* Platform Icons Column */
-.column-platform {
+.column-platform,
+.column-source {
     text-align: center;
-    width: 50px;
+    width: 80px;
+    white-space: nowrap;
 }
 
 .column-platform svg {
@@ -567,13 +555,10 @@
    ======================================== */
 
 .no-reviews-message {
-    background: #fff;
-    border: 1px solid var(--sky-gray-200, #e5e7eb);
-    border-radius: var(--sky-radius-xl, 12px);
+    background: transparent;
     padding: 60px 40px;
     text-align: center;
     margin-top: 20px;
-    box-shadow: var(--sky-shadow, 0 1px 3px rgba(0, 0, 0, 0.04));
 }
 
 .no-reviews-message p {
