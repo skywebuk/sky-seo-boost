@@ -98,13 +98,16 @@ function sky_seo_enqueue_admin_scripts($hook) {
    $is_edit_page = $hook === 'edit.php' && in_array($current_post_type, $post_types);
 
    // Always load base admin styles and scripts on our pages
-   if (in_array($hook, ['edit.php', 'post.php', 'post-new.php']) && in_array($current_post_type, $post_types) 
-       || $is_sky_seo_page 
+   if (in_array($hook, ['edit.php', 'post.php', 'post-new.php']) && in_array($current_post_type, $post_types)
+       || $is_sky_seo_page
        || $is_edit_page
        || $hook === 'index.php') {
-       
+
+       // Load Flaticon UIcons font for the logo icon
+       wp_enqueue_style('flaticon-uicons', 'https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css', [], '2.6.0');
+
        // Load base admin CSS
-       wp_enqueue_style('sky-seo-admin', $plugin_url . '/assets/css/admin.css', [], $version);
+       wp_enqueue_style('sky-seo-admin', $plugin_url . '/assets/css/admin.css', ['flaticon-uicons'], $version);
        
        // Load base admin JS with Chart.js
        wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js', [], '3.9.1', true);
@@ -573,7 +576,7 @@ function sky360_render_admin_header($title, $subtitle = '', $actions = []) {
     <div class="sky360-topbar">
         <div class="sky360-topbar-left">
             <div class="sky360-topbar-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white" width="24" height="24"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0z"/></svg>
+                <i class="fi fi-sr-square-s"></i>
             </div>
             <div>
                 <h1 class="sky360-topbar-title"><?php echo esc_html($title); ?></h1>

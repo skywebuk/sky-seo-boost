@@ -103,6 +103,30 @@
     display: block;
 }
 
+.sky360-topbar-logo .fi {
+    font-size: 24px;
+    color: white;
+    line-height: 1;
+}
+
+/* Dark mode support for topbar logo icon */
+@media (prefers-color-scheme: dark) {
+    .sky360-topbar-logo .fi {
+        color: white;
+    }
+}
+
+/* WordPress admin dark mode support */
+body.admin-color-modern .sky360-topbar-logo .fi,
+body.admin-color-blue .sky360-topbar-logo .fi,
+body.admin-color-coffee .sky360-topbar-logo .fi,
+body.admin-color-ectoplasm .sky360-topbar-logo .fi,
+body.admin-color-midnight .sky360-topbar-logo .fi,
+body.admin-color-ocean .sky360-topbar-logo .fi,
+body.admin-color-sunrise .sky360-topbar-logo .fi {
+    color: white;
+}
+
 .sky360-topbar-title {
     color: white;
     font-size: var(--sky-font-size-xl);
