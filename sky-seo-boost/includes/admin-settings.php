@@ -419,46 +419,94 @@ function sky_seo_sanitize_settings($input) {
 function sky_seo_settings_page() {
     $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
     ?>
-    <div class="sky-seo-settings-wrap">
-        <div class="sky-seo-dashboard-header">
-            <div class="sky-header-top">
-                <br>
-            </div>
+    <div class="sky360-admin-page">
+        <!-- WordPress Notices Area - appears above everything -->
+        <div class="sky360-notices-area">
+            <?php settings_errors('sky_seo_settings'); ?>
         </div>
 
-        <h2 class="nav-tab-wrapper">
-            <a href="?page=sky360-settings&tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
-                <?php _e('General', 'sky360'); ?>
-            </a>
-            <a href="?page=sky360-settings&tab=tracking" class="nav-tab <?php echo $active_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
-                <?php _e('Tracking Codes', 'sky360'); ?>
-            </a>
-            <a href="?page=sky360-settings&tab=seo-integration" class="nav-tab <?php echo $active_tab === 'seo-integration' ? 'nav-tab-active' : ''; ?>">
-                <?php _e('SEO Plugin Integration', 'sky360'); ?>
-            </a>
-            <a href="?page=sky360-settings&tab=duplicate" class="nav-tab <?php echo $active_tab === 'duplicate' ? 'nav-tab-active' : ''; ?>">
-                <?php _e('Duplicate Post', 'sky360'); ?>
-            </a>
-            <?php
-            // Allow other features to add tabs
-            do_action('sky_seo_settings_tabs', $active_tab);
-            ?>
-        </h2>
-        
-        <?php
-        // Allow other features to add content before default tabs
-        do_action('sky_seo_settings_content', $active_tab);
-        
-        // Default tab content
-        if ($active_tab === 'general') : ?>
-            <?php sky_seo_general_settings_tab(); ?>
-        <?php elseif ($active_tab === 'tracking') : ?>
-            <?php sky_seo_analytics_check_tab(); ?>
-        <?php elseif ($active_tab === 'seo-integration') : ?>
-            <?php sky_seo_seo_integration_tab(); ?>
-        <?php elseif ($active_tab === 'duplicate') : ?>
-            <?php sky_seo_duplicate_settings_tab(); ?>
-        <?php endif; ?>
+        <div class="sky360-page-wrapper">
+            <!-- Top Bar -->
+            <div class="sky360-topbar">
+                <div class="sky360-topbar-left">
+                    <div class="sky360-topbar-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white" width="24" height="24"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0z"/></svg>
+                    </div>
+                    <div>
+                        <h1 class="sky360-topbar-title"><?php esc_html_e('Sky360', 'sky360'); ?></h1>
+                        <p class="sky360-topbar-subtitle"><?php esc_html_e('Settings & Configuration', 'sky360'); ?></p>
+                    </div>
+                </div>
+                <div class="sky360-topbar-right">
+                    <span class="sky360-topbar-badge">v<?php echo esc_html(SKY360_VERSION); ?></span>
+                    <a href="https://skywebdesign.co.uk/support" target="_blank" class="sky360-topbar-button">
+                        <span class="dashicons dashicons-sos" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                        <?php esc_html_e('Support', 'sky360'); ?>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="sky-seo-navigation-wrapper">
+                <ul class="sky-seo-navigation-menu">
+                    <li>
+                        <a href="?page=sky-seo-settings&tab=general" class="nav-link <?php echo $active_tab === 'general' ? 'active' : ''; ?>">
+                            <span class="dashicons dashicons-admin-generic"></span>
+                            <?php esc_html_e('General', 'sky360'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page=sky-seo-settings&tab=tracking" class="nav-link <?php echo $active_tab === 'tracking' ? 'active' : ''; ?>">
+                            <span class="dashicons dashicons-chart-area"></span>
+                            <?php esc_html_e('Tracking Codes', 'sky360'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page=sky-seo-settings&tab=seo-integration" class="nav-link <?php echo $active_tab === 'seo-integration' ? 'active' : ''; ?>">
+                            <span class="dashicons dashicons-search"></span>
+                            <?php esc_html_e('SEO Plugin Integration', 'sky360'); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page=sky-seo-settings&tab=duplicate" class="nav-link <?php echo $active_tab === 'duplicate' ? 'active' : ''; ?>">
+                            <span class="dashicons dashicons-admin-page"></span>
+                            <?php esc_html_e('Duplicate Post', 'sky360'); ?>
+                        </a>
+                    </li>
+                    <?php
+                    // Allow other features to add tabs
+                    do_action('sky_seo_settings_tabs', $active_tab);
+                    ?>
+                </ul>
+            </div>
+
+            <!-- Content Wrapper -->
+            <div class="sky-seo-content-wrapper">
+                <?php
+                // Allow other features to add content before default tabs
+                do_action('sky_seo_settings_content', $active_tab);
+
+                // Default tab content
+                if ($active_tab === 'general') {
+                    sky_seo_general_settings_tab();
+                } elseif ($active_tab === 'tracking') {
+                    sky_seo_analytics_check_tab();
+                } elseif ($active_tab === 'seo-integration') {
+                    sky_seo_seo_integration_tab();
+                } elseif ($active_tab === 'duplicate') {
+                    sky_seo_duplicate_settings_tab();
+                }
+                ?>
+            </div>
+
+            <!-- Footer -->
+            <div class="sky-seo-footer" style="margin-top: 24px;">
+                <div class="sky-seo-powered-by">
+                    <?php esc_html_e('Powered by', 'sky360'); ?>
+                    <a href="https://skywebdesign.co.uk" target="_blank">Sky Web Design</a>
+                </div>
+            </div>
+        </div>
     </div>
     <?php
 }

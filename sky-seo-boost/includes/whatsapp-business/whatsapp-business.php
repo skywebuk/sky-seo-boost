@@ -244,7 +244,7 @@ class Sky_SEO_WhatsApp_Business {
      */
     public function add_admin_menu() {
         add_submenu_page(
-            'sky360',
+            'sky-seo-boost',
             __('WhatsApp Chat', 'sky360'),
             __('WhatsApp Chat', 'sky360'),
             'manage_options',
@@ -259,23 +259,25 @@ class Sky_SEO_WhatsApp_Business {
     public function render_admin_page() {
         // Force database fix when viewing the page
         $this->fix_database_structure();
-        
+
         // Get current tab - CHANGED: Default is now 'tracking'
         $current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'tracking';
+
+        // Define tabs
+        $tabs = [
+            ['slug' => 'tracking', 'label' => __('Tracking', 'sky360'), 'icon' => 'dashicons-chart-bar'],
+            ['slug' => 'configuration', 'label' => __('Configuration', 'sky360'), 'icon' => 'dashicons-admin-settings'],
+        ];
+
+        // Start Sky360 page wrapper
+        sky360_admin_page_start();
+        sky360_render_admin_header(
+            __('WhatsApp Chat', 'sky360'),
+            __('Track WhatsApp conversations and configure chat widget', 'sky360')
+        );
+        sky360_render_nav_tabs($tabs, $current_tab, 'sky-seo-whatsapp');
+        sky360_content_wrapper_start();
         ?>
-        <div class="wrap sky-seo-whatsapp-wrap">
-            <!-- Tab Navigation - CHANGED: Tab order -->
-            <nav class="nav-tab-wrapper sky-seo-nav-tabs">
-                <a href="?page=sky-seo-whatsapp&tab=tracking"
-                   class="nav-tab <?php echo $current_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e('Tracking', 'sky360'); ?>
-                </a>
-                <a href="?page=sky-seo-whatsapp&tab=configuration"
-                   class="nav-tab <?php echo $current_tab === 'configuration' ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e('Configuration', 'sky360'); ?>
-                </a>
-            </nav>
-            
             <div class="sky-seo-tab-content">
                 <?php
                 // CHANGED: Switch default case to tracking
@@ -290,7 +292,7 @@ class Sky_SEO_WhatsApp_Business {
                             echo '</div>';
                         }
                         break;
-                    
+
                     case 'tracking':
                     default:
                         if ($this->tracking) {
@@ -305,8 +307,9 @@ class Sky_SEO_WhatsApp_Business {
                 }
                 ?>
             </div>
-        </div>
         <?php
+        sky360_content_wrapper_end();
+        sky360_admin_page_end();
     }
     
     /**

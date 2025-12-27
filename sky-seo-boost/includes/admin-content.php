@@ -75,22 +75,20 @@ function sky_seo_all_content_page() {
         $end = date('Y-m-d 23:59:59', strtotime($end_date));
         $where_date = $wpdb->prepare(" AND click_time BETWEEN %s AND %s", $start, $end);
     }
+    // Start Sky360 page wrapper
+    sky360_admin_page_start();
+    sky360_render_admin_header(
+        __('All Content', 'sky360'),
+        __('Manage Areas, Trending Searches, and Sectors', 'sky360'),
+        [
+            ['url' => admin_url('post-new.php?post_type=sky_areas'), 'label' => __('New Area', 'sky360'), 'icon' => 'dashicons-plus-alt'],
+            ['url' => admin_url('post-new.php?post_type=sky_trending'), 'label' => __('New Trending', 'sky360'), 'icon' => 'dashicons-plus-alt'],
+            ['url' => admin_url('post-new.php?post_type=sky_sectors'), 'label' => __('New Sector', 'sky360'), 'icon' => 'dashicons-plus-alt'],
+        ]
+    );
+    sky360_content_wrapper_start();
     ?>
 <div class="sky-seo-all-content-wrap">
-    <div class="sky-seo-content-header">
-        <h1><?php esc_html_e('All Content', 'sky360'); ?></h1>
-            <div class="sky-seo-header-actions">
-                <a href="<?php echo admin_url('post-new.php?post_type=sky_areas'); ?>" class="button button-primary">
-                    <span class="dashicons dashicons-plus-alt"></span> <?php _e('New Area', 'sky360'); ?>
-                </a>
-                <a href="<?php echo admin_url('post-new.php?post_type=sky_trending'); ?>" class="button button-primary">
-                    <span class="dashicons dashicons-plus-alt"></span> <?php _e('New Trending', 'sky360'); ?>
-                </a>
-                <a href="<?php echo admin_url('post-new.php?post_type=sky_sectors'); ?>" class="button button-primary">
-                    <span class="dashicons dashicons-plus-alt"></span> <?php _e('New Sector', 'sky360'); ?>
-                </a>
-            </div>
-        </div>
 
         <div class="sky-seo-content-filters-card">
             <form method="get" class="sky-seo-filters-form">
@@ -123,7 +121,7 @@ function sky_seo_all_content_page() {
                     
                     <div class="sky-seo-filter-actions">
                         <button type="submit" class="button"><?php _e('Apply Filters', 'sky360'); ?></button>
-                        <a href="?page=sky360-all-content" class="button button-link"><?php _e('Clear', 'sky360'); ?></a>
+                        <a href="?page=sky-seo-all-content" class="button button-link"><?php _e('Clear', 'sky360'); ?></a>
                     </div>
                 </div>
             </form>
@@ -312,7 +310,7 @@ function sky_seo_all_content_page() {
                                         <p><?php esc_html_e('No content found.', 'sky360'); ?></p>
                                         <?php if (!empty($search_term) || $selected_post_type !== 'all' || !empty($start_date)) : ?>
                                             <p class="description"><?php _e('Try adjusting your filters or', 'sky360'); ?> 
-                                                <a href="?page=sky360-all-content"><?php _e('clear all filters', 'sky360'); ?></a>
+                                                <a href="?page=sky-seo-all-content"><?php _e('clear all filters', 'sky360'); ?></a>
                                             </p>
                                         <?php endif; ?>
                                     </div>
@@ -404,5 +402,7 @@ function sky_seo_all_content_page() {
         </form>
     </div>
     <?php
+    sky360_content_wrapper_end();
+    sky360_admin_page_end();
 }
 ?>

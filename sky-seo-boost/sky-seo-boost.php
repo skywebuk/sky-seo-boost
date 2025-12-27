@@ -3,7 +3,7 @@
  * Plugin Name: Sky360
  * Plugin URI: https://skywebdesign.co.uk/sky360
  * Description: Complete business toolkit with SEO content management, analytics, WhatsApp Business, UTM tracking, and Google Ads integration.
- * Version: 5.0.0
+ * Version: 5.0.2
  * Author: Sky Web Design
  * Author URI: https://skywebdesign.co.uk
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('SKY360_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SKY360_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('SKY360_VERSION', '5.0.0');
+define('SKY360_VERSION', '5.0.2');
 define('SKY360_FILE', __FILE__);
 
 // Legacy constant aliases for backward compatibility
@@ -197,7 +197,7 @@ class Sky_SEO_Boost {
             <p>
                 <strong><?php _e('Sky SEO Boost:', 'sky360'); ?></strong>
                 <?php _e('This plugin requires a valid license to function. All features are currently disabled.', 'sky360'); ?>
-                <a href="<?php echo admin_url('admin.php?page=sky360-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
+                <a href="<?php echo admin_url('admin.php?page=sky-seo-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
                     <?php _e('Activate License', 'sky360'); ?>
                 </a>
             </p>
@@ -415,7 +415,7 @@ class Sky_SEO_Boost {
             __('Sky360', 'sky360'),
             __('Sky360', 'sky360'),
             'edit_pages',
-            'sky360',
+            'sky-seo-boost',
             $this->license_valid ? 'sky_seo_analytics_tab' : [$this, 'show_license_required_page'],
             $icon_url,
             2  // Position 2 = right under Dashboard
@@ -423,25 +423,25 @@ class Sky_SEO_Boost {
 
         // Remove duplicate first submenu
         global $submenu;
-        if (isset($submenu['sky360'][0])) {
-            unset($submenu['sky360'][0]);
+        if (isset($submenu['sky-seo-boost'][0])) {
+            unset($submenu['sky-seo-boost'][0]);
         }
 
         // Only show other menu items if licensed
         if ($this->license_valid) {
             // All Content Submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('All Content', 'sky360'),
                 __('All Content', 'sky360'),
                 'edit_pages',
-                'sky360-all-content',
+                'sky-seo-all-content',
                 'sky_seo_all_content_page'
             );
 
             // Areas submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Areas We Cover', 'sky360'),
                 __('Areas', 'sky360'),
                 'edit_pages',
@@ -450,7 +450,7 @@ class Sky_SEO_Boost {
 
             // Trending Searches submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Trending Searches', 'sky360'),
                 __('Trending Searches', 'sky360'),
                 'edit_pages',
@@ -459,7 +459,7 @@ class Sky_SEO_Boost {
 
             // Sectors submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Sectors', 'sky360'),
                 __('Sectors', 'sky360'),
                 'edit_pages',
@@ -469,11 +469,11 @@ class Sky_SEO_Boost {
             // UTM Tracking submenu
             if (function_exists('sky_seo_render_utm_interface')) {
                 add_submenu_page(
-                    'sky360',
+                    'sky-seo-boost',
                     __('UTM Tracking', 'sky360'),
                     __('UTM Tracking', 'sky360'),
                     'manage_options',
-                    'sky360-utm',
+                    'sky-seo-utm',
                     'sky_seo_render_utm_interface'
                 );
             }
@@ -481,11 +481,11 @@ class Sky_SEO_Boost {
             // Google Ads submenu
             if (function_exists('sky_seo_render_google_ads_page')) {
                 add_submenu_page(
-                    'sky360',
+                    'sky-seo-boost',
                     __('Google Ads', 'sky360'),
                     __('Google Ads', 'sky360'),
                     'manage_options',
-                    'sky360-google-ads',
+                    'sky-seo-google-ads',
                     'sky_seo_render_google_ads_page'
                 );
             }
@@ -493,28 +493,23 @@ class Sky_SEO_Boost {
 
         // Settings submenu - always show for license access
         add_submenu_page(
-            'sky360',
+            'sky-seo-boost',
             __('Settings', 'sky360'),
             __('Settings', 'sky360'),
             'manage_options',
-            'sky360-settings',
+            'sky-seo-settings',
             'sky_seo_settings_page'
         );
     }
 
     /**
-     * Get the menu icon as base64 encoded data URI
+     * Get the menu icon as base64 encoded SVG data URI
      */
     private function get_menu_icon() {
-        $icon_path = SKY360_PLUGIN_DIR . 'assets/img/skyweb_logo_black.png';
+        // Shield icon SVG for WordPress admin menu (Font Awesome style)
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="black"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0z"/></svg>';
 
-        if (file_exists($icon_path)) {
-            $icon_data = file_get_contents($icon_path);
-            return 'data:image/png;base64,' . base64_encode($icon_data);
-        }
-
-        // Fallback to dashicon
-        return 'dashicons-chart-line';
+        return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
 
     public function show_license_required_page() {
@@ -527,7 +522,7 @@ class Sky_SEO_Boost {
                     <?php esc_html_e('This plugin requires a valid license to function. Please activate your license to unlock all features.', 'sky360'); ?>
                 </p>
                 <p>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=sky360-settings&tab=license')); ?>" class="button button-primary">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=sky-seo-settings&tab=license')); ?>" class="button button-primary">
                         <?php esc_html_e('Activate License', 'sky360'); ?>
                     </a>
                 </p>

@@ -167,7 +167,7 @@ jQuery(document).ready(function($) {
     });
 
     // Settings page tab persistence
-    if (window.location.href.includes('page=sky360-settings')) {
+    if (window.location.href.includes('page=sky-seo-settings')) {
         const tabLinks = document.querySelectorAll('.nav-tab');
         tabLinks.forEach(link => {
             link.addEventListener('click', function() {

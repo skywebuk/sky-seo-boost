@@ -472,18 +472,22 @@ function sky_seo_render_utm_interface() {
         echo '<div class="notice notice-error"><p>Error: Sky SEO Boost plugin constants not defined.</p></div>';
         return;
     }
-    
+
+    // Start Sky360 page wrapper
+    sky360_admin_page_start();
+    sky360_render_admin_header(
+        __('UTM Tracking', 'sky360'),
+        __('Create and track UTM campaign links', 'sky360')
+    );
+    sky360_content_wrapper_start();
     ?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        
         <!-- Check if WooCommerce is active -->
         <?php if (!class_exists('WooCommerce')) : ?>
-            <div class="notice notice-warning">
+            <div class="notice notice-warning" style="margin: 0 0 20px 0;">
                 <p><?php _e('WooCommerce is required for conversion tracking features.', 'sky360'); ?></p>
             </div>
         <?php endif; ?>
-        
+
         <div id="sky-utm-dashboard" class="sky-seo-utm-dashboard">
             
             <!-- UTM Builder Section -->
@@ -685,10 +689,11 @@ function sky_seo_render_utm_interface() {
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
-    </div>
     <?php
+    sky360_content_wrapper_end();
+    sky360_admin_page_end();
 }
 
 /**
@@ -696,7 +701,7 @@ function sky_seo_render_utm_interface() {
  */
 function sky_seo_enqueue_utm_admin_assets($hook) {
     // Only load on our pages
-    if (strpos($hook, 'sky360-utm') === false) {
+    if (strpos($hook, 'sky-seo-utm') === false) {
         return;
     }
     

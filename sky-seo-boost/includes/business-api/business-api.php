@@ -258,7 +258,7 @@ class Sky_SEO_Business_API {
      */
     public function add_admin_menu() {
         add_submenu_page(
-            'sky360',
+            'sky-seo-boost',
             __('Business API Settings', 'sky360'),
             __('Business API', 'sky360'),
             'manage_options',

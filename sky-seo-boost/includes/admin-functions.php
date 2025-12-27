@@ -98,13 +98,16 @@ function sky_seo_enqueue_admin_scripts($hook) {
    $is_edit_page = $hook === 'edit.php' && in_array($current_post_type, $post_types);
 
    // Always load base admin styles and scripts on our pages
-   if (in_array($hook, ['edit.php', 'post.php', 'post-new.php']) && in_array($current_post_type, $post_types) 
-       || $is_sky_seo_page 
+   if (in_array($hook, ['edit.php', 'post.php', 'post-new.php']) && in_array($current_post_type, $post_types)
+       || $is_sky_seo_page
        || $is_edit_page
        || $hook === 'index.php') {
-       
+
+       // Load Flaticon UIcons font for the logo icon
+       wp_enqueue_style('flaticon-uicons', 'https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css', [], '2.6.0');
+
        // Load base admin CSS
-       wp_enqueue_style('sky-seo-admin', $plugin_url . '/assets/css/admin.css', [], $version);
+       wp_enqueue_style('sky-seo-admin', $plugin_url . '/assets/css/admin.css', ['flaticon-uicons'], $version);
        
        // Load base admin JS with Chart.js
        wp_enqueue_script('chart-js', 'https://cdn.jsdelivr.net/npm/chart.js', [], '3.9.1', true);
@@ -112,12 +115,12 @@ function sky_seo_enqueue_admin_scripts($hook) {
    }
    
    // Load All Content page specific styles - FORCE LOAD on edit.php for our post types
-   if (($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360-all-content') 
+   if (($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-all-content')
        || ($hook === 'edit.php' && in_array($current_post_type, $post_types))) {
-       wp_enqueue_style('sky360-all-content', $plugin_url . '/assets/css/all-content.css', ['sky-seo-admin'], $version);
-       
+       wp_enqueue_style('sky-seo-all-content', $plugin_url . '/assets/css/all-content.css', ['sky-seo-admin'], $version);
+
        // Add inline CSS to ensure our styles take precedence
-       wp_add_inline_style('sky360-all-content', '
+       wp_add_inline_style('sky-seo-all-content', '
            /* Force our layout on edit.php pages */
            body.post-type-sky_areas .wrap > *:not(.sky-seo-post-list-wrap),
            body.post-type-sky_trending .wrap > *:not(.sky-seo-post-list-wrap),
@@ -127,8 +130,8 @@ function sky_seo_enqueue_admin_scripts($hook) {
        ');
    }
    
-   // Load Analytics Dashboard assets on main plugin page (sky360)
-   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360') {
+   // Load Analytics Dashboard assets on main plugin page (sky-seo-boost)
+   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-boost') {
        wp_enqueue_style('sky-seo-analytics-dashboard', $plugin_url . '/assets/css/analytics-dashboard.css', ['sky-seo-admin'], $version);
        wp_enqueue_script('sky-seo-analytics-dashboard', $plugin_url . '/assets/js/analytics-dashboard.js', ['jquery', 'chart-js', 'sky-seo-admin'], $version, true);
        
@@ -140,7 +143,7 @@ function sky_seo_enqueue_admin_scripts($hook) {
    }
    
    // Load general settings styles and scripts
-   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360-settings') {
+   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-settings') {
        // Always load general settings CSS on settings page
        wp_enqueue_style('sky-seo-general-settings', $plugin_url . '/assets/css/general-settings.css', ['sky-seo-admin'], $version);
        wp_enqueue_script('sky-seo-general-settings', $plugin_url . '/assets/js/general-settings.js', ['jquery', 'sky-seo-admin'], $version, true);
@@ -552,4 +555,127 @@ function sky_seo_trending_feed() {
 
 function sky_seo_sectors_feed() {
     load_template(SKY_SEO_BOOST_PLUGIN_DIR . 'templates/feed-sectors.php');
+}
+
+/**
+ * ========================================
+ * SKY360 ADMIN PAGE HELPER FUNCTIONS
+ * Provides consistent styling across all admin pages
+ * ========================================
+ */
+
+/**
+ * Render the Sky360 admin page header/topbar
+ *
+ * @param string $title Page title
+ * @param string $subtitle Page subtitle/description
+ * @param array $actions Optional action buttons for the right side
+ */
+function sky360_render_admin_header($title, $subtitle = '', $actions = []) {
+    ?>
+    <div class="sky360-topbar">
+        <div class="sky360-topbar-left">
+            <div class="sky360-topbar-logo">
+                <i class="fi fi-sr-square-s"></i>
+            </div>
+            <div>
+                <h1 class="sky360-topbar-title"><?php echo esc_html($title); ?></h1>
+                <?php if ($subtitle) : ?>
+                    <p class="sky360-topbar-subtitle"><?php echo esc_html($subtitle); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="sky360-topbar-right">
+            <span class="sky360-topbar-badge">v<?php echo esc_html(SKY360_VERSION); ?></span>
+            <?php foreach ($actions as $action) : ?>
+                <a href="<?php echo esc_url($action['url']); ?>" class="sky360-topbar-button" <?php echo isset($action['target']) ? 'target="' . esc_attr($action['target']) . '"' : ''; ?>>
+                    <?php if (isset($action['icon'])) : ?>
+                        <span class="dashicons <?php echo esc_attr($action['icon']); ?>" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                    <?php endif; ?>
+                    <?php echo esc_html($action['label']); ?>
+                </a>
+            <?php endforeach; ?>
+            <a href="https://skywebdesign.co.uk/support" target="_blank" class="sky360-topbar-button">
+                <span class="dashicons dashicons-sos" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                <?php esc_html_e('Support', 'sky360'); ?>
+            </a>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Start the Sky360 admin page wrapper
+ * Call this at the beginning of an admin page
+ */
+function sky360_admin_page_start() {
+    ?>
+    <div class="sky360-admin-page">
+        <div class="sky360-notices-area">
+            <?php settings_errors(); ?>
+        </div>
+        <div class="sky360-page-wrapper">
+    <?php
+}
+
+/**
+ * End the Sky360 admin page wrapper
+ * Call this at the end of an admin page
+ */
+function sky360_admin_page_end() {
+    ?>
+            <div class="sky-seo-footer" style="margin-top: 24px;">
+                <div class="sky-seo-powered-by">
+                    <?php esc_html_e('Powered by', 'sky360'); ?>
+                    <a href="https://skywebdesign.co.uk" target="_blank">Sky Web Design</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Render navigation tabs for admin pages
+ *
+ * @param array $tabs Array of tabs with 'slug', 'label', 'icon' keys
+ * @param string $active_tab Currently active tab slug
+ * @param string $page_slug The page slug for building URLs
+ */
+function sky360_render_nav_tabs($tabs, $active_tab, $page_slug) {
+    ?>
+    <div class="sky-seo-navigation-wrapper">
+        <ul class="sky-seo-navigation-menu">
+            <?php foreach ($tabs as $tab) : ?>
+                <li>
+                    <a href="?page=<?php echo esc_attr($page_slug); ?>&tab=<?php echo esc_attr($tab['slug']); ?>"
+                       class="nav-link <?php echo $active_tab === $tab['slug'] ? 'active' : ''; ?>">
+                        <?php if (isset($tab['icon'])) : ?>
+                            <span class="dashicons <?php echo esc_attr($tab['icon']); ?>"></span>
+                        <?php endif; ?>
+                        <?php echo esc_html($tab['label']); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php
+}
+
+/**
+ * Start content wrapper
+ */
+function sky360_content_wrapper_start() {
+    ?>
+    <div class="sky-seo-content-wrapper">
+    <?php
+}
+
+/**
+ * End content wrapper
+ */
+function sky360_content_wrapper_end() {
+    ?>
+    </div>
+    <?php
 }

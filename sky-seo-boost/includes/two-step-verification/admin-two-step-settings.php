@@ -25,11 +25,12 @@ function sky_seo_two_step_add_settings_tab($active_tab) {
     }
 
     ?>
-    <a href="?page=sky360-settings&tab=two-step"
-       class="nav-tab <?php echo $active_tab === 'two-step' ? 'nav-tab-active' : ''; ?>">
-        <span class="dashicons dashicons-shield" style="vertical-align: middle;"></span>
-        <?php esc_html_e('Two-Step Verification', 'sky360'); ?>
-    </a>
+    <li>
+        <a href="?page=sky-seo-settings&tab=two-step" class="nav-link <?php echo $active_tab === 'two-step' ? 'active' : ''; ?>">
+            <span class="dashicons dashicons-shield"></span>
+            <?php esc_html_e('Two-Step Verification', 'sky360'); ?>
+        </a>
+    </li>
     <?php
 }
 add_action('sky_seo_settings_tabs', 'sky_seo_two_step_add_settings_tab');

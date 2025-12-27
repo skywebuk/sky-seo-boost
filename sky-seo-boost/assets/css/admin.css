@@ -1,30 +1,32 @@
 /**
- * Sky SEO Boost - Admin Styles
+ * Sky360 - Admin Styles
  * Modern, Clean & User-Friendly Interface
  *
- * @package Sky_SEO_Boost
- * @version 2.0.0
+ * @package Sky360
+ * @version 3.0.0
  *
  * Table of Contents:
  * 1. CSS Variables Import
- * 2. Base Styles
- * 3. Page Wrapper
- * 4. Navigation Menu
- * 5. Content Wrapper
- * 6. Form Tables
- * 7. Form Controls
- * 8. Checkbox & Radio Styles
- * 9. Toggle Switch
- * 10. Buttons
- * 11. Cards & Panels
- * 12. Status Badges
- * 13. Tables
- * 14. Tab Navigation
- * 15. Accordion
- * 16. Dashboard Stats
- * 17. Charts
- * 18. Utilities
- * 19. Responsive Design
+ * 2. WordPress Admin Notice Area
+ * 3. Top Bar
+ * 4. Base Styles
+ * 5. Page Wrapper
+ * 6. Navigation Menu
+ * 7. Content Wrapper
+ * 8. Form Tables
+ * 9. Form Controls
+ * 10. Checkbox & Radio Styles
+ * 11. Toggle Switch
+ * 12. Buttons
+ * 13. Cards & Panels
+ * 14. Status Badges
+ * 15. Tables
+ * 16. Tab Navigation
+ * 17. Accordion
+ * 18. Dashboard Stats
+ * 19. Charts
+ * 20. Utilities
+ * 21. Responsive Design
  */
 
 /* ========================================
@@ -34,9 +36,160 @@
 @import url('./variables.css');
 
 /* ========================================
-   2. BASE STYLES
+   2. WORDPRESS ADMIN NOTICE AREA
    ======================================== */
 
+/* Notices container appears above everything */
+.sky360-notices-area {
+    margin: 20px 20px 0 0;
+}
+
+.sky360-notices-area .notice {
+    margin: 0 0 10px 0;
+}
+
+/* Hide WordPress default notices placement */
+.sky360-admin-page .wrap > .notice,
+.sky360-admin-page .wrap > .updated,
+.sky360-admin-page .wrap > .error {
+    display: none;
+}
+
+/* ========================================
+   3. TOP BAR
+   ======================================== */
+
+.sky360-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--sky-primary) 0%, var(--sky-primary-dark) 100%);
+    padding: 16px 24px;
+    border-radius: var(--sky-radius-xl);
+    margin-bottom: 24px;
+    box-shadow: var(--sky-shadow-md);
+}
+
+.sky360-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.sky360-topbar-logo {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--sky-radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.sky360-topbar-logo img,
+.sky360-topbar-logo svg {
+    width: 28px !important;
+    height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    object-fit: contain;
+    display: block;
+}
+
+.sky360-topbar-logo .fi {
+    font-size: 24px;
+    color: white;
+    line-height: 1;
+}
+
+/* Dark mode support for topbar logo icon */
+@media (prefers-color-scheme: dark) {
+    .sky360-topbar-logo .fi {
+        color: white;
+    }
+}
+
+/* WordPress admin dark mode support */
+body.admin-color-modern .sky360-topbar-logo .fi,
+body.admin-color-blue .sky360-topbar-logo .fi,
+body.admin-color-coffee .sky360-topbar-logo .fi,
+body.admin-color-ectoplasm .sky360-topbar-logo .fi,
+body.admin-color-midnight .sky360-topbar-logo .fi,
+body.admin-color-ocean .sky360-topbar-logo .fi,
+body.admin-color-sunrise .sky360-topbar-logo .fi {
+    color: white;
+}
+
+.sky360-topbar-title {
+    color: white;
+    font-size: var(--sky-font-size-xl);
+    font-weight: var(--sky-font-weight-bold);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sky360-topbar-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--sky-font-size-sm);
+    margin: 4px 0 0 0;
+    font-weight: var(--sky-font-weight-normal);
+}
+
+.sky360-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sky360-topbar-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--sky-radius-full);
+    font-size: var(--sky-font-size-xs);
+    font-weight: var(--sky-font-weight-semibold);
+}
+
+.sky360-topbar-button {
+    background: white;
+    color: var(--sky-primary);
+    padding: 8px 16px;
+    border-radius: var(--sky-radius-lg);
+    font-size: var(--sky-font-size-sm);
+    font-weight: var(--sky-font-weight-semibold);
+    text-decoration: none;
+    transition: var(--sky-transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sky360-topbar-button:hover {
+    background: var(--sky-gray-100);
+    color: var(--sky-primary-dark);
+    transform: translateY(-1px);
+}
+
+/* ========================================
+   4. BASE STYLES
+   ======================================== */
+
+.sky360-page-wrapper {
+    margin: 20px 20px 20px 0;
+    font-family: var(--sky-font-family);
+    font-size: var(--sky-font-size-base);
+    color: var(--sky-gray-700);
+    line-height: 1.6;
+}
+
+/* Legacy wrapper support */
 .sky-seo-page-wrapper {
     margin: 20px 20px 20px 0;
     font-family: var(--sky-font-family);
@@ -45,43 +198,57 @@
     line-height: 1.6;
 }
 
+.sky360-page-wrapper *,
+.sky360-page-wrapper *::before,
+.sky360-page-wrapper *::after,
 .sky-seo-page-wrapper *,
 .sky-seo-page-wrapper *::before,
 .sky-seo-page-wrapper *::after {
     box-sizing: border-box;
 }
 
+.sky360-page-wrapper img,
 .sky-seo-page-wrapper img {
     max-width: 100%;
     height: auto;
 }
 
+.sky360-page-wrapper a,
 .sky-seo-page-wrapper a {
     color: var(--sky-primary);
     text-decoration: none;
     transition: var(--sky-transition-fast);
 }
 
+.sky360-page-wrapper a:hover,
 .sky-seo-page-wrapper a:hover {
     color: var(--sky-primary-hover);
 }
 
+.sky360-page-wrapper p,
 .sky-seo-page-wrapper p {
     margin: 0 0 var(--sky-space-4) 0;
 }
 
+.sky360-page-wrapper p:last-child,
 .sky-seo-page-wrapper p:last-child {
     margin-bottom: 0;
 }
 
-/* Hide WordPress notices inside our wrapper */
+/* Hide WordPress notices inside our wrapper - they should appear above it */
+.sky360-page-wrapper > .notice,
 .sky-seo-page-wrapper > .notice {
     display: none;
 }
 
 /* ========================================
-   3. PAGE WRAPPER
+   5. PAGE WRAPPER
    ======================================== */
+
+.sky360-admin-page .wrap {
+    margin: 0;
+    max-width: none;
+}
 
 .sky360-page .wrap {
     margin: 0;
@@ -182,6 +349,146 @@
     margin: 0;
 }
 
+/* Consistent styling for all content within wrapper */
+.sky-seo-content-wrapper h2,
+.sky360-page-wrapper .sky-seo-content-wrapper h2 {
+    font-size: var(--sky-font-size-lg);
+    font-weight: var(--sky-font-weight-semibold);
+    color: var(--sky-gray-900);
+    margin: 0 0 var(--sky-space-4) 0;
+    padding: 0;
+}
+
+.sky-seo-content-wrapper h3,
+.sky360-page-wrapper .sky-seo-content-wrapper h3 {
+    font-size: var(--sky-font-size-base);
+    font-weight: var(--sky-font-weight-semibold);
+    color: var(--sky-gray-800);
+    margin: var(--sky-space-6) 0 var(--sky-space-3) 0;
+    padding: 0;
+}
+
+.sky-seo-content-wrapper h3:first-child {
+    margin-top: 0;
+}
+
+.sky-seo-content-wrapper p,
+.sky360-page-wrapper .sky-seo-content-wrapper p {
+    margin: 0 0 var(--sky-space-4) 0;
+    color: var(--sky-gray-600);
+    line-height: 1.6;
+}
+
+.sky-seo-content-wrapper .description,
+.sky360-page-wrapper .description {
+    font-size: var(--sky-font-size-sm);
+    color: var(--sky-gray-500);
+    margin-top: var(--sky-space-2);
+}
+
+/* Cards styling within content wrapper */
+.sky-seo-content-wrapper .sky-seo-card,
+.sky-seo-content-wrapper .sky-seo-settings-card,
+.sky-seo-content-wrapper .sky-seo-tracking-card {
+    background: white;
+    border: 1px solid var(--sky-gray-200);
+    border-radius: var(--sky-radius-lg);
+    padding: var(--sky-space-6);
+    margin-bottom: var(--sky-space-6);
+}
+
+.sky-seo-content-wrapper .sky-seo-card:last-child,
+.sky-seo-content-wrapper .sky-seo-settings-card:last-child {
+    margin-bottom: 0;
+}
+
+/* Quick Fixes and similar sections */
+.sky-seo-content-wrapper .sky-seo-quick-fixes,
+.sky-seo-content-wrapper > div > h3 + p,
+.sky-seo-content-wrapper > div > p:first-child {
+    margin-bottom: var(--sky-space-4);
+}
+
+/* Button groups styling */
+.sky-seo-content-wrapper .button,
+.sky360-page-wrapper .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sky-space-2);
+    padding: var(--sky-space-2) var(--sky-space-4);
+    font-size: var(--sky-font-size-sm);
+    font-weight: var(--sky-font-weight-medium);
+    border-radius: var(--sky-radius-md);
+    transition: var(--sky-transition-fast);
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: var(--sky-space-3);
+    margin-right: var(--sky-space-2);
+}
+
+.sky-seo-content-wrapper .button-primary,
+.sky360-page-wrapper .button-primary {
+    background-color: var(--sky-primary);
+    border-color: var(--sky-primary);
+    color: white;
+}
+
+.sky-seo-content-wrapper .button-primary:hover,
+.sky360-page-wrapper .button-primary:hover {
+    background-color: var(--sky-primary-hover);
+    border-color: var(--sky-primary-hover);
+    color: white;
+}
+
+.sky-seo-content-wrapper .button-secondary,
+.sky360-page-wrapper .button-secondary {
+    background-color: white;
+    border: 1px solid var(--sky-gray-300);
+    color: var(--sky-gray-700);
+}
+
+.sky-seo-content-wrapper .button-secondary:hover,
+.sky360-page-wrapper .button-secondary:hover {
+    background-color: var(--sky-gray-50);
+    border-color: var(--sky-gray-400);
+    color: var(--sky-gray-900);
+}
+
+/* Submit button styling */
+.sky-seo-content-wrapper input[type="submit"],
+.sky-seo-content-wrapper .submit .button-primary,
+.sky360-page-wrapper input[type="submit"] {
+    background: var(--sky-success);
+    border: none;
+    color: white;
+    padding: var(--sky-space-3) var(--sky-space-6);
+    font-size: var(--sky-font-size-sm);
+    font-weight: var(--sky-font-weight-semibold);
+    border-radius: var(--sky-radius-lg);
+    cursor: pointer;
+    transition: var(--sky-transition-fast);
+}
+
+.sky-seo-content-wrapper input[type="submit"]:hover,
+.sky-seo-content-wrapper .submit .button-primary:hover,
+.sky360-page-wrapper input[type="submit"]:hover {
+    background: var(--sky-success-dark);
+}
+
+/* Submit section spacing */
+.sky-seo-content-wrapper .submit,
+.sky-seo-content-wrapper p.submit {
+    margin: var(--sky-space-6) 0 0 0;
+    padding: var(--sky-space-6) 0 0 0;
+    border-top: 1px solid var(--sky-gray-200);
+}
+
+/* Remove default WP margins */
+.sky-seo-content-wrapper .form-table + .submit,
+.sky-seo-content-wrapper form > .submit:last-child {
+    margin-top: var(--sky-space-6);
+}
+
 /* ========================================
    6. FORM TABLES
    ======================================== */
@@ -234,6 +541,14 @@
    7. FORM CONTROLS
    ======================================== */
 
+.sky360-page-wrapper input[type="text"],
+.sky360-page-wrapper input[type="email"],
+.sky360-page-wrapper input[type="url"],
+.sky360-page-wrapper input[type="number"],
+.sky360-page-wrapper input[type="password"],
+.sky360-page-wrapper input[type="date"],
+.sky360-page-wrapper textarea,
+.sky360-page-wrapper select,
 .sky-seo-page-wrapper input[type="text"],
 .sky-seo-page-wrapper input[type="email"],
 .sky-seo-page-wrapper input[type="url"],
@@ -255,6 +570,9 @@
     line-height: 1.5;
 }
 
+.sky360-page-wrapper input:focus,
+.sky360-page-wrapper textarea:focus,
+.sky360-page-wrapper select:focus,
 .sky-seo-page-wrapper input:focus,
 .sky-seo-page-wrapper textarea:focus,
 .sky-seo-page-wrapper select:focus {
@@ -263,16 +581,20 @@
     box-shadow: 0 0 0 3px var(--sky-primary-light);
 }
 
+.sky360-page-wrapper input::placeholder,
+.sky360-page-wrapper textarea::placeholder,
 .sky-seo-page-wrapper input::placeholder,
 .sky-seo-page-wrapper textarea::placeholder {
     color: var(--sky-gray-400);
 }
 
+.sky360-page-wrapper textarea,
 .sky-seo-page-wrapper textarea {
     min-height: 100px;
     resize: vertical;
 }
 
+.sky360-page-wrapper select,
 .sky-seo-page-wrapper select {
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
@@ -953,8 +1275,29 @@
 }
 
 @media screen and (max-width: 782px) {
+    .sky360-page-wrapper,
     .sky-seo-page-wrapper {
         margin: 10px 10px 10px 0;
+    }
+
+    .sky360-notices-area {
+        margin: 10px 10px 0 0;
+    }
+
+    .sky360-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .sky360-topbar-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .sky360-topbar-title {
+        font-size: var(--sky-font-size-lg);
     }
 
     .sky-seo-content-wrapper {
