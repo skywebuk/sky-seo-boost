@@ -1394,6 +1394,17 @@ body.admin-color-sunrise .sky360-topbar-logo .fi {
     }
 }
 
+/* Fix WordPress footer overlapping content */
+.sky-seo-page-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.sky-seo-content-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
 /* Print Styles */
 @media print {
     .sky-seo-navigation-wrapper,

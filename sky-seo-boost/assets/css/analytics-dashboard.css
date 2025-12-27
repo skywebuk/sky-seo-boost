@@ -26,15 +26,17 @@
 .sky-seo-date-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .sky-seo-date-form {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sky-seo-date-form > * {
+    flex-shrink: 0;
 }
 
 .sky-seo-date-preset,
@@ -668,35 +670,41 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .sky-seo-date-form {
+        flex-wrap: wrap;
+    }
+}
+
 @media (max-width: 782px) {
     .sky-seo-dashboard-header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .sky-seo-date-controls {
         width: 100%;
     }
-    
+
     .sky-seo-date-form {
         flex-direction: column;
         align-items: stretch;
         width: 100%;
     }
-    
+
     .sky-seo-date-form > * {
         width: 100%;
     }
-    
+
     .sky-seo-metrics-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .sky-seo-table-actions {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .sky-seo-search-input,
     .sky-seo-filter-select {
         width: 100%;
@@ -1280,6 +1288,8 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 20px 0px 0px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Dashboard Header - Updated */
@@ -1370,13 +1380,9 @@
     100% { transform: scale(1); }
 }
 
-/* Date Controls - Updated */
+/* Date Controls - Full width on larger screens */
 .sky-seo-date-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    width: 100%; /* Added to ensure full width */
+    width: 100%;
 }
 
 /* Responsive Design */
