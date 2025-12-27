@@ -240,7 +240,10 @@
     display: flex;
     gap: 12px;
     align-items: center;
-    flex-wrap: wrap;
+}
+
+.filter-row > * {
+    flex-shrink: 0;
 }
 
 .search-input {
@@ -251,6 +254,20 @@
 
 .filter-select {
     min-width: 140px;
+}
+
+/* Bulk Actions - Force inline */
+.bulk-actions-row,
+.reviews-bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.bulk-actions-row > *,
+.reviews-bulk-actions > * {
+    flex-shrink: 0;
 }
 
 /* Reviews Table */
@@ -389,10 +406,22 @@
     text-align: center;
     width: 80px;
     white-space: nowrap;
+    padding-right: 16px !important;
 }
 
 .column-platform svg {
     vertical-align: middle;
+}
+
+/* Table Header Column Spacing */
+.reviews-table th,
+.reviews-table td {
+    padding: 12px 16px;
+}
+
+.reviews-table .column-author {
+    min-width: 100px;
+    padding-left: 16px;
 }
 
 /* ========================================
@@ -492,6 +521,30 @@
     padding: 20px 24px;
     background: var(--sky-gray-50, #f9fafb);
     border-top: 1px solid var(--sky-gray-200, #e5e7eb);
+}
+
+/* ========================================
+   LICENSE KEY FIELD
+   ======================================== */
+
+.license-key-wrapper,
+.sky-license-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.license-key-wrapper input[type="text"],
+.sky-license-field input[type="text"] {
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+.license-key-wrapper .button,
+.sky-license-field .button {
+    flex-shrink: 0;
 }
 
 /* ========================================
@@ -612,17 +665,27 @@
     }
 
     .filter-row {
-        flex-direction: column;
-        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .filter-row > * {
+        flex-shrink: 1;
     }
 
     .search-input {
         width: 100%;
         max-width: none;
+        min-width: 100%;
     }
 
     .filter-select {
-        width: 100%;
+        width: auto;
+        min-width: 120px;
+    }
+
+    .bulk-actions-row,
+    .reviews-bulk-actions {
+        flex-wrap: wrap;
     }
 
     .reviews-table {
