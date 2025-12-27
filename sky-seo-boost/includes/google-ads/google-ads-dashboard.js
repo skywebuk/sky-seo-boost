@@ -1,6 +1,8 @@
 /**
  * Sky SEO Boost - Google Ads Dashboard JavaScript
  * With custom date range picker and real-time data loading
+ *
+ * @version 4.5.0
  */
 
 (function($) {
@@ -31,6 +33,16 @@
             day: 'numeric',
             year: 'numeric'
         });
+    }
+
+    /**
+     * Escape HTML to prevent XSS attacks
+     */
+    function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        const div = document.createElement('div');
+        div.textContent = String(text);
+        return div.innerHTML;
     }
 
     // Main Dashboard Module
@@ -82,6 +94,67 @@
             // Refresh button
             $('#sky-gads-refresh').on('click', function() {
                 self.loadDashboard();
+            });
+
+            // Export button
+            $('#sky-gads-export').on('click', function() {
+                self.exportData();
+            });
+        },
+
+        /**
+         * Export data as CSV
+         */
+        exportData: function() {
+            const self = this;
+            const $button = $('#sky-gads-export');
+            const originalText = $button.html();
+
+            // Show loading state
+            $button.prop('disabled', true).html('<span class="spinner is-active" style="float:none;margin:0;"></span> Exporting...');
+
+            // Prepare data
+            const data = {
+                action: 'sky_seo_export_google_ads_data',
+                nonce: window.skyGoogleAds.nonce,
+                date_range: self.currentDateRange,
+                date_from: self.customDateFrom,
+                date_to: self.customDateTo
+            };
+
+            // Export via AJAX
+            $.ajax({
+                url: window.skyGoogleAds.ajaxurl,
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    if (response.success) {
+                        // Create download link
+                        const blob = new Blob([response.data.csv], { type: 'text/csv;charset=utf-8;' });
+                        const link = document.createElement('a');
+                        const url = URL.createObjectURL(blob);
+
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', response.data.filename);
+                        link.style.visibility = 'hidden';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        // Show success message
+                        $button.html('<span class="dashicons dashicons-yes"></span> Exported ' + response.data.count + ' records');
+                        setTimeout(function() {
+                            $button.html(originalText).prop('disabled', false);
+                        }, 2000);
+                    } else {
+                        alert(response.data.message || 'Export failed');
+                        $button.html(originalText).prop('disabled', false);
+                    }
+                },
+                error: function() {
+                    alert('Export failed. Please try again.');
+                    $button.html(originalText).prop('disabled', false);
+                }
             });
         },
 
@@ -194,10 +267,10 @@
                     const badgeClass = ctr > 5 ? 'high' : (ctr > 2 ? 'medium' : 'low');
 
                     html += '<tr>';
-                    html += '<td><span class="sky-gads-campaign-name">' + campaign.utm_campaign + '</span></td>';
+                    html += '<td><span class="sky-gads-campaign-name">' + escapeHtml(campaign.utm_campaign) + '</span></td>';
                     html += '<td class="text-center">' + formatNumber(campaign.clicks, 0) + '</td>';
                     html += '<td class="text-center">' + formatNumber(campaign.conversions, 0) + '</td>';
-                    html += '<td class="text-center"><span class="sky-gads-badge ' + badgeClass + '">' + formatNumber(ctr, 2) + '%</span></td>';
+                    html += '<td class="text-center"><span class="sky-gads-badge ' + escapeHtml(badgeClass) + '">' + formatNumber(ctr, 2) + '%</span></td>';
                     if (window.skyGoogleAds.conversionType === 'woocommerce') {
                         html += '<td class="text-right">' + formatCurrency(campaign.revenue || 0) + '</td>';
                     }
@@ -224,44 +297,47 @@
                     const badgeClass = rate > 5 ? 'high' : (rate > 2 ? 'medium' : 'low');
 
                     html += '<tr>';
-                    html += '<td><span class="sky-gads-landing-page">' + page.landing_page + '</span></td>';
+                    html += '<td><span class="sky-gads-landing-page">' + escapeHtml(page.landing_page) + '</span></td>';
                     html += '<td class="text-center">' + formatNumber(page.clicks, 0) + '</td>';
                     html += '<td class="text-center">' + formatNumber(page.conversions, 0) + '</td>';
-                    html += '<td class="text-center"><span class="sky-gads-badge ' + badgeClass + '">' + formatNumber(rate, 2) + '%</span></td>';
+                    html += '<td class="text-center"><span class="sky-gads-badge ' + escapeHtml(badgeClass) + '">' + formatNumber(rate, 2) + '%</span></td>';
                     html += '</tr>';
                 });
 
                 html += '</tbody></table></div>';
             }
 
-            // Traffic by Region
-            if (stats.country_data && stats.country_data.length > 0) {
+            // Daily Trend
+            if (stats.daily_trend && stats.daily_trend.length > 0) {
                 html += '<div class="sky-gads-table-container">';
-                html += '<h3><span class="dashicons dashicons-location"></span> Traffic by Region</h3>';
+                html += '<h3><span class="dashicons dashicons-chart-line"></span> Daily Performance (Last 7 Days)</h3>';
                 html += '<table class="sky-gads-table">';
                 html += '<thead><tr>';
-                html += '<th>IP Prefix</th>';
+                html += '<th>Date</th>';
                 html += '<th class="text-center">Clicks</th>';
                 html += '<th class="text-center">Conversions</th>';
                 html += '<th class="text-center">Conversion Rate</th>';
+                if (window.skyGoogleAds.conversionType === 'woocommerce') {
+                    html += '<th class="text-right">Revenue</th>';
+                }
                 html += '</tr></thead><tbody>';
 
-                stats.country_data.forEach(function(location) {
-                    const rate = location.clicks > 0 ? (location.conversions / location.clicks) * 100 : 0;
+                stats.daily_trend.forEach(function(day) {
+                    const rate = day.clicks > 0 ? (day.conversions / day.clicks) * 100 : 0;
                     const badgeClass = rate > 5 ? 'high' : (rate > 2 ? 'medium' : 'low');
 
                     html += '<tr>';
-                    html += '<td>' + location.ip_prefix + '.x.x</td>';
-                    html += '<td class="text-center">' + formatNumber(location.clicks, 0) + '</td>';
-                    html += '<td class="text-center">' + formatNumber(location.conversions, 0) + '</td>';
-                    html += '<td class="text-center"><span class="sky-gads-badge ' + badgeClass + '">' + formatNumber(rate, 2) + '%</span></td>';
+                    html += '<td>' + formatDate(day.date) + '</td>';
+                    html += '<td class="text-center">' + formatNumber(day.clicks, 0) + '</td>';
+                    html += '<td class="text-center">' + formatNumber(day.conversions, 0) + '</td>';
+                    html += '<td class="text-center"><span class="sky-gads-badge ' + escapeHtml(badgeClass) + '">' + formatNumber(rate, 2) + '%</span></td>';
+                    if (window.skyGoogleAds.conversionType === 'woocommerce') {
+                        html += '<td class="text-right">' + formatCurrency(day.revenue || 0) + '</td>';
+                    }
                     html += '</tr>';
                 });
 
                 html += '</tbody></table>';
-                html += '<p style="margin-top: 16px; color: #86868b; font-size: 13px; font-style: italic;">';
-                html += 'Note: IP addresses are anonymized for GDPR compliance. Full geographic data requires additional setup.';
-                html += '</p>';
                 html += '</div>';
             }
 

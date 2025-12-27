@@ -4,7 +4,7 @@
  * Clean, modern design matching UTM dashboard style
  *
  * @package Sky_SEO_Boost
- * @version 3.4.3
+ * @version 4.5.0
  * @since 3.4.3
  */
 
@@ -23,18 +23,20 @@ function sky_seo_render_google_ads_page() {
     }
 
     // Enqueue styles and scripts
+    $version = defined('SKY_SEO_BOOST_VERSION') ? SKY_SEO_BOOST_VERSION : '4.5.0';
+
     wp_enqueue_style(
         'sky-google-ads-dashboard',
         plugin_dir_url(__FILE__) . 'google-ads.css',
         [],
-        '3.4.3'
+        $version
     );
 
     wp_enqueue_script(
         'sky-google-ads-dashboard',
         plugin_dir_url(__FILE__) . 'google-ads-dashboard.js',
         ['jquery'],
-        '3.4.3',
+        $version,
         true
     );
 
@@ -74,8 +76,12 @@ function sky_seo_render_google_ads_page() {
         'currency' => function_exists('get_woocommerce_currency_symbol') ? get_woocommerce_currency_symbol() : '$'
     ]);
 
-    // Get current tab
-    $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'dashboard';
+    // Get current tab with validation
+    $allowed_tabs = ['dashboard', 'settings'];
+    $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'dashboard';
+    if (!in_array($active_tab, $allowed_tabs, true)) {
+        $active_tab = 'dashboard';
+    }
 
     ?>
     <div class="wrap">
@@ -117,10 +123,10 @@ function sky_seo_render_google_ads_dashboard($enabled, $conversion_type) {
     if (!$enabled) {
         ?>
         <div class="sky-gads-notice">
-            <h3><?php _e('Google Ads Tracking is Disabled', 'sky-seo-boost'); ?></h3>
-            <p><?php _e('Enable Google Ads tracking in the settings tab to start collecting data.', 'sky-seo-boost'); ?></p>
+            <h3><?php esc_html_e('Google Ads Tracking is Disabled', 'sky-seo-boost'); ?></h3>
+            <p><?php esc_html_e('Enable Google Ads tracking in the settings tab to start collecting data.', 'sky-seo-boost'); ?></p>
             <a href="?page=sky-seo-google-ads&tab=settings" class="sky-gads-button">
-                <?php _e('Go to Settings', 'sky-seo-boost'); ?>
+                <?php esc_html_e('Go to Settings', 'sky-seo-boost'); ?>
             </a>
         </div>
         <?php
@@ -131,30 +137,35 @@ function sky_seo_render_google_ads_dashboard($enabled, $conversion_type) {
     <!-- Date Range Controls -->
     <div class="sky-gads-header">
         <div class="sky-gads-date-controls">
-            <label for="sky-gads-date-range"><?php _e('Date Range:', 'sky-seo-boost'); ?></label>
+            <label for="sky-gads-date-range"><?php esc_html_e('Date Range:', 'sky-seo-boost'); ?></label>
             <select id="sky-gads-date-range" name="date_range">
-                <option value="last7days"><?php _e('Last 7 days', 'sky-seo-boost'); ?></option>
-                <option value="last30days" selected><?php _e('Last 30 days', 'sky-seo-boost'); ?></option>
-                <option value="last60days"><?php _e('Last 60 days', 'sky-seo-boost'); ?></option>
-                <option value="last90days"><?php _e('Last 90 days', 'sky-seo-boost'); ?></option>
-                <option value="custom"><?php _e('Custom Range', 'sky-seo-boost'); ?></option>
+                <option value="last7days"><?php esc_html_e('Last 7 days', 'sky-seo-boost'); ?></option>
+                <option value="last30days" selected><?php esc_html_e('Last 30 days', 'sky-seo-boost'); ?></option>
+                <option value="last60days"><?php esc_html_e('Last 60 days', 'sky-seo-boost'); ?></option>
+                <option value="last90days"><?php esc_html_e('Last 90 days', 'sky-seo-boost'); ?></option>
+                <option value="custom"><?php esc_html_e('Custom Range', 'sky-seo-boost'); ?></option>
             </select>
 
-            <div class="sky-gads-custom-dates" style="display: none; flex: 1; display: none;">
-                <label for="sky-gads-date-from" style="margin-right: 8px;"><?php _e('From:', 'sky-seo-boost'); ?></label>
+            <div class="sky-gads-custom-dates" style="display: none;">
+                <label for="sky-gads-date-from" style="margin-right: 8px;"><?php esc_html_e('From:', 'sky-seo-boost'); ?></label>
                 <input type="date" id="sky-gads-date-from" name="date_from" />
 
-                <label for="sky-gads-date-to" style="margin-left: 16px; margin-right: 8px;"><?php _e('To:', 'sky-seo-boost'); ?></label>
+                <label for="sky-gads-date-to" style="margin-left: 16px; margin-right: 8px;"><?php esc_html_e('To:', 'sky-seo-boost'); ?></label>
                 <input type="date" id="sky-gads-date-to" name="date_to" />
 
                 <button type="button" id="sky-gads-date-apply" class="sky-gads-date-apply">
-                    <?php _e('Apply', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Apply', 'sky-seo-boost'); ?>
                 </button>
             </div>
 
-            <button type="button" id="sky-gads-refresh" class="sky-gads-button secondary" style="margin-left: auto;">
+            <button type="button" id="sky-gads-export" class="sky-gads-button secondary" style="margin-left: auto;">
+                <span class="dashicons dashicons-download"></span>
+                <?php esc_html_e('Export CSV', 'sky-seo-boost'); ?>
+            </button>
+
+            <button type="button" id="sky-gads-refresh" class="sky-gads-button secondary">
                 <span class="dashicons dashicons-update"></span>
-                <?php _e('Refresh', 'sky-seo-boost'); ?>
+                <?php esc_html_e('Refresh', 'sky-seo-boost'); ?>
             </button>
         </div>
     </div>
@@ -163,7 +174,7 @@ function sky_seo_render_google_ads_dashboard($enabled, $conversion_type) {
     <div id="sky-gads-dashboard-content">
         <div class="sky-gads-loading">
             <span class="spinner is-active"></span>
-            <p><?php _e('Loading analytics data...', 'sky-seo-boost'); ?></p>
+            <p><?php esc_html_e('Loading analytics data...', 'sky-seo-boost'); ?></p>
         </div>
     </div>
     <?php
@@ -178,40 +189,40 @@ function sky_seo_render_google_ads_settings($enabled, $conversion_type) {
         <?php wp_nonce_field('sky_seo_google_ads_settings', 'sky_seo_google_ads_settings_nonce'); ?>
 
         <div class="sky-gads-settings-panel">
-            <h3><?php _e('Tracking Configuration', 'sky-seo-boost'); ?></h3>
+            <h3><?php esc_html_e('Tracking Configuration', 'sky-seo-boost'); ?></h3>
 
             <div class="sky-gads-form-group">
                 <label>
                     <input type="checkbox" name="google_ads_enabled" value="1" <?php checked($enabled); ?>>
-                    <?php _e('Enable Google Ads Tracking', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Enable Google Ads Tracking', 'sky-seo-boost'); ?>
                 </label>
                 <p class="sky-gads-form-help">
-                    <?php _e('Track visitors from Google Ads campaigns and measure conversions.', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Track visitors from Google Ads campaigns and measure conversions.', 'sky-seo-boost'); ?>
                 </p>
             </div>
 
             <div class="sky-gads-form-group">
                 <label for="google_ads_conversion_type">
-                    <?php _e('Conversion Type', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Conversion Type', 'sky-seo-boost'); ?>
                 </label>
                 <select name="google_ads_conversion_type" id="google_ads_conversion_type">
                     <option value="woocommerce" <?php selected($conversion_type, 'woocommerce'); ?>>
-                        <?php _e('WooCommerce Orders', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('WooCommerce Orders', 'sky-seo-boost'); ?>
                     </option>
                     <option value="form_submission" <?php selected($conversion_type, 'form_submission'); ?>>
-                        <?php _e('Form Submissions', 'sky-seo-boost'); ?>
+                        <?php esc_html_e('Form Submissions', 'sky-seo-boost'); ?>
                     </option>
                 </select>
                 <p class="sky-gads-form-help">
-                    <?php _e('Choose what type of conversion to track from Google Ads visitors.', 'sky-seo-boost'); ?>
+                    <?php esc_html_e('Choose what type of conversion to track from Google Ads visitors.', 'sky-seo-boost'); ?>
                 </p>
             </div>
         </div>
 
         <div class="sky-gads-info-box">
             <p>
-                <strong><?php _e('How it works:', 'sky-seo-boost'); ?></strong><br>
-                <?php _e('This system automatically detects visitors from Google Ads (via GCLID parameter or Google UTM parameters) and tracks their conversions. The data is stored securely with GDPR-compliant IP anonymization.', 'sky-seo-boost'); ?>
+                <strong><?php esc_html_e('How it works:', 'sky-seo-boost'); ?></strong><br>
+                <?php esc_html_e('This system automatically detects visitors from Google Ads (via GCLID parameter or Google UTM parameters) and tracks their conversions. The data is stored securely with GDPR-compliant IP anonymization.', 'sky-seo-boost'); ?>
             </p>
         </div>
 
@@ -264,7 +275,7 @@ function sky_seo_ajax_load_google_ads_dashboard() {
         elseif ($date_range === 'last60days') $days = 60;
         elseif ($date_range === 'last90days') $days = 90;
 
-        $start_date = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        $start_date = wp_date('Y-m-d H:i:s', strtotime("-{$days} days"));
     }
 
     // Check if table exists
@@ -354,19 +365,18 @@ function sky_seo_get_google_ads_stats($table_name, $start_date, $conversion_type
         $start_date
     ));
 
-    // Country analytics (from IP address - basic implementation)
-    $country_data = $wpdb->get_results($wpdb->prepare(
+    // Get daily conversion trend for the last 7 days
+    $daily_trend = $wpdb->get_results($wpdb->prepare(
         "SELECT
-            SUBSTRING_INDEX(ip_address, '.', 2) as ip_prefix,
+            DATE(created_at) as date,
             COUNT(*) as clicks,
-            SUM(CASE WHEN converted_at IS NOT NULL THEN 1 ELSE 0 END) as conversions
+            SUM(CASE WHEN converted_at IS NOT NULL THEN 1 ELSE 0 END) as conversions,
+            SUM(CASE WHEN converted_at IS NOT NULL THEN conversion_value ELSE 0 END) as revenue
         FROM {$table_name}
         WHERE created_at >= %s
-            AND ip_address IS NOT NULL
-            AND ip_address != '0.0.0.0'
-        GROUP BY ip_prefix
-        ORDER BY clicks DESC
-        LIMIT 10",
+        GROUP BY DATE(created_at)
+        ORDER BY date DESC
+        LIMIT 7",
         $start_date
     ));
 
@@ -377,6 +387,147 @@ function sky_seo_get_google_ads_stats($table_name, $start_date, $conversion_type
         'revenue_data' => $revenue_data,
         'top_campaigns' => $top_campaigns,
         'top_pages' => $top_pages,
-        'country_data' => $country_data
+        'daily_trend' => $daily_trend
     ];
+}
+
+/**
+ * AJAX handler for exporting Google Ads data
+ */
+add_action('wp_ajax_sky_seo_export_google_ads_data', 'sky_seo_ajax_export_google_ads_data');
+
+function sky_seo_ajax_export_google_ads_data() {
+    // Verify nonce
+    if (!check_ajax_referer('sky_seo_google_ads_dashboard', 'nonce', false)) {
+        wp_send_json_error(['message' => __('Invalid nonce', 'sky-seo-boost')]);
+        return;
+    }
+
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(['message' => __('Insufficient permissions', 'sky-seo-boost')]);
+        return;
+    }
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'sky_seo_google_ads_conversions';
+
+    // Get parameters
+    $date_range = isset($_POST['date_range']) ? sanitize_text_field(wp_unslash($_POST['date_range'])) : 'last30days';
+
+    // Calculate date range
+    if ($date_range === 'custom') {
+        $date_from = isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) . ' 00:00:00' : '';
+        $date_to = isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) . ' 23:59:59' : '';
+
+        if (empty($date_from) || empty($date_to)) {
+            wp_send_json_error(['message' => __('Invalid custom date range', 'sky-seo-boost')]);
+            return;
+        }
+        $start_date = $date_from;
+        $end_date = $date_to;
+    } else {
+        // Parse preset ranges
+        $days = 30;
+        if ($date_range === 'last7days') $days = 7;
+        elseif ($date_range === 'last60days') $days = 60;
+        elseif ($date_range === 'last90days') $days = 90;
+
+        $start_date = wp_date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        $end_date = wp_date('Y-m-d H:i:s');
+    }
+
+    // Check if table exists
+    $table_exists = $wpdb->get_var($wpdb->prepare(
+        "SHOW TABLES LIKE %s",
+        $table_name
+    )) === $table_name;
+
+    if (!$table_exists) {
+        wp_send_json_error(['message' => __('No data available to export.', 'sky-seo-boost')]);
+        return;
+    }
+
+    // Get all conversion data
+    $data = $wpdb->get_results($wpdb->prepare(
+        "SELECT
+            session_id,
+            gclid,
+            utm_source,
+            utm_medium,
+            utm_campaign,
+            landing_page,
+            conversion_type,
+            conversion_value,
+            order_id,
+            form_id,
+            form_name,
+            created_at,
+            converted_at
+        FROM {$table_name}
+        WHERE created_at >= %s AND created_at <= %s
+        ORDER BY created_at DESC",
+        $start_date,
+        $end_date
+    ), ARRAY_A);
+
+    if (empty($data)) {
+        wp_send_json_error(['message' => __('No data found for the selected date range.', 'sky-seo-boost')]);
+        return;
+    }
+
+    // Generate CSV content
+    $csv_lines = [];
+
+    // Headers
+    $csv_lines[] = [
+        'Session ID',
+        'GCLID',
+        'UTM Source',
+        'UTM Medium',
+        'UTM Campaign',
+        'Landing Page',
+        'Conversion Type',
+        'Conversion Value',
+        'Order ID',
+        'Form ID',
+        'Form Name',
+        'Visit Date',
+        'Conversion Date'
+    ];
+
+    // Data rows
+    foreach ($data as $row) {
+        $csv_lines[] = [
+            $row['session_id'],
+            $row['gclid'],
+            $row['utm_source'],
+            $row['utm_medium'],
+            $row['utm_campaign'],
+            $row['landing_page'],
+            $row['conversion_type'] ?: 'Not converted',
+            $row['conversion_value'],
+            $row['order_id'],
+            $row['form_id'],
+            $row['form_name'],
+            $row['created_at'],
+            $row['converted_at'] ?: 'N/A'
+        ];
+    }
+
+    // Convert to CSV string
+    $csv_content = '';
+    foreach ($csv_lines as $line) {
+        $escaped_line = array_map(function($field) {
+            // Escape quotes and wrap in quotes
+            return '"' . str_replace('"', '""', $field ?? '') . '"';
+        }, $line);
+        $csv_content .= implode(',', $escaped_line) . "\n";
+    }
+
+    wp_send_json_success([
+        'csv' => $csv_content,
+        'filename' => 'google-ads-data-' . wp_date('Y-m-d') . '.csv',
+        'count' => count($data)
+    ]);
 }

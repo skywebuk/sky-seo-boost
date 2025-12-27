@@ -6,7 +6,7 @@
  * Integrated with Sky Insights UTM system for seamless tracking
  * 
  * @package Sky_SEO_Boost
- * @version 3.4.1
+ * @version 4.5.0
  * @since 3.1.0
  */
 
@@ -462,9 +462,9 @@ class Sky_SEO_Enhanced_Google_Ads {
         if (class_exists('SkyInsightsUtils') && method_exists('SkyInsightsUtils', 'is_bot_visit')) {
             return SkyInsightsUtils::is_bot_visit();
         }
-        
-        // Fallback bot detection
-        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
+
+        // Fallback bot detection - sanitize user agent
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower(sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']))) : '';
         $bot_patterns = [
             'googlebot', 'bingbot', 'slurp', 'duckduckbot', 'baiduspider',
             'yandexbot', 'facebookexternalhit', 'twitterbot', 'linkedinbot',
@@ -534,8 +534,8 @@ class Sky_SEO_Enhanced_Google_Ads {
         }
         
         // Check referrer
-        $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-        if (strpos($referrer, 'googleads.g.doubleclick.net') !== false || 
+        $referrer = isset($_SERVER['HTTP_REFERER']) ? esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
+        if (strpos($referrer, 'googleads.g.doubleclick.net') !== false ||
             strpos($referrer, 'www.googleadservices.com') !== false) {
             return true;
         }
@@ -633,18 +633,19 @@ class Sky_SEO_Enhanced_Google_Ads {
         
         // Fallback IP detection
         $ip_keys = ['HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR'];
-        
+
         foreach ($ip_keys as $key) {
             if (!empty($_SERVER[$key])) {
-                $ips = explode(',', $_SERVER[$key]);
+                $raw_value = sanitize_text_field(wp_unslash($_SERVER[$key]));
+                $ips = explode(',', $raw_value);
                 $ip = trim($ips[0]);
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
                     return $ip;
                 }
             }
         }
-        
-        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
+
+        return isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '0.0.0.0';
     }
     
     /**
@@ -1203,7 +1204,7 @@ class Sky_SEO_Enhanced_Google_Ads {
         
         // Get period
         $period = isset($_POST['period']) ? intval($_POST['period']) : 30;
-        $start_date = date('Y-m-d H:i:s', strtotime("-{$period} days"));
+        $start_date = wp_date('Y-m-d H:i:s', strtotime("-{$period} days"));
         
         global $wpdb;
         
@@ -1227,18 +1228,18 @@ class Sky_SEO_Enhanced_Google_Ads {
         ?>
         <div class="sky-seo-stats-grid">
             <div class="sky-seo-stat-card">
-                <h3><?php _e('Total Google Ads Visitors', 'sky-seo-boost'); ?></h3>
-                <div class="sky-seo-stat-value"><?php echo number_format($total_visitors); ?></div>
+                <h3><?php esc_html_e('Total Google Ads Visitors', 'sky-seo-boost'); ?></h3>
+                <div class="sky-seo-stat-value"><?php echo esc_html(number_format($total_visitors)); ?></div>
             </div>
-            
+
             <div class="sky-seo-stat-card">
-                <h3><?php _e('Total Conversions', 'sky-seo-boost'); ?></h3>
-                <div class="sky-seo-stat-value"><?php echo number_format($conversions); ?></div>
+                <h3><?php esc_html_e('Total Conversions', 'sky-seo-boost'); ?></h3>
+                <div class="sky-seo-stat-value"><?php echo esc_html(number_format($conversions)); ?></div>
             </div>
-            
+
             <div class="sky-seo-stat-card">
-                <h3><?php _e('Conversion Rate', 'sky-seo-boost'); ?></h3>
-                <div class="sky-seo-stat-value"><?php echo number_format($conversion_rate, 2); ?>%</div>
+                <h3><?php esc_html_e('Conversion Rate', 'sky-seo-boost'); ?></h3>
+                <div class="sky-seo-stat-value"><?php echo esc_html(number_format($conversion_rate, 2)); ?>%</div>
             </div>
         </div>
         
@@ -1259,21 +1260,21 @@ class Sky_SEO_Enhanced_Google_Ads {
             ?>
             
             <div class="sky-seo-woo-stats">
-                <h3><?php _e('WooCommerce Conversion Details', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('WooCommerce Conversion Details', 'sky-seo-boost'); ?></h3>
                 <div class="sky-seo-stats-grid">
                     <div class="sky-seo-stat-card">
-                        <h4><?php _e('Total Orders', 'sky-seo-boost'); ?></h4>
-                        <div class="sky-seo-stat-value"><?php echo number_format($woo_stats->total_orders); ?></div>
+                        <h4><?php esc_html_e('Total Orders', 'sky-seo-boost'); ?></h4>
+                        <div class="sky-seo-stat-value"><?php echo esc_html(number_format($woo_stats->total_orders)); ?></div>
                     </div>
-                    
+
                     <div class="sky-seo-stat-card">
-                        <h4><?php _e('Total Revenue', 'sky-seo-boost'); ?></h4>
-                        <div class="sky-seo-stat-value"><?php echo function_exists('wc_price') ? wc_price($woo_stats->total_revenue) : '$' . number_format($woo_stats->total_revenue, 2); ?></div>
+                        <h4><?php esc_html_e('Total Revenue', 'sky-seo-boost'); ?></h4>
+                        <div class="sky-seo-stat-value"><?php echo function_exists('wc_price') ? wp_kses_post(wc_price($woo_stats->total_revenue)) : '$' . esc_html(number_format($woo_stats->total_revenue, 2)); ?></div>
                     </div>
-                    
+
                     <div class="sky-seo-stat-card">
-                        <h4><?php _e('Average Order Value', 'sky-seo-boost'); ?></h4>
-                        <div class="sky-seo-stat-value"><?php echo function_exists('wc_price') ? wc_price($woo_stats->avg_order_value) : '$' . number_format($woo_stats->avg_order_value, 2); ?></div>
+                        <h4><?php esc_html_e('Average Order Value', 'sky-seo-boost'); ?></h4>
+                        <div class="sky-seo-stat-value"><?php echo function_exists('wc_price') ? wp_kses_post(wc_price($woo_stats->avg_order_value)) : '$' . esc_html(number_format($woo_stats->avg_order_value, 2)); ?></div>
                     </div>
                 </div>
             </div>
@@ -1299,21 +1300,21 @@ class Sky_SEO_Enhanced_Google_Ads {
             if ($top_campaigns):
             ?>
             <div class="sky-seo-campaigns">
-                <h3><?php _e('Top Performing Campaigns', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('Top Performing Campaigns', 'sky-seo-boost'); ?></h3>
                 <table class="widefat">
                     <thead>
                         <tr>
-                            <th><?php _e('Campaign', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Orders', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Revenue', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Campaign', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Orders', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Revenue', 'sky-seo-boost'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($top_campaigns as $campaign): ?>
                         <tr>
                             <td><?php echo esc_html($campaign->utm_campaign); ?></td>
-                            <td><?php echo number_format($campaign->orders); ?></td>
-                            <td><?php echo function_exists('wc_price') ? wc_price($campaign->revenue) : '$' . number_format($campaign->revenue, 2); ?></td>
+                            <td><?php echo esc_html(number_format($campaign->orders)); ?></td>
+                            <td><?php echo function_exists('wc_price') ? wp_kses_post(wc_price($campaign->revenue)) : '$' . esc_html(number_format($campaign->revenue, 2)); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -1363,14 +1364,14 @@ class Sky_SEO_Enhanced_Google_Ads {
             ?>
             
             <div class="sky-seo-form-stats">
-                <h3><?php _e('Form Submission Details', 'sky-seo-boost'); ?></h3>
+                <h3><?php esc_html_e('Form Submission Details', 'sky-seo-boost'); ?></h3>
                 <table class="widefat">
                     <thead>
                         <tr>
-                            <th><?php _e('Form', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Submissions from Google Ads', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Last Submission', 'sky-seo-boost'); ?></th>
-                            <th><?php _e('Actions', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Form', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Submissions from Google Ads', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Last Submission', 'sky-seo-boost'); ?></th>
+                            <th><?php esc_html_e('Actions', 'sky-seo-boost'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1381,20 +1382,20 @@ class Sky_SEO_Enhanced_Google_Ads {
                                     <strong><?php echo esc_html($form->form_name ?: 'Unnamed Form'); ?></strong><br>
                                     <small style="color: #666;"><?php echo esc_html($form->form_id); ?></small>
                                 </td>
-                                <td><?php echo number_format($form->submissions); ?></td>
-                                <td><?php echo human_time_diff(strtotime($form->last_submission), current_time('timestamp')) . ' ago'; ?></td>
+                                <td><?php echo esc_html(number_format($form->submissions)); ?></td>
+                                <td><?php echo esc_html(human_time_diff(strtotime($form->last_submission), current_time('timestamp')) . ' ago'); ?></td>
                                 <td>
-                                    <button type="button" class="button button-small sky-seo-view-submissions" 
+                                    <button type="button" class="button button-small sky-seo-view-submissions"
                                             data-form-id="<?php echo esc_attr($form->form_id); ?>"
                                             data-form-name="<?php echo esc_attr($form->form_name ?: 'Unnamed Form'); ?>">
-                                        <?php _e('View Submissions', 'sky-seo-boost'); ?>
+                                        <?php esc_html_e('View Submissions', 'sky-seo-boost'); ?>
                                     </button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4"><?php _e('No form submissions tracked yet.', 'sky-seo-boost'); ?></td>
+                                <td colspan="4"><?php esc_html_e('No form submissions tracked yet.', 'sky-seo-boost'); ?></td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -1406,13 +1407,13 @@ class Sky_SEO_Enhanced_Google_Ads {
                 <div class="sky-seo-modal-overlay"></div>
                 <div class="sky-seo-modal-content">
                     <div class="sky-seo-modal-header">
-                        <h2 id="sky-seo-modal-title"><?php _e('Form Submissions', 'sky-seo-boost'); ?></h2>
+                        <h2 id="sky-seo-modal-title"><?php esc_html_e('Form Submissions', 'sky-seo-boost'); ?></h2>
                         <button type="button" class="sky-seo-modal-close">&times;</button>
                     </div>
                     <div class="sky-seo-modal-body">
                         <div class="sky-seo-loading">
                             <span class="spinner is-active"></span>
-                            <?php _e('Loading submissions...', 'sky-seo-boost'); ?>
+                            <?php esc_html_e('Loading submissions...', 'sky-seo-boost'); ?>
                         </div>
                     </div>
                 </div>
@@ -1838,7 +1839,7 @@ class Sky_SEO_Enhanced_Google_Ads {
         
         $wpdb->query($wpdb->prepare(
             "DELETE FROM {$this->table_name} WHERE created_at < %s",
-            date('Y-m-d H:i:s', strtotime("-{$retention_days} days"))
+            wp_date('Y-m-d H:i:s', strtotime("-{$retention_days} days"))
         ));
     }
 }
