@@ -3,7 +3,7 @@
  * Plugin Name: Sky360
  * Plugin URI: https://skywebdesign.co.uk/sky360
  * Description: Complete business toolkit with SEO content management, analytics, WhatsApp Business, UTM tracking, and Google Ads integration.
- * Version: 5.0.2
+ * Version: 5.0.3
  * Author: Sky Web Design
  * Author URI: https://skywebdesign.co.uk
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('SKY360_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SKY360_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('SKY360_VERSION', '5.0.2');
+define('SKY360_VERSION', '5.0.3');
 define('SKY360_FILE', __FILE__);
 
 // Legacy constant aliases for backward compatibility
