@@ -209,11 +209,11 @@ class Sky_SEO_Business_API {
         $plugin_url = plugin_dir_url(__FILE__);
         $version = defined('SKY_SEO_BOOST_VERSION') ? SKY_SEO_BOOST_VERSION : '3.1.0';
         
-        // Enqueue styles
+        // Enqueue styles (depends on main admin CSS)
         wp_enqueue_style(
-            'sky-business-api-admin', 
-            $plugin_url . 'assets/css/business-api-admin.css', 
-            [], 
+            'sky-business-api-admin',
+            $plugin_url . 'assets/css/business-api-admin.css',
+            ['sky-seo-admin'],
             $version
         );
         

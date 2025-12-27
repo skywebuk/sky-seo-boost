@@ -506,8 +506,8 @@ class Sky_SEO_Boost {
      * Get the menu icon as base64 encoded SVG data URI
      */
     private function get_menu_icon() {
-        // Shield icon SVG for WordPress admin menu (Font Awesome style)
-        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="black"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0z"/></svg>';
+        // Square-S icon SVG for WordPress admin menu (Flaticon UIcons style)
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M18.5,0H5.5A5.507,5.507,0,0,0,0,5.5v13A5.507,5.507,0,0,0,5.5,24h13A5.507,5.507,0,0,0,24,18.5V5.5A5.507,5.507,0,0,0,18.5,0Zm-3,15.5a3.5,3.5,0,0,1-3.5,3.5H9.5A3.5,3.5,0,0,1,6,15.5a1.5,1.5,0,0,1,3,0,.5.5,0,0,0,.5.5H12a.5.5,0,0,0,.5-.5v-1a.5.5,0,0,0-.5-.5H9.5A3.5,3.5,0,0,1,6,10.5v-2A3.5,3.5,0,0,1,9.5,5H12a3.5,3.5,0,0,1,3.5,3.5,1.5,1.5,0,0,1-3,0A.5.5,0,0,0,12,8H9.5a.5.5,0,0,0-.5.5v2a.5.5,0,0,0,.5.5H12a3.5,3.5,0,0,1,3.5,3.5Z"/></svg>';
 
         return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
