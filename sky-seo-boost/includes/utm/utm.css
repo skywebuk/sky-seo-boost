@@ -28,13 +28,11 @@
    2. UTM BUILDER SECTION
    ======================================== */
 
-/* UTM Builder Section */
+/* UTM Builder Section - inside content wrapper, no extra box needed */
 .sky-utm-builder {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 24px;
+    background: transparent;
+    padding: 0;
     margin-bottom: 32px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .sky-utm-builder h3 {
@@ -205,13 +203,11 @@
     word-break: break-word;
 }
 
-/* Links Table Container - IMPROVED */
+/* Links Table Container - inside content wrapper */
 .sky-utm-links-container {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 24px;
+    background: transparent;
+    padding: 0;
     margin-bottom: 32px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .sky-utm-table-header {
