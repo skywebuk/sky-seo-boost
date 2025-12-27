@@ -3,7 +3,7 @@
  * Plugin Name: Sky360
  * Plugin URI: https://skywebdesign.co.uk/sky360
  * Description: Complete business toolkit with SEO content management, analytics, WhatsApp Business, UTM tracking, and Google Ads integration.
- * Version: 5.0.1
+ * Version: 5.0.2
  * Author: Sky Web Design
  * Author URI: https://skywebdesign.co.uk
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('SKY360_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SKY360_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('SKY360_VERSION', '5.0.1');
+define('SKY360_VERSION', '5.0.2');
 define('SKY360_FILE', __FILE__);
 
 // Legacy constant aliases for backward compatibility
@@ -503,19 +503,13 @@ class Sky_SEO_Boost {
     }
 
     /**
-     * Get the menu icon as base64 encoded data URI
+     * Get the menu icon as base64 encoded SVG data URI
      */
     private function get_menu_icon() {
-        // Use white logo for visibility on dark admin sidebar
-        $icon_path = SKY360_PLUGIN_DIR . 'assets/img/skyweb_logo_white.png';
+        // Simple white "S" icon SVG for WordPress admin menu (20x20)
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black"><rect x="5" y="3" width="10" height="5" rx="1"/><rect x="5" y="9" width="5" height="5" rx="1"/><path d="M5 15h10c0 0 0 0 0 0v0c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2v0z"/><rect x="10" y="9" width="5" height="5" rx="1"/></svg>';
 
-        if (file_exists($icon_path)) {
-            $icon_data = file_get_contents($icon_path);
-            return 'data:image/png;base64,' . base64_encode($icon_data);
-        }
-
-        // Fallback to dashicon
-        return 'dashicons-chart-line';
+        return 'data:image/svg+xml;base64,' . base64_encode($svg);
     }
 
     public function show_license_required_page() {

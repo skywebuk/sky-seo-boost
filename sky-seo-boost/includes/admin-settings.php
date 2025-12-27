@@ -418,9 +418,6 @@ function sky_seo_sanitize_settings($input) {
 // Settings Page with Tabs
 function sky_seo_settings_page() {
     $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-
-    // Get the logo URL for the topbar
-    $logo_url = SKY360_PLUGIN_URL . 'assets/img/skyweb_logo_white.png';
     ?>
     <div class="sky360-admin-page">
         <!-- WordPress Notices Area - appears above everything -->
@@ -433,7 +430,7 @@ function sky_seo_settings_page() {
             <div class="sky360-topbar">
                 <div class="sky360-topbar-left">
                     <div class="sky360-topbar-logo">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Sky360">
+                        <span class="dashicons dashicons-chart-line" style="color: white; font-size: 24px; width: 24px; height: 24px;"></span>
                     </div>
                     <div>
                         <h1 class="sky360-topbar-title"><?php esc_html_e('Sky360', 'sky360'); ?></h1>
