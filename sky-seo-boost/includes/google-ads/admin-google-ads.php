@@ -95,11 +95,11 @@ function sky_seo_render_google_ads_page() {
 
                 <!-- Navigation Tabs -->
                 <div style="margin-top: 20px; border-bottom: 2px solid #e5e5e7; display: flex; gap: 24px;">
-                    <a href="?page=sky360-google-ads&tab=dashboard"
+                    <a href="?page=sky-seo-google-ads&tab=dashboard"
                        style="padding: 12px 0; font-weight: 600; text-decoration: none; color: <?php echo $active_tab === 'dashboard' ? '#007aff' : '#86868b'; ?>; border-bottom: 2px solid <?php echo $active_tab === 'dashboard' ? '#007aff' : 'transparent'; ?>; margin-bottom: -2px;">
                         <span class="dashicons dashicons-dashboard"></span> Dashboard
                     </a>
-                    <a href="?page=sky360-google-ads&tab=settings"
+                    <a href="?page=sky-seo-google-ads&tab=settings"
                        style="padding: 12px 0; font-weight: 600; text-decoration: none; color: <?php echo $active_tab === 'settings' ? '#007aff' : '#86868b'; ?>; border-bottom: 2px solid <?php echo $active_tab === 'settings' ? '#007aff' : 'transparent'; ?>; margin-bottom: -2px;">
                         <span class="dashicons dashicons-admin-settings"></span> Settings
                     </a>
@@ -125,7 +125,7 @@ function sky_seo_render_google_ads_dashboard($enabled, $conversion_type) {
         <div class="sky-gads-notice">
             <h3><?php esc_html_e('Google Ads Tracking is Disabled', 'sky360'); ?></h3>
             <p><?php esc_html_e('Enable Google Ads tracking in the settings tab to start collecting data.', 'sky360'); ?></p>
-            <a href="?page=sky360-google-ads&tab=settings" class="sky-gads-button">
+            <a href="?page=sky-seo-google-ads&tab=settings" class="sky-gads-button">
                 <?php esc_html_e('Go to Settings', 'sky360'); ?>
             </a>
         </div>

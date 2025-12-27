@@ -197,7 +197,7 @@ class Sky_SEO_Boost {
             <p>
                 <strong><?php _e('Sky SEO Boost:', 'sky360'); ?></strong>
                 <?php _e('This plugin requires a valid license to function. All features are currently disabled.', 'sky360'); ?>
-                <a href="<?php echo admin_url('admin.php?page=sky360-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
+                <a href="<?php echo admin_url('admin.php?page=sky-seo-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
                     <?php _e('Activate License', 'sky360'); ?>
                 </a>
             </p>
@@ -415,7 +415,7 @@ class Sky_SEO_Boost {
             __('Sky360', 'sky360'),
             __('Sky360', 'sky360'),
             'edit_pages',
-            'sky360',
+            'sky-seo-boost',
             $this->license_valid ? 'sky_seo_analytics_tab' : [$this, 'show_license_required_page'],
             $icon_url,
             2  // Position 2 = right under Dashboard
@@ -423,25 +423,25 @@ class Sky_SEO_Boost {
 
         // Remove duplicate first submenu
         global $submenu;
-        if (isset($submenu['sky360'][0])) {
-            unset($submenu['sky360'][0]);
+        if (isset($submenu['sky-seo-boost'][0])) {
+            unset($submenu['sky-seo-boost'][0]);
         }
 
         // Only show other menu items if licensed
         if ($this->license_valid) {
             // All Content Submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('All Content', 'sky360'),
                 __('All Content', 'sky360'),
                 'edit_pages',
-                'sky360-all-content',
+                'sky-seo-all-content',
                 'sky_seo_all_content_page'
             );
 
             // Areas submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Areas We Cover', 'sky360'),
                 __('Areas', 'sky360'),
                 'edit_pages',
@@ -450,7 +450,7 @@ class Sky_SEO_Boost {
 
             // Trending Searches submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Trending Searches', 'sky360'),
                 __('Trending Searches', 'sky360'),
                 'edit_pages',
@@ -459,7 +459,7 @@ class Sky_SEO_Boost {
 
             // Sectors submenu
             add_submenu_page(
-                'sky360',
+                'sky-seo-boost',
                 __('Sectors', 'sky360'),
                 __('Sectors', 'sky360'),
                 'edit_pages',
@@ -469,11 +469,11 @@ class Sky_SEO_Boost {
             // UTM Tracking submenu
             if (function_exists('sky_seo_render_utm_interface')) {
                 add_submenu_page(
-                    'sky360',
+                    'sky-seo-boost',
                     __('UTM Tracking', 'sky360'),
                     __('UTM Tracking', 'sky360'),
                     'manage_options',
-                    'sky360-utm',
+                    'sky-seo-utm',
                     'sky_seo_render_utm_interface'
                 );
             }
@@ -481,11 +481,11 @@ class Sky_SEO_Boost {
             // Google Ads submenu
             if (function_exists('sky_seo_render_google_ads_page')) {
                 add_submenu_page(
-                    'sky360',
+                    'sky-seo-boost',
                     __('Google Ads', 'sky360'),
                     __('Google Ads', 'sky360'),
                     'manage_options',
-                    'sky360-google-ads',
+                    'sky-seo-google-ads',
                     'sky_seo_render_google_ads_page'
                 );
             }
@@ -493,11 +493,11 @@ class Sky_SEO_Boost {
 
         // Settings submenu - always show for license access
         add_submenu_page(
-            'sky360',
+            'sky-seo-boost',
             __('Settings', 'sky360'),
             __('Settings', 'sky360'),
             'manage_options',
-            'sky360-settings',
+            'sky-seo-settings',
             'sky_seo_settings_page'
         );
     }
@@ -527,7 +527,7 @@ class Sky_SEO_Boost {
                     <?php esc_html_e('This plugin requires a valid license to function. Please activate your license to unlock all features.', 'sky360'); ?>
                 </p>
                 <p>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=sky360-settings&tab=license')); ?>" class="button button-primary">
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=sky-seo-settings&tab=license')); ?>" class="button button-primary">
                         <?php esc_html_e('Activate License', 'sky360'); ?>
                     </a>
                 </p>

@@ -112,12 +112,12 @@ function sky_seo_enqueue_admin_scripts($hook) {
    }
    
    // Load All Content page specific styles - FORCE LOAD on edit.php for our post types
-   if (($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360-all-content') 
+   if (($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-all-content')
        || ($hook === 'edit.php' && in_array($current_post_type, $post_types))) {
-       wp_enqueue_style('sky360-all-content', $plugin_url . '/assets/css/all-content.css', ['sky-seo-admin'], $version);
-       
+       wp_enqueue_style('sky-seo-all-content', $plugin_url . '/assets/css/all-content.css', ['sky-seo-admin'], $version);
+
        // Add inline CSS to ensure our styles take precedence
-       wp_add_inline_style('sky360-all-content', '
+       wp_add_inline_style('sky-seo-all-content', '
            /* Force our layout on edit.php pages */
            body.post-type-sky_areas .wrap > *:not(.sky-seo-post-list-wrap),
            body.post-type-sky_trending .wrap > *:not(.sky-seo-post-list-wrap),
@@ -127,8 +127,8 @@ function sky_seo_enqueue_admin_scripts($hook) {
        ');
    }
    
-   // Load Analytics Dashboard assets on main plugin page (sky360)
-   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360') {
+   // Load Analytics Dashboard assets on main plugin page (sky-seo-boost)
+   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-boost') {
        wp_enqueue_style('sky-seo-analytics-dashboard', $plugin_url . '/assets/css/analytics-dashboard.css', ['sky-seo-admin'], $version);
        wp_enqueue_script('sky-seo-analytics-dashboard', $plugin_url . '/assets/js/analytics-dashboard.js', ['jquery', 'chart-js', 'sky-seo-admin'], $version, true);
        
@@ -140,7 +140,7 @@ function sky_seo_enqueue_admin_scripts($hook) {
    }
    
    // Load general settings styles and scripts
-   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky360-settings') {
+   if ($is_sky_seo_page && isset($_GET['page']) && $_GET['page'] === 'sky-seo-settings') {
        // Always load general settings CSS on settings page
        wp_enqueue_style('sky-seo-general-settings', $plugin_url . '/assets/css/general-settings.css', ['sky-seo-admin'], $version);
        wp_enqueue_script('sky-seo-general-settings', $plugin_url . '/assets/js/general-settings.js', ['jquery', 'sky-seo-admin'], $version, true);

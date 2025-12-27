@@ -572,7 +572,7 @@ class SkyInsightsWCOrderUTMDisplay {
                 </div>
                 <?php endif; ?>
                 <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e0e0e0;">
-                    <a href="<?php echo admin_url('admin.php?page=sky360-utm'); ?>" 
+                    <a href="<?php echo admin_url('admin.php?page=sky-seo-utm'); ?>"
                        class="button button-small">
                         <?php _e('Create UTM Links', 'sky-insights'); ?>
                     </a>

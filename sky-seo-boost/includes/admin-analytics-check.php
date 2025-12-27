@@ -258,7 +258,7 @@ function sky_seo_analytics_check_tab() {
                     </div>
                     <div class="sky-seo-actions">
                         <?php submit_button(__('Save Tracking Settings', 'sky360'), 'primary', 'submit', false); ?>
-                        <a href="?page=sky360-settings&tab=tracking&refresh=1" class="button button-secondary"><?php _e('Refresh Detection Status', 'sky360'); ?></a>
+                        <a href="?page=sky-seo-settings&tab=tracking&refresh=1" class="button button-secondary"><?php _e('Refresh Detection Status', 'sky360'); ?></a>
                     </div>
                 </div>
             </div>

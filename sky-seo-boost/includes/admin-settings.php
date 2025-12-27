@@ -427,16 +427,16 @@ function sky_seo_settings_page() {
         </div>
 
         <h2 class="nav-tab-wrapper">
-            <a href="?page=sky360-settings&tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
+            <a href="?page=sky-seo-settings&tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>">
                 <?php _e('General', 'sky360'); ?>
             </a>
-            <a href="?page=sky360-settings&tab=tracking" class="nav-tab <?php echo $active_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
+            <a href="?page=sky-seo-settings&tab=tracking" class="nav-tab <?php echo $active_tab === 'tracking' ? 'nav-tab-active' : ''; ?>">
                 <?php _e('Tracking Codes', 'sky360'); ?>
             </a>
-            <a href="?page=sky360-settings&tab=seo-integration" class="nav-tab <?php echo $active_tab === 'seo-integration' ? 'nav-tab-active' : ''; ?>">
+            <a href="?page=sky-seo-settings&tab=seo-integration" class="nav-tab <?php echo $active_tab === 'seo-integration' ? 'nav-tab-active' : ''; ?>">
                 <?php _e('SEO Plugin Integration', 'sky360'); ?>
             </a>
-            <a href="?page=sky360-settings&tab=duplicate" class="nav-tab <?php echo $active_tab === 'duplicate' ? 'nav-tab-active' : ''; ?>">
+            <a href="?page=sky-seo-settings&tab=duplicate" class="nav-tab <?php echo $active_tab === 'duplicate' ? 'nav-tab-active' : ''; ?>">
                 <?php _e('Duplicate Post', 'sky360'); ?>
             </a>
             <?php

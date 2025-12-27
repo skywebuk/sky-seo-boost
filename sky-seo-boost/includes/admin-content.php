@@ -123,7 +123,7 @@ function sky_seo_all_content_page() {
                     
                     <div class="sky-seo-filter-actions">
                         <button type="submit" class="button"><?php _e('Apply Filters', 'sky360'); ?></button>
-                        <a href="?page=sky360-all-content" class="button button-link"><?php _e('Clear', 'sky360'); ?></a>
+                        <a href="?page=sky-seo-all-content" class="button button-link"><?php _e('Clear', 'sky360'); ?></a>
                     </div>
                 </div>
             </form>
@@ -312,7 +312,7 @@ function sky_seo_all_content_page() {
                                         <p><?php esc_html_e('No content found.', 'sky360'); ?></p>
                                         <?php if (!empty($search_term) || $selected_post_type !== 'all' || !empty($start_date)) : ?>
                                             <p class="description"><?php _e('Try adjusting your filters or', 'sky360'); ?> 
-                                                <a href="?page=sky360-all-content"><?php _e('clear all filters', 'sky360'); ?></a>
+                                                <a href="?page=sky-seo-all-content"><?php _e('clear all filters', 'sky360'); ?></a>
                                             </p>
                                         <?php endif; ?>
                                     </div>

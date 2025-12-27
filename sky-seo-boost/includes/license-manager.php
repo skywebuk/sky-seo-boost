@@ -533,22 +533,22 @@ class Sky_SEO_License_Manager {
         // Restrict admin menu
         add_action('admin_menu', function() {
             global $submenu;
-            if (isset($submenu['sky360'])) {
-                foreach ($submenu['sky360'] as $key => $item) {
-                    if ($item[2] !== 'sky360-settings') {
-                        unset($submenu['sky360'][$key]);
+            if (isset($submenu['sky-seo-boost'])) {
+                foreach ($submenu['sky-seo-boost'] as $key => $item) {
+                    if ($item[2] !== 'sky-seo-settings') {
+                        unset($submenu['sky-seo-boost'][$key]);
                     }
                 }
             }
         }, 999);
-        
+
         // Redirect from plugin pages to license page
         $current_page = isset($_GET['page']) ? $_GET['page'] : '';
         $current_tab = isset($_GET['tab']) ? $_GET['tab'] : '';
-        
-        if ($current_page !== 'sky360-settings' || $current_tab !== 'license') {
+
+        if ($current_page !== 'sky-seo-settings' || $current_tab !== 'license') {
             if (strpos($current_page, 'sky-seo') !== false) {
-                wp_redirect(admin_url('admin.php?page=sky360-settings&tab=license'));
+                wp_redirect(admin_url('admin.php?page=sky-seo-settings&tab=license'));
                 exit;
             }
         }
@@ -578,7 +578,7 @@ class Sky_SEO_License_Manager {
                     <p>
                         <strong><?php _e('Sky SEO Boost - License Required:', 'sky360'); ?></strong>
                         <?php _e('This plugin requires a valid license to function. All features have been disabled.', 'sky360'); ?>
-                        <a href="<?php echo admin_url('admin.php?page=sky360-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
+                        <a href="<?php echo admin_url('admin.php?page=sky-seo-settings&tab=license'); ?>" class="button button-primary" style="margin-left: 10px;">
                             <?php _e('Activate License', 'sky360'); ?>
                         </a>
                     </p>
@@ -613,7 +613,7 @@ class Sky_SEO_License_Manager {
      */
     public function add_license_tab($active_tab) {
         ?>
-        <a href="?page=sky360-settings&tab=license" 
+        <a href="?page=sky-seo-settings&tab=license"
            class="nav-tab <?php echo $active_tab === 'license' ? 'nav-tab-active' : ''; ?>">
             <?php _e('License', 'sky360'); ?>
             <?php if (!$this->is_license_valid()) : ?>

@@ -155,7 +155,7 @@ $export_url_args = [
     'show_all_traffic'   => $show_all_traffic ? '1' : '0',
     '_wpnonce'           => wp_create_nonce('sky_seo_export_analytics') // Add nonce for security
 ];
-                    $export_url = add_query_arg($export_url_args, admin_url('admin.php?page=sky360'));
+                    $export_url = add_query_arg($export_url_args, admin_url('admin.php?page=sky-seo-boost'));
                     $export_url = wp_nonce_url($export_url, 'sky_seo_export_analytics');
                     ?>
                     <a href="<?php echo esc_url($export_url); ?>" class="button"><?php _e('Export CSV', 'sky360'); ?></a>

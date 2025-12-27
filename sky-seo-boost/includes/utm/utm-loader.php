@@ -696,7 +696,7 @@ function sky_seo_render_utm_interface() {
  */
 function sky_seo_enqueue_utm_admin_assets($hook) {
     // Only load on our pages
-    if (strpos($hook, 'sky360-utm') === false) {
+    if (strpos($hook, 'sky-seo-utm') === false) {
         return;
     }
     
