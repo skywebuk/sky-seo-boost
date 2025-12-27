@@ -76,7 +76,7 @@ function sky_seo_ensure_edit_link_visible($wp_admin_bar) {
 function sky_seo_enqueue_admin_scripts($hook) {
    $post_types = ['sky_areas', 'sky_trending', 'sky_sectors'];
    $plugin_url = plugins_url('', dirname(__FILE__));
-   $version = '1.0.27';
+   $version = defined('SKY360_VERSION') ? SKY360_VERSION : '5.0.3';
    
    // Get current post type
    $current_post_type = '';
