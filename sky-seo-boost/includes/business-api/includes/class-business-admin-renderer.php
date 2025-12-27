@@ -43,45 +43,63 @@ class Sky_SEO_Business_Admin_Renderer {
     public function render_admin_page() {
         // Get current tab
         $current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'settings';
-        
+
         // Check if Reviews Database is available
         $show_reviews_tab = class_exists('Sky_SEO_Reviews_Database');
-        ?>
-        <div class="wrap">
 
-            <?php if ($show_reviews_tab) : ?>
-            <nav class="nav-tab-wrapper">
-                <a href="<?php echo admin_url('admin.php?page=sky-seo-business-api'); ?>" 
-                   class="nav-tab <?php echo $current_tab === 'settings' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Settings', 'sky360'); ?>
-                </a>
-                <a href="<?php echo admin_url('admin.php?page=sky-seo-business-api&tab=reviews'); ?>" 
-                   class="nav-tab <?php echo $current_tab === 'reviews' ? 'nav-tab-active' : ''; ?>">
-                    <?php _e('Reviews', 'sky360'); ?>
-                </a>
-            </nav>
-            <?php endif; ?>
-            
-            <div class="tab-content">
-                <?php
-                switch ($current_tab) {
-                    case 'reviews':
-                        if ($show_reviews_tab) {
-                            $this->render_reviews_tab();
-                        } else {
-                            $this->render_settings_tab();
-                        }
-                        break;
-                    
-                    case 'settings':
-                    default:
-                        $this->render_settings_tab();
-                        break;
+        // Start admin page wrapper
+        sky360_admin_page_start();
+
+        // Render header
+        sky360_render_admin_header(
+            __('Business API', 'sky360'),
+            __('Manage your Google Business Profile and reviews', 'sky360')
+        );
+
+        // Build tabs array
+        $tabs = [
+            [
+                'slug' => 'settings',
+                'label' => __('Settings', 'sky360'),
+                'icon' => 'dashicons-admin-generic'
+            ]
+        ];
+
+        if ($show_reviews_tab) {
+            $tabs[] = [
+                'slug' => 'reviews',
+                'label' => __('Reviews', 'sky360'),
+                'icon' => 'dashicons-star-filled'
+            ];
+        }
+
+        // Render navigation tabs
+        sky360_render_nav_tabs($tabs, $current_tab, 'sky-seo-business-api');
+
+        // Start content wrapper
+        sky360_content_wrapper_start();
+
+        // Render appropriate tab content
+        switch ($current_tab) {
+            case 'reviews':
+                if ($show_reviews_tab) {
+                    $this->render_reviews_tab();
+                } else {
+                    $this->render_settings_tab();
                 }
-                ?>
-            </div>
-        </div>
-        <?php
+                break;
+
+            case 'settings':
+            default:
+                $this->render_settings_tab();
+                break;
+        }
+
+        // End content wrapper
+        sky360_content_wrapper_end();
+
+        // End admin page wrapper
+        sky360_admin_page_end();
     }
     
     /**

@@ -553,3 +553,126 @@ function sky_seo_trending_feed() {
 function sky_seo_sectors_feed() {
     load_template(SKY_SEO_BOOST_PLUGIN_DIR . 'templates/feed-sectors.php');
 }
+
+/**
+ * ========================================
+ * SKY360 ADMIN PAGE HELPER FUNCTIONS
+ * Provides consistent styling across all admin pages
+ * ========================================
+ */
+
+/**
+ * Render the Sky360 admin page header/topbar
+ *
+ * @param string $title Page title
+ * @param string $subtitle Page subtitle/description
+ * @param array $actions Optional action buttons for the right side
+ */
+function sky360_render_admin_header($title, $subtitle = '', $actions = []) {
+    ?>
+    <div class="sky360-topbar">
+        <div class="sky360-topbar-left">
+            <div class="sky360-topbar-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white" width="24" height="24"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0z"/></svg>
+            </div>
+            <div>
+                <h1 class="sky360-topbar-title"><?php echo esc_html($title); ?></h1>
+                <?php if ($subtitle) : ?>
+                    <p class="sky360-topbar-subtitle"><?php echo esc_html($subtitle); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="sky360-topbar-right">
+            <span class="sky360-topbar-badge">v<?php echo esc_html(SKY360_VERSION); ?></span>
+            <?php foreach ($actions as $action) : ?>
+                <a href="<?php echo esc_url($action['url']); ?>" class="sky360-topbar-button" <?php echo isset($action['target']) ? 'target="' . esc_attr($action['target']) . '"' : ''; ?>>
+                    <?php if (isset($action['icon'])) : ?>
+                        <span class="dashicons <?php echo esc_attr($action['icon']); ?>" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                    <?php endif; ?>
+                    <?php echo esc_html($action['label']); ?>
+                </a>
+            <?php endforeach; ?>
+            <a href="https://skywebdesign.co.uk/support" target="_blank" class="sky360-topbar-button">
+                <span class="dashicons dashicons-sos" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                <?php esc_html_e('Support', 'sky360'); ?>
+            </a>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Start the Sky360 admin page wrapper
+ * Call this at the beginning of an admin page
+ */
+function sky360_admin_page_start() {
+    ?>
+    <div class="sky360-admin-page">
+        <div class="sky360-notices-area">
+            <?php settings_errors(); ?>
+        </div>
+        <div class="sky360-page-wrapper">
+    <?php
+}
+
+/**
+ * End the Sky360 admin page wrapper
+ * Call this at the end of an admin page
+ */
+function sky360_admin_page_end() {
+    ?>
+            <div class="sky-seo-footer" style="margin-top: 24px;">
+                <div class="sky-seo-powered-by">
+                    <?php esc_html_e('Powered by', 'sky360'); ?>
+                    <a href="https://skywebdesign.co.uk" target="_blank">Sky Web Design</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Render navigation tabs for admin pages
+ *
+ * @param array $tabs Array of tabs with 'slug', 'label', 'icon' keys
+ * @param string $active_tab Currently active tab slug
+ * @param string $page_slug The page slug for building URLs
+ */
+function sky360_render_nav_tabs($tabs, $active_tab, $page_slug) {
+    ?>
+    <div class="sky-seo-navigation-wrapper">
+        <ul class="sky-seo-navigation-menu">
+            <?php foreach ($tabs as $tab) : ?>
+                <li>
+                    <a href="?page=<?php echo esc_attr($page_slug); ?>&tab=<?php echo esc_attr($tab['slug']); ?>"
+                       class="nav-link <?php echo $active_tab === $tab['slug'] ? 'active' : ''; ?>">
+                        <?php if (isset($tab['icon'])) : ?>
+                            <span class="dashicons <?php echo esc_attr($tab['icon']); ?>"></span>
+                        <?php endif; ?>
+                        <?php echo esc_html($tab['label']); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php
+}
+
+/**
+ * Start content wrapper
+ */
+function sky360_content_wrapper_start() {
+    ?>
+    <div class="sky-seo-content-wrapper">
+    <?php
+}
+
+/**
+ * End content wrapper
+ */
+function sky360_content_wrapper_end() {
+    ?>
+    </div>
+    <?php
+}

@@ -77,20 +77,15 @@ function sky_seo_analytics_tab() {
     $total_content = sky_seo_get_content_count($start_date, $end_date, $selected_post_type, $human_only_filter);
     $total_pages = ceil($total_content / 20);
 
+    // Start Sky360 page wrapper
+    sky360_admin_page_start();
+    sky360_render_admin_header(
+        __('Analytics Dashboard', 'sky360'),
+        __('Track page views and traffic analytics', 'sky360')
+    );
+    sky360_content_wrapper_start();
     ?>
     <div class="sky-seo-analytics-dashboard">
-        <!-- Header with Date Controls -->
-<div class="sky-seo-dashboard-header">
-    <div class="sky-header-top">
-        <h2><?php _e('Analytics Dashboard', 'sky360'); ?></h2>
-        
-<div class="sky-powered-by">
-    <a href="https://skywebdesign.co.uk/" target="_blank">
-        <span><?php _e('Powered by Sky Web', 'sky360'); ?></span>
-        <img src="<?php echo SKY_SEO_BOOST_PLUGIN_URL; ?>assets/img/logo.svg" alt="Sky Web">
-    </a>
-</div>
-    </div>
     <div class="sky-seo-date-controls">
                 <form method="get" class="sky-seo-date-form">
     <input type="hidden" name="page" value="sky360">
@@ -633,6 +628,8 @@ $export_url_args = [
         </script>
     </div>
     <?php
+    sky360_content_wrapper_end();
+    sky360_admin_page_end();
 }
 
 // Get traffic quality metrics

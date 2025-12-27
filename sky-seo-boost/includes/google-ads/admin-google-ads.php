@@ -83,37 +83,31 @@ function sky_seo_render_google_ads_page() {
         $active_tab = 'dashboard';
     }
 
+    // Define tabs
+    $tabs = [
+        ['slug' => 'dashboard', 'label' => __('Dashboard', 'sky360'), 'icon' => 'dashicons-dashboard'],
+        ['slug' => 'settings', 'label' => __('Settings', 'sky360'), 'icon' => 'dashicons-admin-settings'],
+    ];
+
+    // Start Sky360 page wrapper
+    sky360_admin_page_start();
+    sky360_render_admin_header(
+        __('Google Ads', 'sky360'),
+        __('Track and analyze your Google Ads campaigns, conversions, and ROI', 'sky360')
+    );
+    sky360_render_nav_tabs($tabs, $active_tab, 'sky-seo-google-ads');
+    sky360_content_wrapper_start();
     ?>
-    <div class="wrap">
-        <h1 style="display: none;">Google Ads</h1>
-
         <div class="sky-google-ads-dashboard">
-            <!-- Header -->
-            <div class="sky-gads-header">
-                <h2><span class="dashicons dashicons-google" style="color: #4285f4;"></span> Google Ads Tracking & Analytics</h2>
-                <p>Track and analyze your Google Ads campaigns, conversions, and ROI</p>
-
-                <!-- Navigation Tabs -->
-                <div style="margin-top: 20px; border-bottom: 2px solid #e5e5e7; display: flex; gap: 24px;">
-                    <a href="?page=sky-seo-google-ads&tab=dashboard"
-                       style="padding: 12px 0; font-weight: 600; text-decoration: none; color: <?php echo $active_tab === 'dashboard' ? '#007aff' : '#86868b'; ?>; border-bottom: 2px solid <?php echo $active_tab === 'dashboard' ? '#007aff' : 'transparent'; ?>; margin-bottom: -2px;">
-                        <span class="dashicons dashicons-dashboard"></span> Dashboard
-                    </a>
-                    <a href="?page=sky-seo-google-ads&tab=settings"
-                       style="padding: 12px 0; font-weight: 600; text-decoration: none; color: <?php echo $active_tab === 'settings' ? '#007aff' : '#86868b'; ?>; border-bottom: 2px solid <?php echo $active_tab === 'settings' ? '#007aff' : 'transparent'; ?>; margin-bottom: -2px;">
-                        <span class="dashicons dashicons-admin-settings"></span> Settings
-                    </a>
-                </div>
-            </div>
-
             <?php if ($active_tab === 'dashboard'): ?>
                 <?php sky_seo_render_google_ads_dashboard($google_ads_enabled, $conversion_type); ?>
             <?php elseif ($active_tab === 'settings'): ?>
                 <?php sky_seo_render_google_ads_settings($google_ads_enabled, $conversion_type); ?>
             <?php endif; ?>
         </div>
-    </div>
     <?php
+    sky360_content_wrapper_end();
+    sky360_admin_page_end();
 }
 
 /**
