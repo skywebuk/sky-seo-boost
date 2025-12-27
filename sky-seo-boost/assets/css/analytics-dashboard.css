@@ -262,7 +262,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+}
+
+.sky-seo-table-actions > * {
+    flex-shrink: 0;
 }
 
 .sky-seo-search-input {
