@@ -244,7 +244,7 @@ class Sky_SEO_WhatsApp_Business {
      */
     public function add_admin_menu() {
         add_submenu_page(
-            'sky360',
+            'sky-seo-boost',
             __('WhatsApp Chat', 'sky360'),
             __('WhatsApp Chat', 'sky360'),
             'manage_options',
