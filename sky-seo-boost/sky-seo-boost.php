@@ -506,7 +506,8 @@ class Sky_SEO_Boost {
      * Get the menu icon as base64 encoded data URI
      */
     private function get_menu_icon() {
-        $icon_path = SKY360_PLUGIN_DIR . 'assets/img/skyweb_logo_black.png';
+        // Use white logo for visibility on dark admin sidebar
+        $icon_path = SKY360_PLUGIN_DIR . 'assets/img/skyweb_logo_white.png';
 
         if (file_exists($icon_path)) {
             $icon_data = file_get_contents($icon_path);
